@@ -78,7 +78,7 @@ libs
 rsconnect
 
 # artwork:
-images
+art
 
 # files:
 *.html
