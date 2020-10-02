@@ -1,7 +1,3 @@
-Introduction to Data Science (i2ds)
-================
-Hansjörg Neth, uni.kn
-2020-10-02
 
 <!-- README.md is generated from README.Rmd. Please edit the .Rmd file. -->
 <!-- badges: start -->
@@ -10,8 +6,8 @@ Hansjörg Neth, uni.kn
 <!-- ![](i2ds_logo_1.png) -->
 <a href="https://www.spds.uni-konstanz.de/"> <img src = "./inst/images/i2ds_logo_1.png" alt = "i2ds" align = "right" width = "150" style = "width: 150px; float: right; border:15;"/> </a>
 
-Overview
-========
+Introduction to Data Science (i2ds)
+===================================
 
 The R package **i2ds** supports the course **Introduction to Data Science (using R, ADILT)** at the [University of Konstanz](https://www.uni-konstanz.de/en/) in **Winter 2020/2021**.
 
@@ -43,8 +39,8 @@ Coordinates
     -   [Ilias](https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1077339.html) course management system
 
 <!-- Add blank line. -->
-Course Syllabus
----------------
+Syllabus
+--------
 
 The syllabus provides additional details on the course **Introduction to Data Science (using R, ADILT)** at the [University of Konstanz](https://www.uni-konstanz.de/en/) in **Winter 2020/2021** and will be updated in case of changes.
 
@@ -64,8 +60,7 @@ We will be using several chapters from my textbook ([2020](#ref-Neth2020)[a](#re
 
 -   Neth, H. (2020). ds4psy: Data Science for Psychologists.
     Social Psychology and Decision Sciences, University of Konstanz, Germany.
-    Textbook and R package (version 0.5.0, Sep 1, 2020).
-    Available at <https://bookdown.org/hneth/ds4psy/>.
+    Textbook and R package (version 0.5.0, Sep 1, 2020). Available at <https://bookdown.org/hneth/ds4psy/>.
 
 The URL of the supporting R package **ds4psy** ([2020](#ref-R-ds4psy)[b](#ref-R-ds4psy)) is <https://CRAN.R-project.org/package=ds4psy>.
 
@@ -74,11 +69,20 @@ We are also using selected chapters from the following books:
 -   *Modern Data Science with R*.
     By Benjamin S. Baumer, Daniel T. Kaplan, and Nicholas J. Horton (2017, 1st edition).
     CRC Press, Taylor & Francis Group, Boca Raton/London/New York.
-    (2nd edition).
-    Available at <https://beanumber.github.io/mdsr2e/>.
+    (2nd edition). Available at <https://beanumber.github.io/mdsr2e/>.
 
--   Wickham, H., & Grolemund, G. (2017). *R for data science: Import, tidy, transform, visualize, and model data.* Sebastopol, Canada: O'Reilly Media, Inc.
-    Available at <http://r4ds.had.co.nz>.
+-   Wickham, H., & Grolemund, G. (2017). *R for data science: Import, tidy, transform, visualize, and model data.* Sebastopol, Canada: O'Reilly Media, Inc. Available at <http://r4ds.had.co.nz>.
+
+License
+-------
+
+<!-- (a) Use online image: -->
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+<!-- (b) Use local image: -->
+<!-- <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src = "./images/CC_BY_NC_SA.png" /></a> -->
+<!-- License text:  -->
+<span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">**Introduction to Data Science** (**i2ds**)</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://neth.de" property="cc:attributionName" rel="cc:attributionURL">Hansjörg Neth</a> is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
 
 <!-- i2ds logo: -->
 <!-- ![](i2ds_logo_2.png) -->
@@ -95,9 +99,10 @@ For all other questions, contact <!-- the course tutor Lisa Fleuchaus (<lisa.fle
 
 ------------------------------------------------------------------------
 
-\[README.Rmd updated on 2020-10-02 12:32:08 by [hn](https://neth.de/).\]
+<!-- Update: -->
+\[Updated 2020-10-02 by [hn](https://neth.de).\]
 
-<!-- Automatic references here: -->
+<!-- Automatic references: -->
 References
 ==========
 

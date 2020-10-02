@@ -1,7 +1,4 @@
 ---
-title: "Introduction to Data Science (i2ds)"
-author: "Hansjörg Neth, uni.kn"
-date: "`r Sys.Date()`"
 bibliography: [./bib/ref.bib, ./bib/refpkg+.bib]
 biblio-style: apalike
 csl: ./csl/apa.csl
@@ -81,7 +78,7 @@ frm_ds_deadline <- "%A, %B %e, %Y"
 <img src = "./inst/images/i2ds_logo_1.png" alt = "i2ds" align = "right" width = "150" style = "width: 150px; float: right; border:15;"/>
 </a>
 
-# Overview
+# Introduction to Data Science (i2ds) 
 
 The R package **i2ds** supports the course **Introduction to Data Science (using R, ADILT)** at the [University of Konstanz](https://www.uni-konstanz.de/en/) in **Winter&nbsp;2020/2021**. 
 
@@ -101,12 +98,14 @@ The course uses the technologies provided by [R](https://www.r-project.org/) [@R
 
 ## Coordinates
 
-<!-- uni.kn logo and link: -->  
+<!-- uni.kn logo and link: -->
+
 <!-- ![](./inst/images/uniKn_logo.png) --> 
 <a href = "https://www.uni-konstanz.de/en/">
 <img src = "./inst/images/uniKn_logo.png" alt = "uni.kn" align = "right" width = "300px" style = "width: 300px; float: right; border: 20px;"/>
 <!-- <img src = "./inst/images/uniKn_logo_s.png" alt = "uni.kn" style = "float: right; border:20;"/> --> 
 </a>
+
 
 <!-- Winter 2020/2021: -->
 
@@ -124,7 +123,8 @@ by [Hansjörg Neth](https://neth.de/) (<h.neth@uni.kn>, [SPDS](https://www.spds.
 
 <!-- Add blank line. --> 
 
-## Course Syllabus
+
+## Syllabus
 
 The syllabus provides additional details on the course **Introduction to Data Science (using R, ADILT)** at the [University of Konstanz](https://www.uni-konstanz.de/en/) in **Winter&nbsp;2020/2021** and will be updated in case of changes. 
 
@@ -146,7 +146,7 @@ We will be using several chapters from my textbook [-@Neth2020]:
 
 - Neth, H. (2020). ds4psy: Data Science for Psychologists.  
 Social Psychology and Decision Sciences, University of Konstanz, Germany.  
-Textbook and R package (version 0.5.0, Sep 1, 2020).  
+Textbook and R package (version 0.5.0, Sep 1, 2020). 
 Available at <`r url_ds4psy_book`>.  
 
 The URL of the supporting R package **ds4psy** [-@R-ds4psy] is <`r url_ds4psy_cran`>. 
@@ -157,13 +157,29 @@ We are also using selected chapters from the following books:
 - _Modern Data Science with R_.    
 By Benjamin S. Baumer, Daniel T. Kaplan, and Nicholas J. Horton (2017, 1st edition).   
 CRC Press, Taylor & Francis Group, Boca Raton/London/New York.  
-(2nd edition).  
+(2nd edition). 
 Available at <https://beanumber.github.io/mdsr2e/>.  
 
 - Wickham, H., & Grolemund, G. (2017). _R for data science: Import, tidy, transform, visualize, and model data._ 
-Sebastopol, Canada: O'Reilly Media, Inc.  
+Sebastopol, Canada: O'Reilly Media, Inc. 
 Available at <http://r4ds.had.co.nz>.  
 
+
+## License
+
+<!-- (a) Use online image: -->
+
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
+
+<!-- (b) Use local image: -->
+
+<!-- <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src = "./images/CC_BY_NC_SA.png" /></a> -->
+
+
+
+<!-- License text:  -->
+
+<span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">**Introduction to Data Science** (**i2ds**)</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://neth.de" property="cc:attributionName" rel="cc:attributionURL">Hansjörg Neth</a> is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. 
 
 
 <!-- i2ds logo: -->  
@@ -186,9 +202,11 @@ the instructor (Hansjörg Neth, <h.neth@uni.kn>).
 
 ----- 
 
-[`r fileName` updated on `r Sys.time()` by [hn](https://neth.de/).]
+<!-- Update: -->
 
-<!-- Automatic references here: -->
+[Updated `r format(Sys.time(), "%Y-%m-%d")` by [hn](https://neth.de).]  
+
+<!-- Automatic references: -->
 
 # References
 
