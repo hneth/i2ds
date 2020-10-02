@@ -8,7 +8,7 @@ Hansjörg Neth, SPDS, uni.kn
 <!-- badges: end -->
 <!-- i2ds logo: -->
 <!-- ![](i2ds_logo_1.png) -->
-<a href="https://www.spds.uni-konstanz.de/"> <img src = "images/i2ds_logo_1.png" alt = "i2ds" align = "right" width = "150" style = "width: 150px; float: right; border:15;"/> </a>
+<a href="https://www.spds.uni-konstanz.de/"> <img src = "./inst/images/i2ds_logo_1.png" alt = "i2ds" align = "right" width = "150" style = "width: 150px; float: right; border:15;"/> </a>
 
 i2ds
 ====
@@ -41,7 +41,7 @@ Coordinates
 
 <!-- uni.kn logo and link: -->
 <!-- ![](./inst/images/uniKn_logo.png) -->
-<a href = "https://www.uni-konstanz.de/en/"> <img src = "images/uniKn_logo.png" alt = "uni.kn" align = "right" width = "300px" style = "width: 300px; float: right; border: 20px;"/> <!-- <img src = "./inst/images/uniKn_logo_s.png" alt = "uni.kn" style = "float: right; border:20;"/> --> </a>
+<a href = "https://www.uni-konstanz.de/en/"> <img src = "./inst/images/uniKn_logo.png" alt = "uni.kn" align = "right" width = "300px" style = "width: 300px; float: right; border: 20px;"/> <!-- <img src = "./inst/images/uniKn_logo_s.png" alt = "uni.kn" style = "float: right; border:20;"/> --> </a>
 
 <!-- Winter 2020/2021: -->
 -   **Introduction to Data Science (using R, ADILT)** (course ID) at the [University of Konstanz](https://www.uni-konstanz.de/en/) by [Hansjörg Neth](https://neth.de/) (<h.neth@uni.kn>, [SPDS](https://www.spds.uni-konstanz.de/), office D507).
@@ -77,7 +77,7 @@ The URL of the supporting R package **ds4psy** (Neth, [2020](#ref-R-ds4psy)[b](#
 
 <!-- i2ds logo: -->
 <!-- ![](i2ds_logo_2.png) -->
-<a href="https://www.spds.uni-konstanz.de/"> <img src = "images/i2ds_logo_2.png" alt = "i2ds (square)" align = "right" width = "150" style = "width: 150px; float: right; border:15;"/> </a>
+<a href="https://www.spds.uni-konstanz.de/"> <img src = "./inst/images/i2ds_logo_2.png" alt = "i2ds (square)" align = "right" width = "150" style = "width: 150px; float: right; border:15;"/> </a>
 
 Contact
 -------
@@ -90,7 +90,7 @@ For all other questions, contact <!-- the course tutor Lisa Fleuchaus (<lisa.fle
 
 ------------------------------------------------------------------------
 
-\[README.Rmd updated on 2020-10-02 09:54:53 by [hn](https://neth.de/).\]
+\[README.Rmd updated on 2020-10-02 11:52:48 by [hn](https://neth.de/).\]
 
 <!-- Automatic references here: -->
 References

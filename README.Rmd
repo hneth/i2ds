@@ -78,7 +78,7 @@ frm_ds_deadline <- "%A, %B %e, %Y"
 <!-- i2ds logo: -->  
 <!-- ![](i2ds_logo_1.png) --> 
 <a href="https://www.spds.uni-konstanz.de/">
-<img src = "images/i2ds_logo_1.png" alt = "i2ds" align = "right" width = "150" style = "width: 150px; float: right; border:15;"/>
+<img src = "./inst/images/i2ds_logo_1.png" alt = "i2ds" align = "right" width = "150" style = "width: 150px; float: right; border:15;"/>
 </a>
 
 # i2ds
@@ -116,7 +116,7 @@ The course uses the technologies provided by [R](https://www.r-project.org/) [@R
 <!-- uni.kn logo and link: -->  
 <!-- ![](./inst/images/uniKn_logo.png) --> 
 <a href = "https://www.uni-konstanz.de/en/">
-<img src = "images/uniKn_logo.png" alt = "uni.kn" align = "right" width = "300px" style = "width: 300px; float: right; border: 20px;"/>
+<img src = "./inst/images/uniKn_logo.png" alt = "uni.kn" align = "right" width = "300px" style = "width: 300px; float: right; border: 20px;"/>
 <!-- <img src = "./inst/images/uniKn_logo_s.png" alt = "uni.kn" style = "float: right; border:20;"/> --> 
 </a>
 
@@ -163,7 +163,7 @@ The URL of the supporting R package **ds4psy** [@R-ds4psy] is <`r url_ds4psy_cra
 <!-- i2ds logo: -->  
 <!-- ![](i2ds_logo_2.png) --> 
 <a href="https://www.spds.uni-konstanz.de/">
-<img src = "images/i2ds_logo_2.png" alt = "i2ds (square)" align = "right" width = "150" style = "width: 150px; float: right; border:15;"/>
+<img src = "./inst/images/i2ds_logo_2.png" alt = "i2ds (square)" align = "right" width = "150" style = "width: 150px; float: right; border:15;"/>
 </a>
 
 
