@@ -68,9 +68,8 @@ frm_ds_deadline <- "%A, %B %e, %Y"
 # format(ds_project_due, frm_ds_deadline)
 ```
 
-<!-- badges: start -->
-
-<!-- badges: end -->
+<!-- badges: start: -->
+<!-- badges: end. -->
 
 <!-- i2ds logo: -->  
 <!-- ![](i2ds_logo_1.png) --> 
@@ -122,6 +121,7 @@ by [Hansjörg Neth](https://neth.de/) (<h.neth@uni.kn>, [SPDS](https://www.spds.
     - [Ilias](`r url_i2ds_ilias`) course management system  
 
 <!-- Add blank line. --> 
+
 
 
 ## Syllabus
@@ -195,16 +195,17 @@ Please ask any question that may also be of interest to other course members in 
 
 For all other questions, contact 
 <!-- the course tutor Lisa Fleuchaus (<lisa.fleuchaus@uni.kn>) or  -->
-the instructor (Hansjörg Neth, <h.neth@uni.kn>). 
+the instructor (Hansjörg Neth, h.neth at uni.kn). 
 
 
-<!-- footer: -->
+<!-- Footer: -->
 
 ----- 
 
-<!-- Update: -->
+<!-- Update note: -->
 
 [Updated `r format(Sys.time(), "%Y-%m-%d")` by [hn](https://neth.de).]  
+
 
 <!-- Automatic references: -->
 
