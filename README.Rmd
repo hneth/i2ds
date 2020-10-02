@@ -101,12 +101,14 @@ The course uses the technologies provided by [R](https://www.r-project.org/) [@R
 
 ## Coordinates
 
-<!-- uni.kn logo and link: -->  
+<!-- uni.kn logo and link: -->
+
 <!-- ![](./inst/images/uniKn_logo.png) --> 
 <a href = "https://www.uni-konstanz.de/en/">
 <img src = "./inst/images/uniKn_logo.png" alt = "uni.kn" align = "right" width = "300px" style = "width: 300px; float: right; border: 20px;"/>
 <!-- <img src = "./inst/images/uniKn_logo_s.png" alt = "uni.kn" style = "float: right; border:20;"/> --> 
 </a>
+
 
 <!-- Winter 2020/2021: -->
 
@@ -123,6 +125,7 @@ by [Hansjörg Neth](https://neth.de/) (<h.neth@uni.kn>, [SPDS](https://www.spds.
     - [Ilias](`r url_i2ds_ilias`) course management system  
 
 <!-- Add blank line. --> 
+
 
 ## Course Syllabus
 
@@ -188,7 +191,7 @@ the instructor (Hansjörg Neth, <h.neth@uni.kn>).
 
 [`r fileName` updated on `r Sys.time()` by [hn](https://neth.de/).]
 
-<!-- Automatic references here: -->
+<!-- Automatic references: -->
 
 # References
 

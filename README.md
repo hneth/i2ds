@@ -95,9 +95,9 @@ For all other questions, contact <!-- the course tutor Lisa Fleuchaus (<lisa.fle
 
 ------------------------------------------------------------------------
 
-\[README.Rmd updated on 2020-10-02 12:32:08 by [hn](https://neth.de/).\]
+\[README.Rmd updated on 2020-10-02 12:37:22 by [hn](https://neth.de/).\]
 
-<!-- Automatic references here: -->
+<!-- Automatic references: -->
 References
 ==========
 
