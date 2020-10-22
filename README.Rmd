@@ -129,9 +129,11 @@ by [Hansjörg Neth](https://neth.de/) (<h.neth@uni.kn>, [SPDS](https://www.spds.
 
 
 
-## Syllabus
+## Contents 
 
-The syllabus provides additional details on the course **Introduction to Data Science (using R, ADILT)** at the [University of Konstanz](https://www.uni-konstanz.de/en/) in **Winter&nbsp;2020/2021** and will be updated in case of changes. 
+The syllabus for the course **Introduction to Data Science (using R, ADILT)** at the [University of Konstanz](https://www.uni-konstanz.de/en/) in **Winter&nbsp;2020/2021** is currently under development. 
+
+- An initial syllabus for [Introduction to Data Science](`r url_i2ds_book`) is available at <`r url_i2ds_book`>. 
 
 - The organizational details for this course are available at the [ZEuS](`r url_i2ds_zeus`) and [Ilias](`r url_i2ds_ilias`) web platforms. 
 
@@ -150,7 +152,7 @@ A textbook fragment [Introduction to Data Science](`r url_i2ds_book`) is availab
 
 In the meantime, we will be using several chapters from my textbook [-@ds4psyBook]: 
 
-- Neth, H. (2020). ds4psy: Data Science for Psychologists.  
+- Neth, H. (2020). ds4psy: _Data Science for Psychologists_.  
 Social Psychology and Decision Sciences, University of Konstanz, Germany.  
 Textbook and R package (version 0.5.0, Sep 1, 2020). 
 Available at <`r url_ds4psy_book`>.  
@@ -160,7 +162,7 @@ The URL of the supporting R package **ds4psy** [-@R-ds4psy] is <`r url_ds4psy_cr
 
 We are also using selected chapters from the following books [@mdsr; @r4ds]: 
 
-- _Baumer, B. S., Kaplan, D. T., & Horton, N. J. (2020). _Modern Data Science with R_ (2nd ed.).
+- Baumer, B.S., Kaplan, D.T., & Horton, N.J. (2020). _Modern Data Science with R_ (2nd ed.).
 CRC Press, Taylor & Francis Group, Boca Raton/London/New York.  
 Available at <https://beanumber.github.io/mdsr2e/>.  
 

@@ -86,12 +86,16 @@ the [tidyverse](https://www.tidyverse.org/) (Wickham et al.,
 
 <!-- Add blank line. -->
 
-## Syllabus
+## Contents
 
-The syllabus provides additional details on the course **Introduction to
-Data Science (using R, ADILT)** at the [University of
-Konstanz](https://www.uni-konstanz.de/en/) in **Winter 2020/2021** and
-will be updated in case of changes.
+The syllabus for the course **Introduction to Data Science (using R,
+ADILT)** at the [University of
+Konstanz](https://www.uni-konstanz.de/en/) in **Winter 2020/2021** is
+currently under development.
+
+  - An initial syllabus for [Introduction to Data
+    Science](https://bookdown.org/hneth/i2ds/) is available at
+    <https://bookdown.org/hneth/i2ds/>.
 
   - The organizational details for this course are available at the
     [ZEuS](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=181)
@@ -119,7 +123,7 @@ Science](https://bookdown.org/hneth/i2ds/) is available at
 In the meantime, we will be using several chapters from my textbook
 ([2020](#ref-ds4psyBook)[a](#ref-ds4psyBook)):
 
-  - Neth, H. (2020). ds4psy: Data Science for Psychologists.  
+  - Neth, H. (2020). ds4psy: *Data Science for Psychologists*.  
     Social Psychology and Decision Sciences, University of Konstanz,
     Germany.  
     Textbook and R package (version 0.5.0, Sep 1, 2020). Available at
@@ -133,7 +137,7 @@ We are also using selected chapters from the following books (Baumer,
 Kaplan, & Horton, [2020](#ref-mdsr); Wickham & Grolemund,
 [2017](#ref-r4ds)):
 
-  - \_Baumer, B. S., Kaplan, D. T., & Horton, N. J. (2020). *Modern Data
+  - Baumer, B.S., Kaplan, D.T., & Horton, N.J. (2020). *Modern Data
     Science with R* (2nd ed.). CRC Press, Taylor & Francis Group, Boca
     Raton/London/New York.  
     Available at <https://beanumber.github.io/mdsr2e/>.
