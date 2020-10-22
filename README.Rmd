@@ -55,6 +55,8 @@ url_ds4psy_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.
 url_i2ds_ilias <- "https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1077339.html"
 url_i2ds_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=181" 
 
+url_i2ds_book <- "https://bookdown.org/hneth/i2ds/" 
+
 # OLDER URLs:
 # # SoSe 2020:
 # url_ds4psy_ilias <- "https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_979923.html"
@@ -79,7 +81,9 @@ frm_ds_deadline <- "%A, %B %e, %Y"
 
 # Introduction to Data Science (i2ds) 
 
-The R package **i2ds** supports the course **Introduction to Data Science (using R, ADILT)** at the [University of Konstanz](https://www.uni-konstanz.de/en/) in **Winter&nbsp;2020/2021**. 
+The R package **i2ds** will eventually support the course **Introduction to Data Science (using R, ADILT)** at the [University of Konstanz](https://www.uni-konstanz.de/en/). 
+
+A textbook fragment [Introduction to Data Science](`r url_i2ds_book`) is available at <`r url_i2ds_book`>. 
 
 ## Description
 
@@ -111,12 +115,13 @@ The course uses the technologies provided by [R](https://www.r-project.org/) [@R
 * **Introduction to Data Science (using R, ADILT)** (course ID) 
 at the [University of Konstanz](https://www.uni-konstanz.de/en/) 
 by [Hansjörg Neth](https://neth.de/) (<h.neth@uni.kn>, [SPDS](https://www.spds.uni-konstanz.de/), office D507). 
-* Winter 2020: Thursdays, 13:30--15:00, C336.  
-* Course materials:  
+* Winter 2020: Thursdays, 13:30--15:00, C336. 
+* Course materials: 
+    - Ebook [Introduction to Data Science](`r url_i2ds_book`) (at <`r url_i2ds_book`>) 
     - Ebook [Data Science for Psychologists](`r url_ds4psy_book`) (at <`r url_ds4psy_book`>) 
     - R package [ds4psy](`r url_ds4psy_cran`) (at <`r url_ds4psy_cran`>) 
 
-* Online platforms (at [uni.kn](https://www.uni-konstanz.de/en/)):   
+* Online platforms (at [uni.kn](https://www.uni-konstanz.de/en/)): 
     - [ZEuS](`r url_i2ds_zeus`) registration system  
     - [Ilias](`r url_i2ds_ilias`) course management system  
 
@@ -141,8 +146,9 @@ The syllabus provides additional details on the course **Introduction to Data Sc
 ## Readings 
 
 The main textbook for this course is yet to be written. 
+A textbook fragment [Introduction to Data Science](`r url_i2ds_book`) is available at <`r url_i2ds_book`>. 
 
-We will be using several chapters from my textbook [-@Neth2020]: 
+In the meantime, we will be using several chapters from my textbook [-@ds4psyBook]: 
 
 - Neth, H. (2020). ds4psy: Data Science for Psychologists.  
 Social Psychology and Decision Sciences, University of Konstanz, Germany.  
@@ -152,12 +158,10 @@ Available at <`r url_ds4psy_book`>.
 The URL of the supporting R package **ds4psy** [-@R-ds4psy] is <`r url_ds4psy_cran`>. 
 
 
-We are also using selected chapters from the following books: 
+We are also using selected chapters from the following books [@mdsr; @r4ds]: 
 
-- _Modern Data Science with R_.    
-By Benjamin S. Baumer, Daniel T. Kaplan, and Nicholas J. Horton (2017, 1st edition).   
+- _Baumer, B. S., Kaplan, D. T., & Horton, N. J. (2020). _Modern Data Science with R_ (2nd ed.).
 CRC Press, Taylor & Francis Group, Boca Raton/London/New York.  
-(2nd edition). 
 Available at <https://beanumber.github.io/mdsr2e/>.  
 
 - Wickham, H., & Grolemund, G. (2017). _R for data science: Import, tidy, transform, visualize, and model data._ 
@@ -194,7 +198,6 @@ Available at <http://r4ds.had.co.nz>.
 Please ask any question that may also be of interest to other course members in the **Discussion Forum** on [Ilias](`r url_i2ds_ilias`).  
 
 For all other questions, contact 
-<!-- the course tutor Lisa Fleuchaus (<lisa.fleuchaus@uni.kn>) or  -->
 the instructor (Hansjörg Neth, h.neth at uni.kn). 
 
 
