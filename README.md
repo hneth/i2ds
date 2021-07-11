@@ -1,12 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit the .Rmd file. -->
-
 <!-- badges: start: -->
-
 <!-- badges: end. -->
-
 <!-- i2ds logo: -->
-
 <!-- ![](i2ds_logo_1.png) -->
 
 <a href="https://www.spds.uni-konstanz.de/">
@@ -15,18 +11,30 @@
 
 # Introduction to Data Science (i2ds)
 
-The R package **i2ds** will eventually support the course **Introduction
-to Data Science (using R, ADILT)** at the [University of
+The R package **i2ds** supports the course **Introduction to Data
+Science (using R, ADILT)** at the [University of
 Konstanz](https://www.uni-konstanz.de/en/).
 
-A textbook fragment [Introduction to Data
+<!-- From package description: -->
+
+The **i2ds** package provides datasets and functions used in the
+examples and exercises of the book “Introduction to Data Science” (by
+Hansjoerg Neth, Konstanz University, 2021), available at
+<a href="https://bookdown.org/hneth/ds4psy/" class="uri">https://bookdown.org/hneth/ds4psy/</a>.
+The book and course introduce principles and methods of data science to
+students of psychology and other biological or social sciences. The
+‘i2ds’ package primarily provides datasets, but also functions for data
+generation and manipulation that are used in the book and its exercises.
+All functions included in ‘i2ds’ are designed to be explicit and
+instructive, rather than efficient or elegant.
+
+The textbook [Introduction to Data
 Science](https://bookdown.org/hneth/i2ds/) is available at
-<https://bookdown.org/hneth/i2ds/>.
+<a href="https://bookdown.org/hneth/i2ds/" class="uri">https://bookdown.org/hneth/i2ds/</a>.
 
 ## Description
 
 <!-- Abstract: [2020-09-17]  -->
-
 <!-- Contents: -->
 
 This course provides an introduction to data science for students of any
@@ -52,7 +60,6 @@ the [tidyverse](https://www.tidyverse.org/) (Wickham et al.,
 ## Coordinates
 
 <!-- uni.kn logo and link: -->
-
 <!-- ![](./inst/images/uniKn_logo.png) -->
 
 <a href = "https://www.uni-konstanz.de/en/">
@@ -62,26 +69,26 @@ the [tidyverse](https://www.tidyverse.org/) (Wickham et al.,
 
 <!-- Winter 2020/2021: -->
 
-  - **Introduction to Data Science (using R, ADILT)** (course ID) at the
+-   **Introduction to Data Science (using R, ADILT)** (course ID) at the
     [University of Konstanz](https://www.uni-konstanz.de/en/) by
-    [Hansjörg Neth](https://neth.de/) (<h.neth@uni.kn>,
+    [Hansjörg Neth](https://neth.de/)
+    (<a href="mailto:h.neth@uni.kn" class="email">h.neth@uni.kn</a>,
     [SPDS](https://www.spds.uni-konstanz.de/), office D507).
-  - Winter 2020: Thursdays, 13:30–15:00, C336.
-  - Course materials:
-      - Ebook [Introduction to Data
+-   Winter 2020: Thursdays, 13:30–15:00, C336.
+-   Course materials:
+    -   Ebook [Introduction to Data
         Science](https://bookdown.org/hneth/i2ds/) (at
-        <https://bookdown.org/hneth/i2ds/>)
-      - Ebook [Data Science for
+        <a href="https://bookdown.org/hneth/i2ds/" class="uri">https://bookdown.org/hneth/i2ds/</a>)
+    -   Ebook [Data Science for
         Psychologists](https://bookdown.org/hneth/ds4psy/) (at
-        <https://bookdown.org/hneth/ds4psy/>)
-      - R package [ds4psy](https://CRAN.R-project.org/package=ds4psy)
-        (at <https://CRAN.R-project.org/package=ds4psy>)
-  - Online platforms (at
-        [uni.kn](https://www.uni-konstanz.de/en/)):
-      - [ZEuS](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=181)
-        registration
-        system  
-      - [Ilias](https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1077339.html)
+        <a href="https://bookdown.org/hneth/ds4psy/" class="uri">https://bookdown.org/hneth/ds4psy/</a>)
+    -   R package [ds4psy](https://CRAN.R-project.org/package=ds4psy)
+        (at
+        <a href="https://CRAN.R-project.org/package=ds4psy" class="uri">https://CRAN.R-project.org/package=ds4psy</a>)
+-   Online platforms (at [uni.kn](https://www.uni-konstanz.de/en/)):
+    -   [ZEuS](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=181)
+        registration system  
+    -   [Ilias](https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1077339.html)
         course management system
 
 <!-- Add blank line. -->
@@ -93,21 +100,21 @@ ADILT)** at the [University of
 Konstanz](https://www.uni-konstanz.de/en/) in **Winter 2020/2021** is
 currently under development.
 
-  - An initial syllabus for [Introduction to Data
+-   An initial syllabus for [Introduction to Data
     Science](https://bookdown.org/hneth/i2ds/) is available at
-    <https://bookdown.org/hneth/i2ds/>.
+    <a href="https://bookdown.org/hneth/i2ds/" class="uri">https://bookdown.org/hneth/i2ds/</a>.
 
-  - The organizational details for this course are available at the
+-   The organizational details for this course are available at the
     [ZEuS](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=181)
     and
     [Ilias](https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1077339.html)
     web platforms.
 
-  - The textbook [Data Science for
+-   The textbook [Data Science for
     Psychologists](https://bookdown.org/hneth/ds4psy/) is available at
-    <https://bookdown.org/hneth/ds4psy/>.
+    <a href="https://bookdown.org/hneth/ds4psy/" class="uri">https://bookdown.org/hneth/ds4psy/</a>.
 
-  - Information on the [Advanced Data and Information Literacy Track
+-   Information on the [Advanced Data and Information Literacy Track
     (ADILT)](https://www.uni-konstanz.de/lehren/adilt-projekt/)
     ([en](https://www.uni-konstanz.de/en/teaching/adilt/)).
 
@@ -118,34 +125,35 @@ currently under development.
 The main textbook for this course is yet to be written. A textbook
 fragment [Introduction to Data
 Science](https://bookdown.org/hneth/i2ds/) is available at
-<https://bookdown.org/hneth/i2ds/>.
+<a href="https://bookdown.org/hneth/i2ds/" class="uri">https://bookdown.org/hneth/i2ds/</a>.
 
 In the meantime, we will be using several chapters from my textbook
 ([2020](#ref-ds4psyBook)[a](#ref-ds4psyBook)):
 
-  - Neth, H. (2020). ds4psy: *Data Science for Psychologists*.  
+-   Neth, H. (2020). ds4psy: *Data Science for Psychologists*.  
     Social Psychology and Decision Sciences, University of Konstanz,
     Germany.  
     Textbook and R package (version 0.5.0, Sep 1, 2020). Available at
-    <https://bookdown.org/hneth/ds4psy/>.
+    <a href="https://bookdown.org/hneth/ds4psy/" class="uri">https://bookdown.org/hneth/ds4psy/</a>.
 
 The URL of the supporting R package **ds4psy**
 ([2020](#ref-R-ds4psy)[b](#ref-R-ds4psy)) is
-<https://CRAN.R-project.org/package=ds4psy>.
+<a href="https://CRAN.R-project.org/package=ds4psy" class="uri">https://CRAN.R-project.org/package=ds4psy</a>.
 
 We are also using selected chapters from the following books (Baumer,
 Kaplan, & Horton, [2020](#ref-mdsr); Wickham & Grolemund,
 [2017](#ref-r4ds)):
 
-  - Baumer, B.S., Kaplan, D.T., & Horton, N.J. (2020). *Modern Data
+-   Baumer, B.S., Kaplan, D.T., & Horton, N.J. (2020). *Modern Data
     Science with R* (2nd ed.). CRC Press, Taylor & Francis Group, Boca
     Raton/London/New York.  
-    Available at <https://beanumber.github.io/mdsr2e/>.
+    Available at
+    <a href="https://beanumber.github.io/mdsr2e/" class="uri">https://beanumber.github.io/mdsr2e/</a>.
 
-  - Wickham, H., & Grolemund, G. (2017). *R for data science: Import,
+-   Wickham, H., & Grolemund, G. (2017). *R for data science: Import,
     tidy, transform, visualize, and model data.* Sebastopol, Canada:
-    O’Reilly Media, Inc. Available at
-<http://r4ds.had.co.nz>.
+    O’Reilly Media, Inc.  Available at
+    <a href="http://r4ds.had.co.nz" class="uri">http://r4ds.had.co.nz</a>.
 
 ## License
 
@@ -154,13 +162,12 @@ Kaplan, & Horton, [2020](#ref-mdsr); Wickham & Grolemund,
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
 
 <!-- (b) Use local image: -->
-
 <!-- <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src = "./images/CC_BY_NC_SA.png" /></a> -->
-
 <!-- License text:  -->
 
-<span xmlns:dct="http://purl.org/dc/terms/" data-property="dct:title">**Introduction
-to Data Science** (**i2ds**)</span> by
+<span xmlns:dct="http://purl.org/dc/terms/"
+property="dct:title">**Introduction to Data Science** (**i2ds**)</span>
+by
 <a xmlns:cc="http://creativecommons.org/ns#" href="https://neth.de" property="cc:attributionName" rel="cc:attributionURL">Hansjörg
 Neth</a> is licensed under a
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
@@ -168,7 +175,6 @@ Commons Attribution-NonCommercial-ShareAlike 4.0 International
 License</a>.
 
 <!-- i2ds logo: -->
-
 <!-- ![](i2ds_logo_2.png) -->
 
 <a href="https://www.spds.uni-konstanz.de/">
@@ -186,11 +192,11 @@ at uni.kn).
 
 <!-- Footer: -->
 
------
+------------------------------------------------------------------------
 
 <!-- Update note: -->
 
-\[Updated 2020-10-22 by [hn](https://neth.de).\]
+\[Updated 2021-07-11 by [hn](https://neth.de).\]
 
 <!-- Automatic references: -->
 
@@ -198,7 +204,7 @@ at uni.kn).
 
 <!-- eof. -->
 
-<div id="refs" class="references">
+<div id="refs" class="references hanging-indent">
 
 <div id="ref-mdsr">
 
@@ -232,8 +238,8 @@ computing*. Retrieved from <https://www.R-project.org>
 <div id="ref-tidyverse">
 
 Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L. D.,
-François, R., … Yutani, H. (2019). Welcome to the tidyverse. *Journal
-of Open Source Software*, *4*(43), 1686.
+François, R., … Yutani, H. (2019). Welcome to the tidyverse. *Journal of
+Open Source Software*, *4*(43), 1686.
 <https://doi.org/10.21105/joss.01686>
 
 </div>

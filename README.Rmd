@@ -81,9 +81,15 @@ frm_ds_deadline <- "%A, %B %e, %Y"
 
 # Introduction to Data Science (i2ds) 
 
-The R package **i2ds** will eventually support the course **Introduction to Data Science (using R, ADILT)** at the [University of Konstanz](https://www.uni-konstanz.de/en/). 
+The R package **i2ds** supports the course **Introduction to Data Science (using R, ADILT)** at the [University of Konstanz](https://www.uni-konstanz.de/en/). 
 
-A textbook fragment [Introduction to Data Science](`r url_i2ds_book`) is available at <`r url_i2ds_book`>. 
+<!-- From package description: -->
+
+The **i2ds** package provides datasets and functions used in the examples and exercises of the book "Introduction to Data Science" (by Hansjoerg Neth, Konstanz University, 2021), available at <https://bookdown.org/hneth/ds4psy/>. 
+The book and course introduce principles and methods of data science to students of psychology and other biological or social sciences. The 'i2ds' package primarily provides datasets, but also functions for data generation and manipulation that are used in the book and its exercises. All functions included in 'i2ds' are designed to be explicit and instructive, rather than efficient or elegant. 
+
+The textbook [Introduction to Data Science](`r url_i2ds_book`) is available at <`r url_i2ds_book`>. 
+
 
 ## Description
 
