@@ -202,11 +202,19 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 #' 
 #' @importFrom tidyr expand_grid 
 #' 
-#' @examples  
+#' @examples
+#' flatten_array(UCBAdmissions)
+#' flatten_array(UCBAdmissions, margin = 1)
+#' flatten_array(UCBAdmissions, margin = 3)
+#' 
 #' a1 <- array(data = 1:8, dim = c(2, 2, 2), 
 #'             dimnames = list(c("r1", "r2"), c("c1", "c2"), c("t1", "t2")))
-#' 
 #' flatten_array(a1)  # using default (margin = 2) 
+#' 
+#' # Using names of dimnames:
+#' names(dimnames(a1)) <- c("row", "col", "tab")
+#' flatten_array(a1)
+#' flatten_array(a1, margin = 3)  
 #' 
 #' # Returning name variables as factors:
 #' a1f <- flatten_array(a1, varsAsFactors = TRUE)
@@ -253,6 +261,9 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
     
   }
   
+  # Store dimension names:
+  dim_names_x <- names(dimnames(x))
+  
   # Main: 
   # Flatten array:
   flat <- apply(x, MARGIN = margin, FUN = c)
@@ -264,14 +275,29 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
   df <- data.frame(vars, flat)
   
   # Adjust names (of 2 initial columns/variables): 
-  # if (varsAsFactors){  # get var names from factor levels:
-  #   n_1 <- substr(levels(df$Var1)[1], 1, 1)
-  #   n_2 <- substr(levels(df$Var2)[1], 1, 1)
-  # } else { # get var names from dimnames of array x: 
-  n_1 <- substr(dimnames(x)[-margin][[1]][1], 1, 1)  # 1st letter of dim/var 1
-  n_2 <- substr(dimnames(x)[-margin][[2]][1], 1, 1)  # 1st letter of dim/var 2
-  # }
   
+  if (is.null(dim_names_x)) { # dimensions are not named:
+    
+    # if (varsAsFactors){  # get var names from factor levels:
+    # 
+    #   n_1 <- substr(levels(df$Var1)[1], 1, 1)
+    #   n_2 <- substr(levels(df$Var2)[1], 1, 1)
+    #   
+    # } else { # create var names from name initials of array x: 
+    
+    n_1 <- substr(dimnames(x)[-margin][[1]][1], 1, 1)  # 1st letter of dim/var 1
+    n_2 <- substr(dimnames(x)[-margin][[2]][1], 1, 1)  # 1st letter of dim/var 2
+    
+    # }
+    
+  } else {  # use existing dimension names:
+    
+    n_1 <- dim_names_x[-margin][1]  # 1st of the remaining names
+    n_2 <- dim_names_x[-margin][2]  # 2nd of the remaining names
+    
+  }
+  
+  # Name 2 initial variables:
   names(df)[1:2] <- c(n_1, n_2)
   
   return(df)
@@ -279,9 +305,18 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 } # flatten_array(). 
 
 ## Check: 
+# flatten_array(UCBAdmissions)
+# flatten_array(UCBAdmissions, margin = 1)
+# flatten_array(UCBAdmissions, margin = 3)
+# 
 # a1 <- array(data = 1:8, dim = c(2, 2, 2), 
 #             dimnames = list(c("r1", "r2"), c("c1", "c2"), c("t1", "t2")))
 # 
+# flatten_array(a1)  # using default (margin = 2) 
+# 
+# # Using names of dimnames:
+# a1 <- array(data = 1:8, dim = c(2, 2, 2), 
+#             dimnames = list(c("r1", "r2"), c("c1", "c2"), c("t1", "t2")))
 # flatten_array(a1)  # using default (margin = 2) 
 # 
 # # Returning name variables as factors:
