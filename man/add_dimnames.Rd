@@ -4,16 +4,30 @@
 \alias{add_dimnames}
 \title{Add dimension names (to arrays).}
 \usage{
-add_dimnames(x, prefix = c("r", "c", "t"), sep = "")
+add_dimnames(
+  x,
+  dnames = c("row", "col", "tab"),
+  prefix = c("r", "c", "t"),
+  sep = ""
+)
 }
 \arguments{
 \item{x}{An array to which dimension names are to be added.}
 
-\item{prefix}{A vector of prefixes (as character, 
+\item{dnames}{A character vector of dimension names. 
+If \code{length(dnames == 1)}, a numeric digit is added to 
+signal the dimension number. 
+If \code{length(dnames)} exceeds the number of dimensions, 
+it is truncated. 
+If the number of dimensions exceeds \code{length(dnames)}, 
+\code{dnames} are created from \code{LETTERS}. 
+Default: \code{dnames = c("row", "col", "tab")}.}
+
+\item{prefix}{A character vector of prefixes (whose
 length must match the number of dimensions of \code{x}). 
 Default: \code{prefix = c("r", "c", "t")} (for row, column, and table).}
 
-\item{sep}{Separator (as character) between prefix and numeric indices. 
+\item{sep}{A separator (as character) between prefix and numeric indices. 
 Default: \code{sep = ""}.}
 }
 \value{
@@ -30,15 +44,17 @@ When \code{x} is an atomic vector,
 \examples{
 a <- array(1:24, dim = c(3, 4, 2))
 add_dimnames(a)
-add_dimnames(a, prefix = c("row", "col", "table"), sep = "_")
+add_dimnames(a, dnames = "dim", sep = "_")
+add_dimnames(a, dnames = c("X", "Y", "Z", "XYZ"), prefix = c("x", "y", "z"), sep = "_")
 
 # More dimensions:
 b <- array(1:2^5, dim = rep(2, 5))
 add_dimnames(b)
+add_dimnames(b, dnames = "D")
+add_dimnames(b, dnames = "dim", prefix = c("r", "c", "u", "v", "w"), sep = "_")
 
 # For data frames:
-c <- data.frame(let = letters[1:4],
-                num = 5:8)
+c <- data.frame(let = letters[1:4], num = 5:8)
 is.list(c)
 is.data.frame(c)
 add_dimnames(c, prefix = c("r", "c"))
