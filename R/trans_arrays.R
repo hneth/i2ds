@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 07 11
+## hn | uni.kn | 2021 07 12
 ## ---------------------------
 
 # Functions for transforming/manipulating arrays. 
@@ -18,25 +18,36 @@
 #' 
 #' @param x An array to which dimension names are to be added.
 #' 
-#' @param prefix A vector of prefixes (as character, 
+#' @param dnames A character vector of dimension names. 
+#' If \code{length(dnames == 1)}, a numeric digit is added to 
+#' signal the dimension number. 
+#' If \code{length(dnames)} exceeds the number of dimensions, 
+#' it is truncated. 
+#' If the number of dimensions exceeds \code{length(dnames)}, 
+#' \code{dnames} are created from \code{LETTERS}. 
+#' Default: \code{dnames = c("row", "col", "tab")}.   
+#'        
+#' @param prefix A character vector of prefixes (whose  
 #' length must match the number of dimensions of \code{x}). 
 #' Default: \code{prefix = c("r", "c", "t")} (for row, column, and table).
 #' 
-#' @param sep Separator (as character) between prefix and numeric indices. 
+#' @param sep A separator (as character) between prefix and numeric indices. 
 #' Default: \code{sep = ""}. 
 #' 
 #' @examples 
 #' a <- array(1:24, dim = c(3, 4, 2))
 #' add_dimnames(a)
-#' add_dimnames(a, prefix = c("row", "col", "table"), sep = "_")
+#' add_dimnames(a, dnames = "dim", sep = "_")
+#' add_dimnames(a, dnames = c("X", "Y", "Z", "XYZ"), prefix = c("x", "y", "z"), sep = "_")
 #' 
 #' # More dimensions:
 #' b <- array(1:2^5, dim = rep(2, 5))
 #' add_dimnames(b)
+#' add_dimnames(b, dnames = "D")
+#' add_dimnames(b, dnames = "dim", prefix = c("r", "c", "u", "v", "w"), sep = "_")
 #' 
 #' # For data frames:
-#' c <- data.frame(let = letters[1:4],
-#'                 num = 5:8)
+#' c <- data.frame(let = letters[1:4], num = 5:8)
 #' is.list(c)
 #' is.data.frame(c)
 #' add_dimnames(c, prefix = c("r", "c"))
@@ -58,7 +69,7 @@
 #' 
 #' @export 
 
-add_dimnames <- function(x, prefix = c("r", "c", "t"), sep = ""){
+add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c", "t"), sep = ""){
   
   dims <- dim(x)
   
@@ -79,16 +90,33 @@ add_dimnames <- function(x, prefix = c("r", "c", "t"), sep = ""){
       
     }
     
-    # Create dim_names (as a vector): 
-    dim_names <- paste(prefix, 1:elm_nr, sep = sep) 
+    # Create name_vec: 
+    name_vec <- paste(prefix, 1:elm_nr, sep = sep) 
     
-    # Assign dim_names to x:
-    names(x) <- dim_names
+    # Assign name_vec to x (as a vector):
+    names(x) <- name_vec
     
   } else { # (C) x is a data frame or an array:
     
     dim_nr <- length(dims)  # nr of dimensions
     
+    # Check dnames length: 
+    if (length(dnames) == 1){ # atomic dnames:
+      
+      dnames <- paste(dnames, 1:dim_nr, sep = sep)  # add dim number to dnames
+      
+    } else if (length(dnames) > dim_nr){  # too many dnames for dim_nr: 
+      
+      dnames <- dnames[1:dim_nr]  # truncate dnames
+      
+    } else if (length(dnames) != dim_nr){ # dim_nr exceeds dnames: 
+      
+      message("add_dimnames: Length of dnames must match x dimensions. Using LETTERS:")
+      dnames <- LETTERS[1:dim_nr]
+      
+    }
+    
+    # Check prefix length: 
     if (length(prefix) != dim_nr){
       
       message("add_dimnames: Length of prefix must match x dimensions. Using letters:")
@@ -96,17 +124,20 @@ add_dimnames <- function(x, prefix = c("r", "c", "t"), sep = ""){
       
     }
     
-    # Create dim_names (as a list): 
-    dim_names <- vector("list", dim_nr)  # an empty list
+    # Create name_list (as a list): 
+    name_list <- vector("list", dim_nr)  # an empty list
     
-    for (i in 1:dim_nr){ # fill list:
+    for (i in 1:dim_nr){ # list elements:
       
-      dim_names[[i]] <- paste(prefix[i], 1:dims[i], sep = sep)
+      name_list[[i]] <- paste(prefix[i], 1:dims[i], sep = sep)
       
     }
     
-    # Assign dim_names to x:
-    dimnames(x) <- dim_names
+    # Add dnames:
+    names(name_list) <- dnames 
+    
+    # Assign name_list to x:
+    dimnames(x) <- name_list
     
   } # else.
   
