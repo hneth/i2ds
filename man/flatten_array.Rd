@@ -32,11 +32,18 @@ It aims to reconstruct the names of the collapsed variables
 from the initial letters of the dimension names.
 }
 \examples{
- 
+flatten_array(UCBAdmissions)
+flatten_array(UCBAdmissions, margin = 1)
+flatten_array(UCBAdmissions, margin = 3)
+
 a1 <- array(data = 1:8, dim = c(2, 2, 2), 
             dimnames = list(c("r1", "r2"), c("c1", "c2"), c("t1", "t2")))
-
 flatten_array(a1)  # using default (margin = 2) 
+
+# Using names of dimnames:
+names(dimnames(a1)) <- c("row", "col", "tab")
+flatten_array(a1)
+flatten_array(a1, margin = 3)  
 
 # Returning name variables as factors:
 a1f <- flatten_array(a1, varsAsFactors = TRUE)
