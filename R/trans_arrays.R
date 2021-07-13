@@ -1,10 +1,10 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 07 12
-## ---------------------------
+## hn | uni.kn | 2021 07 13
+## -------------------------
 
 # Functions for transforming/manipulating arrays. 
 
-# add_dimnames: Add default names to array dimensions: ------ 
+## add_dimnames: Add default names to array dimensions: ------ 
 
 #' Add dimension names (to arrays). 
 #' 
@@ -175,7 +175,7 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 # add_dimnames(l)  # return NA
 
 
-# flatten_array: Turn a 3D array into a 2D data frame: ------ 
+## flatten_array: Turn a 3D array into a 2D data frame: ------ 
 
 #' Flatten a 3D array into a 2D data frame. 
 #' 
@@ -183,7 +183,10 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 #' into a 2-dimensional data frame.
 #' 
 #' \code{flatten_array} assumes that \code{x} is a 3-dimensional array 
-#' with dimension names (and calls \code{\link{add_dimnames}} instead). 
+#' with dimension names (and calls \code{\link{add_dimnames}} if not).
+#' 
+#' \code{flatten_array} returns \code{NA} for non-arrays and  
+#' for arrays with more than 3 dimensions. 
 #' 
 #' Internally, \code{flatten_array} uses \code{apply} to apply 
 #' the \code{\link{c}} function to a specified \code{margin} of \code{x}. 
@@ -198,7 +201,7 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 #' Default: \code{margin = 2} (i.e., columns). 
 #' 
 #' @param varsAsFactors Boolean: Should reconstructed variables be factors? 
-#' Default: \code{varsAsFactors = FALSE} (i.e., as character variables). 
+#' Default: \code{varsAsFactors = FALSE} (i.e., character variables). 
 #' 
 #' @importFrom tidyr expand_grid 
 #' 
@@ -333,8 +336,8 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 # flatten_array(a3)
 
 
-
 ## ToDo: ------
+
 ## - ...
 
 ## eof. ----------
