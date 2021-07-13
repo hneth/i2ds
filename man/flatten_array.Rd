@@ -13,7 +13,7 @@ flatten_array(x, margin = 2, varsAsFactors = FALSE)
 Default: \code{margin = 2} (i.e., columns).}
 
 \item{varsAsFactors}{Boolean: Should reconstructed variables be factors? 
-Default: \code{varsAsFactors = FALSE} (i.e., as character variables).}
+Default: \code{varsAsFactors = FALSE} (i.e., character variables).}
 }
 \value{
 A data frame.
@@ -24,7 +24,10 @@ into a 2-dimensional data frame.
 }
 \details{
 \code{flatten_array} assumes that \code{x} is a 3-dimensional array 
-with dimension names (and calls \code{\link{add_dimnames}} instead). 
+with dimension names (and calls \code{\link{add_dimnames}} if not).
+
+\code{flatten_array} returns \code{NA} for non-arrays and  
+for arrays with more than 3 dimensions. 
 
 Internally, \code{flatten_array} uses \code{apply} to apply 
 the \code{\link{c}} function to a specified \code{margin} of \code{x}. 
