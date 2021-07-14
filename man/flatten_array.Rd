@@ -32,7 +32,13 @@ for arrays with more than 3 dimensions.
 Internally, \code{flatten_array} uses \code{apply} to apply 
 the \code{\link{c}} function to a specified \code{margin} of \code{x}. 
 It aims to reconstruct the names of the collapsed variables 
-from the initial letters of the dimension names.
+from the initial letters of the dimension names. 
+
+See \code{\link{ftable}} (from the \strong{stats} package) 
+for a more general function (in combination with \code{\link{aperm}})  
+and \code{\link{margin.table}} (from \strong{base} R) 
+and \code{\link{addmargins}} (from \strong{stats}) for aggregating 
+over array/table dimensions.
 }
 \examples{
 flatten_array(UCBAdmissions)
@@ -63,6 +69,10 @@ flatten_array(a3)
 
 }
 \seealso{
+\code{\link{ftable}} for flattening multi-dimensional arrays; 
+\code{\link{aperm}} for permuting array dimensions; 
+\code{\link{margin.table}} for aggregating across array dimensions; 
+\code{\link{addmargins}} for expanding factor levels on margins; 
 \code{\link{add_dimnames}} for adding dimension names to arrays.
 
 Other array functions: 
