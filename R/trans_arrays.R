@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 07 13
+## hn | uni.kn | 2021 07 14
 ## -------------------------
 
 # Functions for transforming/manipulating arrays. 
@@ -193,6 +193,12 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 #' It aims to reconstruct the names of the collapsed variables 
 #' from the initial letters of the dimension names. 
 #' 
+#' See \code{\link{ftable}} (from the \strong{stats} package) 
+#' for a more general function (in combination with \code{\link{aperm}})  
+#' and \code{\link{margin.table}} (from \strong{base} R) 
+#' and \code{\link{addmargins}} (from \strong{stats}) for aggregating 
+#' over array/table dimensions.
+#' 
 #' @return A data frame. 
 #' 
 #' @param x A 3-dimensional array. 
@@ -235,6 +241,10 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 #' @family array functions
 #' 
 #' @seealso
+#' \code{\link{ftable}} for flattening multi-dimensional arrays; 
+#' \code{\link{aperm}} for permuting array dimensions; 
+#' \code{\link{margin.table}} for aggregating across array dimensions; 
+#' \code{\link{addmargins}} for expanding factor levels on margins; 
 #' \code{\link{add_dimnames}} for adding dimension names to arrays.  
 #' 
 #' @export
@@ -334,6 +344,21 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 # 
 # a3 <- array(data = 1:2^4, dim = c(2, 2, 2, 2))  # 4-dimensions
 # flatten_array(a3)
+
+
+## Compare with margin.table() and ftable(): 
+
+# dim(Titanic)
+# dimnames(Titanic)
+# (T2 <- margin.table(Titanic, margin = c(2, 3, 4)))  # aggregate over dimension 1 (Class)
+# 
+# flatten_array(T2, margin = 3)
+# 
+# # Compare: 
+# ftable(T2)
+# data.frame(ftable(T2)) # same as:
+# data.frame(T2)
+
 
 
 ## ToDo: ------
