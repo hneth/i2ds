@@ -14,6 +14,9 @@
 #' When \code{x} is an atomic vector, 
 #' \code{add_dimnames} returns a named vector. 
 #' 
+#' See \code{\link{provideDimnames}} (from \strong{base} R) 
+#' for a related function. 
+#' 
 #' @return Input \code{x} with dimension names. 
 #' 
 #' @param x An array to which dimension names are to be added.
@@ -66,6 +69,9 @@
 #' add_dimnames(l)  # return NA
 #' 
 #' @family array functions
+#' 
+#' @seealso
+#' \code{\link{provideDimnames}} is a more basic version. 
 #' 
 #' @export 
 
