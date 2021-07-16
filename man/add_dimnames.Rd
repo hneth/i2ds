@@ -39,7 +39,10 @@ Input \code{x} with dimension names.
 }
 \details{
 When \code{x} is an atomic vector, 
-\code{add_dimnames} returns a named vector.
+\code{add_dimnames} returns a named vector. 
+
+See \code{\link{provideDimnames}} (from \strong{base} R) 
+for a related function.
 }
 \examples{
 a <- array(1:24, dim = c(3, 4, 2))
@@ -74,6 +77,8 @@ add_dimnames(l)  # return NA
 
 }
 \seealso{
+\code{\link{provideDimnames}} is a more basic version.
+
 Other array functions: 
 \code{\link{flatten_array}()}
 }
