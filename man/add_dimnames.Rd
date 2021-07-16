@@ -80,6 +80,7 @@ add_dimnames(l)  # return NA
 \code{\link{provideDimnames}} is a more basic version.
 
 Other array functions: 
+\code{\link{expand_data_frame}()},
 \code{\link{flatten_array}()}
 }
 \concept{array functions}

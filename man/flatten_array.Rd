@@ -76,6 +76,7 @@ flatten_array(a3)
 \code{\link{add_dimnames}} for adding dimension names to arrays.
 
 Other array functions: 
-\code{\link{add_dimnames}()}
+\code{\link{add_dimnames}()},
+\code{\link{expand_data_frame}()}
 }
 \concept{array functions}
