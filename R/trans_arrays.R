@@ -1,8 +1,8 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 07 14
+## hn | uni.kn | 2021 07 16
 ## -------------------------
 
-# Functions for transforming/manipulating arrays. 
+# Functions for transforming/manipulating arrays/tables. 
 
 ## add_dimnames: Add default names to array dimensions: ------ 
 
@@ -351,7 +351,6 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 # a3 <- array(data = 1:2^4, dim = c(2, 2, 2, 2))  # 4-dimensions
 # flatten_array(a3)
 
-
 ## Compare with margin.table() and ftable(): 
 
 # dim(Titanic)
@@ -365,6 +364,110 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 # data.frame(ftable(T2)) # same as:
 # data.frame(T2)
 
+
+## expand_data_frame: Turn a contingency table into a data frame of raw cases: ------ 
+
+#' Expand an array/contingency table into a data frame. 
+#' 
+#' \code{expand_data_frame} turns an array/table or contingency table 
+#' (with a frequency count variable denoting the number of corresponding cases) 
+#' into a data frame of raw cases.
+#' 
+#' \code{expand_data_frame} assumes that \code{x} is an array/table 
+#' or a data frame with a frequency count variable \code{\link{freq_var}}. 
+#' 
+#' If \code{x} is an array/table, \code{expand_data_frame} uses 
+#' \code{\link{data.frame}} to turn \code{x} into a contingency table 
+#' (with a frequency variable named "\code{Freq}" by default). 
+#' 
+#' The function allows turning data stored in an array/table 
+#' or a contingency table into a data frame of raw cases. 
+#' The number of cases corresponds to \code{sum(x$freq_var)}. 
+#' 
+#' @return A data frame. 
+#' 
+#' @param x An array/table or contingency table (as data frame). 
+#' 
+#' @param freq_var The name of the frequency count variable in 
+#' a data frame \code{x}. 
+#' Default: \code{freq_var = "Freq"} (i.e., as in \code{data.frame(x)} for arrays/tables). 
+#' 
+#' @param fix_row_names Boolean: Should rows be named consecutively? 
+#' Default: \code{fix_row_names = TRUE}. 
+#' 
+#' @examples
+#' # (a) from raw data (vectors):
+#' ans <- sample(c("yes", "no", "maybe"), 100, replace = TRUE)
+#' eat <- sample(c("fish", "meat", "veggie"), 100, replace = TRUE)
+#' df_1 <- data.frame(ans, eat)  # data frame from vectors
+#' df_2 <- expand_data_frame(data.frame(table(ans, eat))) # from table > contingency table > data frame
+#' all.equal(table(df_1), table(df_2))
+#' 
+#' # (b) from array/table:
+#' df <- expand_data_frame(UCBAdmissions)  # array/table > contingency table > df
+#' tb <- table(df)                         # df > array/table 
+#' all.equal(UCBAdmissions, tb)
+#' 
+#' # Full circle (4D array > contingency table > data frame > 4D array): 
+#' df <- expand_data_frame(Titanic)
+#' tb <- table(df)
+#' all.equal(Titanic, tb)
+#' 
+#' @family array functions
+#' 
+#' @seealso
+#' \code{\link{table}} for the inverse function;  
+#' \code{\link{data.frame}} for turning an array/table into a contingency table. 
+#' 
+#' @export
+
+expand_data_frame <- function(x, freq_var = "Freq", fix_row_names = TRUE){
+  
+  # Turn array/table into a contingency table (as df): 
+  if (is.table(x)){
+    x <- data.frame(x)  # Note: x is a contingency table
+  }
+  
+  # Index of frequency count variable: 
+  ix_freq_var <- which(names(x) == freq_var)
+  
+  # Split x into 2 parts:
+  df_rest <- x[ , -ix_freq_var]  # df without freq_var   
+  n_cases <- x[[ix_freq_var]]    # cases per combination (as vector)
+  
+  # Index of how often each row of df_rest is to be repeated:
+  ix_repeats <- rep(1:nrow(df_rest), n_cases)
+  
+  # Main: Use ix_repeats to generate new data frame:
+  df_out <- df_rest[ix_repeats, ]
+  
+  # Fix rownames:
+  if (fix_row_names){
+    row.names(df_out) <- 1:nrow(df_out)
+  }
+  
+  # Output:   
+  df_out
+  
+} # expand_data_frame(). 
+
+# # Check:
+# # (a) from raw data (vectors):
+# ans <- sample(c("yes", "no", "maybe"), 100, replace = TRUE)
+# eat <- sample(c("fish", "meat", "veggie"), 100, replace = TRUE)
+# df_1 <- data.frame(ans, eat)  # data frame from vectors
+# df_2 <- expand_data_frame(data.frame(table(ans, eat))) # from table > contingency table > data frame
+# all.equal(table(df_1), table(df_2))
+# 
+# # (b) from array/table:
+# df <- expand_data_frame(UCBAdmissions) # array/table > contingency table > df
+# tb <- table(df)                        # df > array/table 
+# all.equal(UCBAdmissions, tb)
+# 
+# # Full circle (4D array > contingency table > data frame > 4D array): 
+# df <- expand_data_frame(Titanic)
+# tb <- table(df)
+# all.equal(Titanic, tb)
 
 
 ## ToDo: ------
