@@ -26,15 +26,17 @@ into a data frame of raw cases.
 }
 \details{
 \code{expand_data_frame} assumes that \code{x} is an array/table 
-or a data frame with a frequency count variable \code{\link{freq_var}}. 
+or a data frame with a frequency count variable \code{freq_var}. 
 
 If \code{x} is an array/table, \code{expand_data_frame} uses 
 \code{\link{data.frame}} to turn \code{x} into a contingency table 
-(with a frequency variable named "\code{Freq}" by default). 
+(with a frequency variable named \code{"Freq"} by default). 
 
 The function allows turning data stored in an array/table 
-or a contingency table into a data frame of raw cases. 
-The number of cases corresponds to \code{sum(x$freq_var)}.
+or a contingency table (with a frequency count variable \code{freq_var}) 
+into a corresponding data frame of raw cases. 
+The number of cases (rows) in the resulting data frame 
+corresponds to \code{sum(x$freq_var)}.
 }
 \examples{
 # (a) from raw data (vectors):
