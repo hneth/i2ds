@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 07 16
+## hn | uni.kn | 2021 07 19
 ## -------------------------
 
 # Functions for transforming/manipulating arrays/tables. 
@@ -425,31 +425,93 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 
 expand_data_frame <- function(x, freq_var = "Freq", fix_row_names = TRUE){
   
-  # Turn array/table into a contingency table (as df): 
+  # 0. Initialize:
+  df_out   <- NA
+  freqs    <- NA
+  ix_freqs <- NA
+  
+  # 1. Turn array/table into a contingency table (as df): 
   if (is.table(x)){
+    
     x <- data.frame(x)  # Note: x is a contingency table
+    
   }
   
-  # Index of frequency count variable: 
-  ix_freq_var <- which(names(x) == freq_var)
+  # 2. Process df: 
+  if (!is.data.frame(x)){
+    
+    message("expand_data_frame: x must be a data frame (or table).")
+    return(NA)
+    
+  } else { # x is df: 
+    
+    # 3. Check frequency count variable:
+    
+    freqs <- x[[freq_var]]  # freq of cases per combination (as vector)
+    # print(table(freqs))  # 4debugging
+    
+    if ( (!is.numeric(freqs)) | (any(freqs < 0)) | (any(is.na(as.integer(freqs)))) | (any(freqs %% 1 > 0)) ){
+      
+      message("expand_data_frame: freq_var must be an existing numeric variable and only contain non-negative integers.")
+      return(NA)
+      
+    } else { # Get index of frequency count variable: 
+      
+      if (is.character(freq_var)){      
+        
+        ix_freqs <- which(names(x) == freq_var)
+        
+      } else if ( (is.numeric(freq_var)) & (!is.na(as.integer(freq_var))) ) {
+        
+        ix_freqs <- freq_var 
+        
+      } else {
+        
+        message("expand_data_frame: freq_var is not a name or numeric index of df.")
+        return(NA)
+        
+      }
+      # print(ix_freqs)  # 4debugging 
+    }
+    
+    # 4. Remove freq count variable from df:
+    df_rest <- x[ , -ix_freqs]
+    # print(df_rest)  # 4debugging 
+    
+    # 5. If df_rest is only a vector: 
+    if (!is.data.frame(df_rest)){
+      
+      df_rest <- data.frame(df_rest)  # make data frame
+      # print(df_rest)  # 4debugging 
+      
+    }
+    
+    # Main part: ---- 
+    
+    # 6. Index of how often each row of df_rest is to be repeated:
+    ix_repeats <- rep(1:nrow(df_rest), freqs)
+    # print(ix_repeats)  # 4debugging 
+    
+    # 7. Use ix_repeats to generate new data frame:
+    df_out <- df_rest[ix_repeats, ]
+    
+    # 8. If df_out is only a vector: 
+    if (!is.data.frame(df_out)){
+      
+      df_out <- data.frame(df_out)  # make data frame
+      # print(df_out)  # 4debugging 
+      
+    }
+    
+    # 9. Fix rownames:
+    if (fix_row_names){
+      row.names(df_out) <- 1:nrow(df_out)
+    }
+    
+  } # if (df) else. 
   
-  # Split x into 2 parts:
-  df_rest <- x[ , -ix_freq_var]  # df without freq_var   
-  n_cases <- x[[ix_freq_var]]    # cases per combination (as vector)
-  
-  # Index of how often each row of df_rest is to be repeated:
-  ix_repeats <- rep(1:nrow(df_rest), n_cases)
-  
-  # Main: Use ix_repeats to generate new data frame:
-  df_out <- df_rest[ix_repeats, ]
-  
-  # Fix rownames:
-  if (fix_row_names){
-    row.names(df_out) <- 1:nrow(df_out)
-  }
-  
-  # Output:   
-  df_out
+  # 10. Output: 
+  return(df_out) 
   
 } # expand_data_frame(). 
 
@@ -470,6 +532,15 @@ expand_data_frame <- function(x, freq_var = "Freq", fix_row_names = TRUE){
 # df <- expand_data_frame(Titanic)
 # tb <- table(df)
 # all.equal(Titanic, tb)
+
+# # Note: Works for non-normal data frames (with positive freq count variables): 
+# count <- round(runif(100, min = 0, max = 3), 0)  # count must be non-negative integers
+# df <- data.frame(ans, count)
+# head(df)
+# ed <- expand_data_frame(df, freq_var = "count")
+# ed <- expand_data_frame(df, freq_var = 2)
+# dim(ed)
+# head(ed)
 
 
 ## ToDo: ------
