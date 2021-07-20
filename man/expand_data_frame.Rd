@@ -51,6 +51,9 @@ df <- expand_data_frame(UCBAdmissions)  # array/table > contingency table > df
 tb <- table(df)                         # df > array/table 
 all.equal(UCBAdmissions, tb)
 
+# Trivial case:
+expand_data_frame(data.frame(x = "a", Freq = 2))
+
 # Full circle (4D array > contingency table > data frame > 4D array): 
 df <- expand_data_frame(Titanic)
 tb <- table(df)
