@@ -41,10 +41,12 @@ and \code{\link{addmargins}} (from \strong{stats}) for aggregating
 over array/table dimensions.
 }
 \examples{
-flatten_array(UCBAdmissions)
+# UCBAdmissions data: 
+flatten_array(UCBAdmissions)  # margin = 2
 flatten_array(UCBAdmissions, margin = 1)
 flatten_array(UCBAdmissions, margin = 3)
 
+# Dummy data: 
 a1 <- array(data = 1:8, dim = c(2, 2, 2), 
             dimnames = list(c("r1", "r2"), c("c1", "c2"), c("t1", "t2")))
 flatten_array(a1)  # using default (margin = 2) 
@@ -70,9 +72,9 @@ flatten_array(a3)
 }
 \seealso{
 \code{\link{ftable}} for flattening multi-dimensional arrays; 
-\code{\link{aperm}} for permuting array dimensions; 
 \code{\link{margin.table}} for aggregating across array dimensions; 
 \code{\link{addmargins}} for expanding factor levels on margins; 
+\code{\link{aperm}} for permuting array dimensions; 
 \code{\link{add_dimnames}} for adding dimension names to arrays.
 
 Other array functions: 
