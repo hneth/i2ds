@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 07 24
+## hn | uni.kn | 2021 07 29
 ## -------------------------
 
 # Functions for transforming/manipulating arrays/tables. 
@@ -152,9 +152,9 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 } # add_dimnames(). 
 
 ## Check:
-# a <- array(1:24, dim = c(3, 4, 2))
-# add_dimnames(a)
-# add_dimnames(a, prefix = c("row", "col", "table"), sep = "_")
+# a <- array(1:24, dim = c(4, 3, 2))
+# a <- add_dimnames(a)
+# add_dimnames(a, prefix = c("row", "col", "tab"), sep = "_")
 # 
 # # More dimensions:
 # b <- array(1:2^5, dim = rep(2, 5))
