@@ -542,7 +542,7 @@ expand_data_frame <- function(x, freq_var = "Freq", fix_row_names = TRUE){
 # all.equal(Titanic, tb)
 # 
 # # From 2x2 table:
-# mx <- margin.table(Titanic, c(4, 2))
+# (mx <- margin.table(Titanic, c(4, 2)))
 # all.equal(mx, table(expand_data_frame(mx)))
 # 
 # # Trivial case:
@@ -560,6 +560,6 @@ expand_data_frame <- function(x, freq_var = "Freq", fix_row_names = TRUE){
 
 ## ToDo: ------
 
-## - ...
+## - expand_data_frame: Consider renaming fix_row_names to row_name_repair?
 
 ## eof. ----------
