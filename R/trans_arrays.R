@@ -1,6 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 07 29
-## -------------------------
+## hn | uni.kn | 2021 08 03
 
 # Functions for transforming/manipulating arrays/tables. 
 
@@ -371,22 +370,23 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 
 #' Expand an array/contingency table into a data frame. 
 #' 
-#' \code{expand_data_frame} turns an array/table or contingency table 
+#' \code{expand_data_frame} turns an array/table or a contingency table 
 #' (with a frequency count variable denoting the number of corresponding cases) 
 #' into a data frame of raw cases.
 #' 
 #' \code{expand_data_frame} assumes that \code{x} is an array/table 
 #' or a data frame with a frequency count variable \code{freq_var}. 
 #' 
-#' If \code{x} is an array/table, \code{expand_data_frame} uses 
+#' If \code{x} is an array/table, \code{expand_data_frame} first uses 
 #' \code{\link{data.frame}} to turn \code{x} into a contingency table 
 #' (with a frequency variable named \code{"Freq"} by default). 
 #' 
-#' The function allows turning data stored in an array/table 
+#' The function allows turning data stored as an array/table 
 #' or a contingency table (with a frequency count variable \code{freq_var}) 
 #' into a corresponding data frame of raw cases. 
 #' The number of cases (rows) in the resulting data frame 
-#' corresponds to \code{sum(x$freq_var)}. 
+#' corresponds to \code(sum(x)} (for tables) or 
+#' \code{sum(x$freq_var)} (for data frames). 
 #' 
 #' @return A data frame. 
 #' 
@@ -394,7 +394,8 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 #' 
 #' @param freq_var The name of the frequency count variable in 
 #' a data frame \code{x}. 
-#' Default: \code{freq_var = "Freq"} (i.e., as in \code{data.frame(x)} for arrays/tables). 
+#' Default: \code{freq_var = "Freq"} 
+#' (i.e., as in \code{data.frame(x)} for arrays/tables). 
 #' 
 #' @param fix_row_names Boolean: Should rows be named consecutively? 
 #' Default: \code{fix_row_names = TRUE}. 
@@ -539,6 +540,10 @@ expand_data_frame <- function(x, freq_var = "Freq", fix_row_names = TRUE){
 # df <- expand_data_frame(Titanic)
 # tb <- table(df)
 # all.equal(Titanic, tb)
+# 
+# # From 2x2 table:
+# mx <- margin.table(Titanic, c(4, 2))
+# all.equal(mx, table(expand_data_frame(mx)))
 # 
 # # Trivial case:
 # expand_data_frame(data.frame(x = "a", Freq = 2))
