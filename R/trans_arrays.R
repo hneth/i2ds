@@ -385,7 +385,7 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 #' or a contingency table (with a frequency count variable \code{freq_var}) 
 #' into a corresponding data frame of raw cases. 
 #' The number of cases (rows) in the resulting data frame 
-#' corresponds to \code(sum(x)} (for tables) or 
+#' corresponds to \code{sum(x)} (for tables) or 
 #' \code{sum(x$freq_var)} (for data frames). 
 #' 
 #' @return A data frame. 
