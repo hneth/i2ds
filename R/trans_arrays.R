@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 08 03
+## hn | uni.kn | 2021 08 05
 
 # Functions for transforming/manipulating arrays/tables. 
 
@@ -366,70 +366,73 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 # data.frame(T2)
 
 
-## expand_data_frame: Turn a contingency table into a data frame of raw cases: ------ 
+## expand_freq_table: Turn a contingency table into a data frame of raw cases: ------ 
 
-#' Expand an array/contingency table into a data frame. 
+#' Expand a contingency table (as array/table or data frame) into a raw cases (as data frame). 
 #' 
-#' \code{expand_data_frame} turns an array/table or a contingency table 
-#' (with a frequency count variable denoting the number of corresponding cases) 
-#' into a data frame of raw cases.
+#' \code{expand_freq_table} turns a contingency table 
+#' (given as an array/table or as a data frame with a frequency count variable 
+#' \code{freq_var} that denotes the number of cases for each factor combination) 
+#' into a data frame of raw cases. 
 #' 
-#' \code{expand_data_frame} assumes that \code{x} is an array/table 
+#' \code{expand_freq_table} assumes that \code{x} is an array/table 
 #' or a data frame with a frequency count variable \code{freq_var}. 
 #' 
-#' If \code{x} is an array/table, \code{expand_data_frame} first uses 
-#' \code{\link{data.frame}} to turn \code{x} into a contingency table 
-#' (with a frequency variable named \code{"Freq"} by default). 
+#' If \code{x} is an array/table, \code{expand_freq_table} first uses 
+#' \code{\link{as.data.frame}} (with \code{responseName = freq_var}) 
+#' to turn \code{x} into a contingency table (as a data frame with 
+#' a frequency variable, named \code{"Freq"} by default). 
 #' 
-#' The function allows turning data stored as an array/table 
-#' or a contingency table (with a frequency count variable \code{freq_var}) 
+#' The function allows turning a contingency table 
+#' (i.e., a table that cross-classifies frequency counts) 
+#' in the form of an array/table or a data frame with a frequency count variable \code{freq_var} 
 #' into a corresponding data frame of raw cases. 
 #' The number of cases (rows) in the resulting data frame 
-#' corresponds to \code{sum(x)} (for tables) or 
+#' corresponds to \code{sum(x)} (for arrays/tables) or 
 #' \code{sum(x$freq_var)} (for data frames). 
 #' 
-#' @return A data frame. 
+#' @return A data frame (of raw cases). 
 #' 
-#' @param x An array/table or contingency table (as data frame). 
+#' @param x An contingency table (as array/table or data frame). 
 #' 
 #' @param freq_var The name of the frequency count variable in 
-#' a data frame \code{x}. 
-#' Default: \code{freq_var = "Freq"} 
-#' (i.e., as in \code{data.frame(x)} for arrays/tables). 
+#' a data frame \code{x} (aka. \code{responseName} in \code{\link{as.data.frame}}). 
+#' Default: \code{freq_var = "Freq"},  
+#' based on default of \code{as.data.frame(x, responseName = "Freq")} for arrays/tables. 
 #' 
-#' @param fix_row_names Boolean: Should rows be named consecutively? 
-#' Default: \code{fix_row_names = TRUE}. 
+#' @param row_name_repair Boolean: Should rows be repaired (i.e., enumerated)? 
+#' Default: \code{row_name_repair = TRUE}. 
 #' 
 #' @examples
 #' # (a) from raw data (vectors):
 #' ans <- sample(c("yes", "no", "maybe"), 100, replace = TRUE)
 #' eat <- sample(c("fish", "meat", "veggie"), 100, replace = TRUE)
 #' df_1 <- data.frame(ans, eat)  # data frame from vectors
-#' df_2 <- expand_data_frame(data.frame(table(ans, eat))) # from table > contingency table > data frame
+#' df_2 <- expand_freq_table(data.frame(table(ans, eat))) # table > contingency table > df
 #' all.equal(table(df_1), table(df_2))
 #' 
 #' # (b) from array/table:
-#' df <- expand_data_frame(UCBAdmissions)  # array/table > contingency table > df
-#' tb <- table(df)                         # df > array/table 
+#' df <- expand_freq_table(UCBAdmissions)  # array/table > contingency table > df
+#' tb <- table(df)                                # df > array/table 
 #' all.equal(UCBAdmissions, tb)
 #' 
 #' # Trivial case:
-#' expand_data_frame(data.frame(x = "a", Freq = 2))
+#' expand_freq_table(data.frame(x = "a", Freq = 2))
 #' 
 #' # Full circle (4D array > contingency table > data frame > 4D array): 
-#' df <- expand_data_frame(Titanic)
+#' df <- expand_freq_table(Titanic)
 #' tb <- table(df)
 #' all.equal(Titanic, tb)
 #' 
 #' @family array functions
 #' 
 #' @seealso
-#' \code{\link{table}} for the inverse function;  
-#' \code{\link{data.frame}} for turning an array/table into a contingency table. 
+#' \code{\link{table}} and \link{xtabs}} for turning data frames into contingency tables;  
+#' \code{\link{as.data.frame}} for turning an array/table into a contingency table (as df). 
 #' 
 #' @export
 
-expand_data_frame <- function(x, freq_var = "Freq", fix_row_names = TRUE){
+expand_freq_table <- function(x, freq_var = "Freq", row_name_repair = TRUE){
   
   # 0. Initialize:
   df_out   <- NA
@@ -439,15 +442,16 @@ expand_data_frame <- function(x, freq_var = "Freq", fix_row_names = TRUE){
   # 1. Turn array/table into a contingency table (as df): 
   if (is.table(x)){
     
-    x <- data.frame(x)  # Note: x is a contingency table
-    # message("expand_data_frame: Converted x from table to data frame.")
+    x <- as.data.frame(x, responseName = freq_var)  # Note: x is a contingency table (table > df)
+    # message("expand_freq_table: Converted x from a table to a data frame.")
+    # print(head(x))  # 4debugging
     
   }
   
   # 2. Process df: 
   if (!is.data.frame(x)){
     
-    message("expand_data_frame: x must be a data frame (or table).")
+    message("expand_freq_table: x must be a contingency table (as data frame or table).")
     return(NA)
     
   } else { # x is df: 
@@ -459,7 +463,7 @@ expand_data_frame <- function(x, freq_var = "Freq", fix_row_names = TRUE){
     
     if ( (!is.numeric(freqs)) | (any(freqs < 0)) | (any(is.na(as.integer(freqs)))) | (any((freqs %% 1) > 0)) ){
       
-      message("expand_data_frame: freq_var must be an existing numeric variable and only contain non-negative integers.")
+      message("expand_freq_table: freq_var must be an existing numeric variable and only contain non-negative integers.")
       return(NA)
       
     } else { # Get index of frequency count variable: 
@@ -474,7 +478,7 @@ expand_data_frame <- function(x, freq_var = "Freq", fix_row_names = TRUE){
         
       } else {
         
-        message("expand_data_frame: freq_var is not a name or numeric index of df.")
+        message("expand_freq_table: freq_var is not a name or numeric index of df.")
         return(NA)
         
       }
@@ -511,9 +515,12 @@ expand_data_frame <- function(x, freq_var = "Freq", fix_row_names = TRUE){
       
     }
     
-    # 9. Fix rownames:
-    if (fix_row_names){
-      row.names(df_out) <- 1:nrow(df_out)
+    # 9. Repair rownames:
+    if (row_name_repair){
+      
+      row.names(df_out) <- NULL # NULL sets row names to "automatic" values 
+                                # of seq_len(nrow(x)) (i.e., 1:nrow(df_out))
+      
     }
     
   } # if (df) else. 
@@ -521,45 +528,87 @@ expand_data_frame <- function(x, freq_var = "Freq", fix_row_names = TRUE){
   # 10. Output: 
   return(df_out) 
   
-} # expand_data_frame(). 
+} # expand_freq_table(). 
 
 # # Check:
 # # (a) from raw data (vectors):
 # ans <- sample(c("yes", "no", "maybe"), 100, replace = TRUE)
 # eat <- sample(c("fish", "meat", "veggie"), 100, replace = TRUE)
 # df_1 <- data.frame(ans, eat)  # data frame from vectors
-# df_2 <- expand_data_frame(data.frame(table(ans, eat))) # from table > contingency table > data frame
+# df_2 <- expand_freq_table(data.frame(table(ans, eat))) # from table > contingency table > data frame
 # all.equal(table(df_1), table(df_2))
 # 
 # # (b) from array/table:
-# df <- expand_data_frame(UCBAdmissions) # array/table > contingency table > df
+# df <- expand_freq_table(UCBAdmissions) # array/table > contingency table > df
 # tb <- table(df)                        # df > array/table 
 # all.equal(UCBAdmissions, tb)
 # 
 # # Full circle (4D array > contingency table > data frame > 4D array): 
-# df <- expand_data_frame(Titanic)
+# df <- expand_freq_table(Titanic)
 # tb <- table(df)
 # all.equal(Titanic, tb)
 # 
 # # From 2x2 table:
 # (mx <- margin.table(Titanic, c(4, 2)))
-# all.equal(mx, table(expand_data_frame(mx)))
+# all.equal(mx, table(expand_freq_table(mx)))
 # 
 # # Trivial case:
-# expand_data_frame(data.frame(x = "a", Freq = 2))
+# expand_freq_table(data.frame(x = "a", Freq = 2))
 # 
 # # Note: Works for non-normal data frames (with positive freq count variables): 
 # count <- round(runif(100, min = 0, max = 3), 0)  # count must be non-negative integers
 # df <- data.frame(ans, count)
 # head(df)
-# ed <- expand_data_frame(df, freq_var = "count")
-# ed <- expand_data_frame(df, freq_var = 2)
+# ed <- expand_freq_table(df, freq_var = "count")
+# ed <- expand_freq_table(df, freq_var = 2)
 # dim(ed)
 # head(ed)
 
 
+## Key data structures: Contingency table (as data frame, with a freq_var): ------ 
+
+# Note: Contingency table (data frame) can easily be created from and transformed into an array/table:
+
+# a <- array(1:prod(5:3), dim = 5:3)
+# a <- i2ds::add_dimnames(a)
+# a <- as.table(a)  # turn array into table (note: any "table" is still an "array")
+# # is.array(a)
+# # is.table(a)
+# a
+# 
+# tb_org <- a # Titanic # UCBAdmissions ##  Data (as table)
+# tb_org
+# # str(tb_org)
+# 
+# df_con <- as.data.frame(ftable(tb_org))       # contingency table (as df)
+# df_con
+# 
+# # Note inverse of as.data.frame(table):
+# tb_xtb <- xtabs(Freq ~ ., data = df_con)
+# tb_xtb
+# # str(tb_xtb)
+# all.equal(tb_xtb, tb_org)  # Note: xtabs are NOT table
+# 
+# df_raw <- i2ds::expand_freq_table(df_con)  # raw cases (as df)
+# df_raw
+# 
+# tb_new <- table(df_raw)
+# tb_new
+# 
+# all.equal(tb_new, tb_org)
+
+
 ## ToDo: ------
 
-## - expand_data_frame: Consider renaming fix_row_names to row_name_repair?
+# Work out relations between 
+# A: Data structures:
+#    n-dimensional array/table <--> contingency table (as df) <--> table of raw cases (as df)
+# and 
+# B: Functions:
+# - expand_freq_table()
+# - data.frame(), as.data.frame() 
+# - array(), table(), xtabs() 
+# - stats::ftable()
+
 
 ## eof. ----------
