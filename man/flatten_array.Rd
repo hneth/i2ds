@@ -79,6 +79,6 @@ flatten_array(a3)
 
 Other array functions: 
 \code{\link{add_dimnames}()},
-\code{\link{expand_data_frame}()}
+\code{\link{expand_freq_table}()}
 }
 \concept{array functions}
