@@ -66,7 +66,8 @@ all.equal(Titanic, tb)
 
 }
 \seealso{
-
+\code{\link{table}} and \code{\link{xtabs}} for turning data frames into contingency tables;  
+\code{\link{as.data.frame}} for turning an array/table into a contingency table (as df).
 
 Other array functions: 
 \code{\link{add_dimnames}()},
