@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 08 05
+## hn | uni.kn | 2021 08 06
 
 # Functions for transforming/manipulating arrays/tables. 
 
@@ -427,7 +427,7 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 #' @family array functions
 #' 
 #' @seealso
-#' \code{\link{table}} and \link{xtabs}} for turning data frames into contingency tables;  
+#' \code{\link{table}} and \code{\link{xtabs}} for turning data frames into contingency tables;  
 #' \code{\link{as.data.frame}} for turning an array/table into a contingency table (as df). 
 #' 
 #' @export
