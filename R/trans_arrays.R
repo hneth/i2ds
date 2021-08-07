@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 08 06
+## hn | uni.kn | 2021 08 07
 
 # Functions for transforming/manipulating arrays/tables. 
 
@@ -184,11 +184,19 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 
 #' Flatten a 3D array into a 2D data frame. 
 #' 
-#' \code{flatten_array} turns a 3-dimensional array 
-#' into a 2-dimensional data frame.
+#' \code{flatten_array} turns a 3-dimensional array or table  
+#' into a 2-dimensional data frame (in wide format).
 #' 
 #' \code{flatten_array} assumes that \code{x} is a 3-dimensional array 
-#' with dimension names (and calls \code{\link{add_dimnames}} if not).
+#' of table with dimension names (and calls \code{\link{add_dimnames}} 
+#' if they are absent). 
+#' 
+#' To flatten arrays with more then 3 dimensions, 
+#' use \code{\link{margin.table}} (from \strong{base} R) 
+#' to create a 3-dimensional aggregate first. 
+#' 
+#' The \code{margin} argument specifies an array dimension 
+#' to be passed to \code{apply(x, MARGIN = margin, FUN = c)}. 
 #' 
 #' \code{flatten_array} returns \code{NA} for non-arrays and  
 #' for arrays with more than 3 dimensions. 
@@ -217,10 +225,14 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 #' @importFrom tidyr expand_grid 
 #' 
 #' @examples
-#' # UCBAdmissions data: 
-#' flatten_array(UCBAdmissions)  # margin = 2
+#' # UCBAdmissions data (3-dimensions): 
+#' flatten_array(UCBAdmissions) # margin = 2
 #' flatten_array(UCBAdmissions, margin = 1)
 #' flatten_array(UCBAdmissions, margin = 3)
+#' 
+#' # Titanic data (4-dimensions):
+#' T3d <- margin.table(Titanic, margin = c(2, 3, 4))  # aggregate 3d-array
+#' flatten_array(T3d, margin = 3)  # compare to ftable(T3d)
 #' 
 #' # Dummy data: 
 #' a1 <- array(data = 1:8, dim = c(2, 2, 2), 
@@ -244,6 +256,7 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 #' 
 #' a3 <- array(data = 1:2^4, dim = c(2, 2, 2, 2))  # 4-dimensions
 #' flatten_array(a3)
+#' flatten_array(margin.table(a3, margin = 1:3))
 #' 
 #' @family array functions
 #' 
@@ -258,12 +271,19 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 
 flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
   
-  # Check input:
+  # Check inputs:
   if ( (!is.array(x)) | (length(dim(x)) != 3) ){
     
     message("flatten_array: x must be a 3-dimensional array.")
     return(NA)
     
+  }
+  
+  # Get numeric margin:
+  if (is.character(margin)){
+    margin <- which(names(dimnames(x)) == margin)
+  } else {
+    margin <- as.numeric(margin)  # use number
   }
   
   if ( (!is.numeric(margin)) | (margin < 1) | (margin > 3) ){
@@ -519,7 +539,7 @@ expand_freq_table <- function(x, freq_var = "Freq", row_name_repair = TRUE){
     if (row_name_repair){
       
       row.names(df_out) <- NULL # NULL sets row names to "automatic" values 
-                                # of seq_len(nrow(x)) (i.e., 1:nrow(df_out))
+      # of seq_len(nrow(x)) (i.e., 1:nrow(df_out))
       
     }
     
