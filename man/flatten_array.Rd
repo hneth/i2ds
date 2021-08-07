@@ -19,12 +19,20 @@ Default: \code{varsAsFactors = FALSE} (i.e., character variables).}
 A data frame.
 }
 \description{
-\code{flatten_array} turns a 3-dimensional array 
-into a 2-dimensional data frame.
+\code{flatten_array} turns a 3-dimensional array or table  
+into a 2-dimensional data frame (in wide format).
 }
 \details{
 \code{flatten_array} assumes that \code{x} is a 3-dimensional array 
-with dimension names (and calls \code{\link{add_dimnames}} if not).
+of table with dimension names (and calls \code{\link{add_dimnames}} 
+if they are absent). 
+
+To flatten arrays with more then 3 dimensions, 
+use \code{\link{margin.table}} (from \strong{base} R) 
+to create a 3-dimensional aggregate first. 
+
+The \code{margin} argument specifies an array dimension 
+to be passed to \code{apply(x, MARGIN = margin, FUN = c)}. 
 
 \code{flatten_array} returns \code{NA} for non-arrays and  
 for arrays with more than 3 dimensions. 
@@ -41,10 +49,14 @@ and \code{\link{addmargins}} (from \strong{stats}) for aggregating
 over array/table dimensions.
 }
 \examples{
-# UCBAdmissions data: 
-flatten_array(UCBAdmissions)  # margin = 2
+# UCBAdmissions data (3-dimensions): 
+flatten_array(UCBAdmissions) # margin = 2
 flatten_array(UCBAdmissions, margin = 1)
 flatten_array(UCBAdmissions, margin = 3)
+
+# Titanic data (4-dimensions):
+T3d <- margin.table(Titanic, margin = c(2, 3, 4))  # aggregate 3d-array
+flatten_array(T3d, margin = 3)  # compare to ftable(T3d)
 
 # Dummy data: 
 a1 <- array(data = 1:8, dim = c(2, 2, 2), 
@@ -68,6 +80,7 @@ flatten_array(a2, margin = 3)
 
 a3 <- array(data = 1:2^4, dim = c(2, 2, 2, 2))  # 4-dimensions
 flatten_array(a3)
+flatten_array(margin.table(a3, margin = 1:3))
 
 }
 \seealso{
