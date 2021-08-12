@@ -34,12 +34,16 @@ Default: \code{sep = ""}.}
 Input \code{x} with dimension names.
 }
 \description{
-\code{add_dimnames} adds (or re-assigns) dimension names to arrays 
-(or data frames or atomic vectors, but not other lists).
+\code{add_dimnames} adds (or re-assigns) dimension names to arrays.
 }
 \details{
-When \code{x} is an atomic vector, 
-\code{add_dimnames} returns a named vector. 
+Although \code{add_dimnames} is intended for arrays, 
+it also works for atomic vectors (yielding a named vector) 
+and data frames (yielding new row and column names) 
+but not other lists. 
+
+As R objects of class \code{\link{matrix}}, \code{\link{table}}, 
+and \code{\link{xtabs}} are also arrays \code{add_dimnames} works for them as well. 
 
 See \code{\link{provideDimnames}} (from \strong{base} R) 
 for a related function.
@@ -48,18 +52,19 @@ for a related function.
 a <- array(1:24, dim = c(3, 4, 2))
 add_dimnames(a)
 add_dimnames(a, dnames = "dim", sep = "_")
-add_dimnames(a, dnames = c("X", "Y", "Z", "XYZ"), prefix = c("x", "y", "z"), sep = "_")
+add_dimnames(a, dnames = c("X", "Y", "Layer", "XYZ"), prefix = c("x", "y", "l"), sep = "_")
 
 # More dimensions:
 b <- array(1:2^5, dim = rep(2, 5))
 add_dimnames(b)
 add_dimnames(b, dnames = "D")
-add_dimnames(b, dnames = "dim", prefix = c("r", "c", "u", "v", "w"), sep = "_")
+add_dimnames(b, dnames = "dim", prefix = c("r", "c", "l", "m", "n"), sep = "_")
+
+# For a table:
+add_dimnames(UCBAdmissions)
 
 # For data frames:
 c <- data.frame(let = letters[1:4], num = 5:8)
-is.list(c)
-is.data.frame(c)
 add_dimnames(c, prefix = c("r", "c"))
 add_dimnames(c)
 
