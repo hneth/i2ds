@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 08 07
+## hn | uni.kn | 2021 08 12
 
 # Functions for transforming/manipulating arrays/tables. 
 
@@ -7,11 +7,15 @@
 
 #' Add dimension names (to arrays). 
 #' 
-#' \code{add_dimnames} adds (or re-assigns) dimension names to arrays 
-#' (or data frames or atomic vectors, but not other lists). 
+#' \code{add_dimnames} adds (or re-assigns) dimension names to arrays. 
 #' 
-#' When \code{x} is an atomic vector, 
-#' \code{add_dimnames} returns a named vector. 
+#' Although \code{add_dimnames} is intended for arrays, 
+#' it also works for atomic vectors (yielding a named vector) 
+#' and data frames (yielding new row and column names) 
+#' but not other lists. 
+#' 
+#' As R objects of class \code{\link{matrix}}, \code{\link{table}}, 
+#' and \code{\link{xtabs}} are also arrays \code{add_dimnames} works for them as well. 
 #' 
 #' See \code{\link{provideDimnames}} (from \strong{base} R) 
 #' for a related function. 
@@ -40,18 +44,19 @@
 #' a <- array(1:24, dim = c(3, 4, 2))
 #' add_dimnames(a)
 #' add_dimnames(a, dnames = "dim", sep = "_")
-#' add_dimnames(a, dnames = c("X", "Y", "Z", "XYZ"), prefix = c("x", "y", "z"), sep = "_")
+#' add_dimnames(a, dnames = c("X", "Y", "Layer", "XYZ"), prefix = c("x", "y", "l"), sep = "_")
 #' 
 #' # More dimensions:
 #' b <- array(1:2^5, dim = rep(2, 5))
 #' add_dimnames(b)
 #' add_dimnames(b, dnames = "D")
-#' add_dimnames(b, dnames = "dim", prefix = c("r", "c", "u", "v", "w"), sep = "_")
+#' add_dimnames(b, dnames = "dim", prefix = c("r", "c", "l", "m", "n"), sep = "_")
+#' 
+#' # For a table:
+#' add_dimnames(UCBAdmissions)
 #' 
 #' # For data frames:
 #' c <- data.frame(let = letters[1:4], num = 5:8)
-#' is.list(c)
-#' is.data.frame(c)
 #' add_dimnames(c, prefix = c("r", "c"))
 #' add_dimnames(c)
 #' 
@@ -80,7 +85,7 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
   
   if ( (is.list(x)) & (!is.data.frame(x)) ){ # (A) x is a list, but NO data frame: 
     
-    message("add_dimnames: x is a list, but must be an array, a data frame, or a vector.")
+    message("add_dimnames: x is a list, but must be an array, a vector, or a data.frame.")
     
     return(NA)
     
@@ -184,16 +189,12 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 
 #' Flatten a 3D array into a 2D data frame. 
 #' 
-#' \code{flatten_array} turns a 3-dimensional array or table  
+#' \code{flatten_array} turns a 3-dimensional array   
 #' into a 2-dimensional data frame (in wide format).
 #' 
-#' \code{flatten_array} assumes that \code{x} is a 3-dimensional array 
-#' of table with dimension names (and calls \code{\link{add_dimnames}} 
-#' if they are absent). 
-#' 
-#' To flatten arrays with more then 3 dimensions, 
-#' use \code{\link{margin.table}} (from \strong{base} R) 
-#' to create a 3-dimensional aggregate first. 
+#' \code{flatten_array} assumes that \code{x} is a 3-dimensional 
+#' \code{\link{array}} with dimension names 
+#' (and calls \code{\link{add_dimnames}} if they are absent). 
 #' 
 #' The \code{margin} argument specifies an array dimension 
 #' to be passed to \code{apply(x, MARGIN = margin, FUN = c)}. 
@@ -201,7 +202,15 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 #' \code{flatten_array} returns \code{NA} for non-arrays and  
 #' for arrays with more than 3 dimensions. 
 #' 
-#' Internally, \code{flatten_array} uses \code{apply} to apply 
+#' As R objects of class \code{\link{table}} are also arrays 
+#' (contingency tables of frequency counts, in numeric mode) 
+#' \code{flatten_array} works for them as well. 
+#' 
+#' To flatten numeric arrays or objects of class \code{\link{table}}  
+#' with more then 3 dimensions, use \code{\link{margin.table}} (from \strong{base} R) 
+#' to create a 3-dimensional aggregate first. 
+#' 
+#' Internally, \code{flatten_array} uses \code{\link{apply}} to apply 
 #' the \code{\link{c}} function to a specified \code{margin} of \code{x}. 
 #' It aims to reconstruct the names of the collapsed variables 
 #' from the initial letters of the dimension names. 
@@ -210,7 +219,7 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 #' for a more general function (in combination with \code{\link{aperm}})  
 #' and \code{\link{margin.table}} (from \strong{base} R) 
 #' and \code{\link{addmargins}} (from \strong{stats}) for aggregating 
-#' over array/table dimensions.
+#' over table dimensions.
 #' 
 #' @return A data frame. 
 #' 
@@ -225,17 +234,7 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 #' @importFrom tidyr expand_grid 
 #' 
 #' @examples
-#' # UCBAdmissions data (3-dimensions): 
-#' flatten_array(UCBAdmissions) # margin = 2
-#' flatten_array(UCBAdmissions, margin = 1)
-#' flatten_array(UCBAdmissions, margin = 3)
-#' 
-#' # Titanic data (4-dimensions):
-#' T3d <- margin.table(Titanic, margin = c(2, 3, 4))  # aggregate 3d-array
-#' flatten_array(T3d, margin = 3)  # compare to ftable(T3d)
-#' 
-#' # Dummy data: 
-#' a1 <- array(data = 1:8, dim = c(2, 2, 2), 
+#' a1 <- array(data = LETTERS[1:8], dim = c(2, 2, 2), 
 #'             dimnames = list(c("r1", "r2"), c("c1", "c2"), c("t1", "t2")))
 #' flatten_array(a1)  # using default (margin = 2) 
 #' 
@@ -257,6 +256,16 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
 #' a3 <- array(data = 1:2^4, dim = c(2, 2, 2, 2))  # 4-dimensions
 #' flatten_array(a3)
 #' flatten_array(margin.table(a3, margin = 1:3))
+#' 
+#' # For table:
+#' # UCBAdmissions data (3-dimensions): 
+#' flatten_array(UCBAdmissions) # margin = 2
+#' flatten_array(UCBAdmissions, margin = 1)
+#' flatten_array(UCBAdmissions, margin = 3)
+#' 
+#' # Titanic data (4-dimensions):
+#' T3d <- margin.table(Titanic, margin = c(2, 3, 4))  # aggregate 3d-array
+#' flatten_array(T3d, margin = 3)  # compare to ftable(T3d)
 #' 
 #' @family array functions
 #' 
