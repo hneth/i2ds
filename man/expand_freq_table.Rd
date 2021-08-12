@@ -7,7 +7,7 @@
 expand_freq_table(x, freq_var = "Freq", row_name_repair = TRUE)
 }
 \arguments{
-\item{x}{An contingency table (as array/table or data frame).}
+\item{x}{An contingency table (as \code{\link{table}} or \code{\link{data.frame}}).}
 
 \item{freq_var}{The name of the frequency count variable in 
 a data frame \code{x} (aka. \code{responseName} in \code{\link{as.data.frame}}). 
@@ -27,20 +27,21 @@ A data frame (of raw cases).
 into a data frame of raw cases.
 }
 \details{
-\code{expand_freq_table} assumes that \code{x} is an array/table 
-or a data frame with a frequency count variable \code{freq_var}. 
+\code{expand_freq_table} assumes that \code{x} is a \code{\link{table}} 
+or a \code{\link{data.frame}} with a frequency count variable \code{freq_var}. 
 
-If \code{x} is an array/table, \code{expand_freq_table} first uses 
+If \code{x} is a \code{\link{table}}, \code{expand_freq_table} first uses 
 \code{\link{as.data.frame}} (with \code{responseName = freq_var}) 
 to turn \code{x} into a contingency table (as a data frame with 
 a frequency variable, named \code{"Freq"} by default). 
 
 The function allows turning a contingency table 
-(i.e., a table that cross-classifies frequency counts) 
-in the form of an array/table or a data frame with a frequency count variable \code{freq_var} 
-into a corresponding data frame of raw cases. 
-The number of cases (rows) in the resulting data frame 
-corresponds to \code{sum(x)} (for arrays/tables) or 
+(i.e., a table that cross-classifies frequency counts) ---  
+in the form of a \code{\link{table}} or a \code{\link{data.frame}} 
+with a frequency count variable \code{freq_var} --- 
+into a corresponding \code{\link{data.frame}} of raw cases. 
+The number of cases or observations (rows) in the resulting data frame 
+corresponds to \code{sum(x)} (for tables) or 
 \code{sum(x$freq_var)} (for data frames).
 }
 \examples{
@@ -51,7 +52,7 @@ df_1 <- data.frame(ans, eat)  # data frame from vectors
 df_2 <- expand_freq_table(data.frame(table(ans, eat))) # table > contingency table > df
 all.equal(table(df_1), table(df_2))
 
-# (b) from array/table:
+# (b) from a table:
 df <- expand_freq_table(UCBAdmissions)  # array/table > contingency table > df
 tb <- table(df)                                # df > array/table 
 all.equal(UCBAdmissions, tb)
