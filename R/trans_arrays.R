@@ -404,25 +404,26 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 #' \code{freq_var} that denotes the number of cases for each factor combination) 
 #' into a data frame of raw cases. 
 #' 
-#' \code{expand_freq_table} assumes that \code{x} is an array/table 
-#' or a data frame with a frequency count variable \code{freq_var}. 
+#' \code{expand_freq_table} assumes that \code{x} is a \code{\link{table}} 
+#' or a \code{\link{data.frame}} with a frequency count variable \code{freq_var}. 
 #' 
-#' If \code{x} is an array/table, \code{expand_freq_table} first uses 
+#' If \code{x} is a \code{\link{table}}, \code{expand_freq_table} first uses 
 #' \code{\link{as.data.frame}} (with \code{responseName = freq_var}) 
 #' to turn \code{x} into a contingency table (as a data frame with 
 #' a frequency variable, named \code{"Freq"} by default). 
 #' 
 #' The function allows turning a contingency table 
-#' (i.e., a table that cross-classifies frequency counts) 
-#' in the form of an array/table or a data frame with a frequency count variable \code{freq_var} 
-#' into a corresponding data frame of raw cases. 
-#' The number of cases (rows) in the resulting data frame 
-#' corresponds to \code{sum(x)} (for arrays/tables) or 
+#' (i.e., a table that cross-classifies frequency counts) ---  
+#' in the form of a \code{\link{table}} or a \code{\link{data.frame}} 
+#' with a frequency count variable \code{freq_var} --- 
+#' into a corresponding \code{\link{data.frame}} of raw cases. 
+#' The number of cases or observations (rows) in the resulting data frame 
+#' corresponds to \code{sum(x)} (for tables) or 
 #' \code{sum(x$freq_var)} (for data frames). 
 #' 
 #' @return A data frame (of raw cases). 
 #' 
-#' @param x An contingency table (as array/table or data frame). 
+#' @param x An contingency table (as \code{\link{table}} or \code{\link{data.frame}}). 
 #' 
 #' @param freq_var The name of the frequency count variable in 
 #' a data frame \code{x} (aka. \code{responseName} in \code{\link{as.data.frame}}). 
@@ -440,7 +441,7 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 #' df_2 <- expand_freq_table(data.frame(table(ans, eat))) # table > contingency table > df
 #' all.equal(table(df_1), table(df_2))
 #' 
-#' # (b) from array/table:
+#' # (b) from a table:
 #' df <- expand_freq_table(UCBAdmissions)  # array/table > contingency table > df
 #' tb <- table(df)                                # df > array/table 
 #' all.equal(UCBAdmissions, tb)
@@ -468,7 +469,7 @@ expand_freq_table <- function(x, freq_var = "Freq", row_name_repair = TRUE){
   freqs    <- NA
   ix_freqs <- NA
   
-  # 1. Turn array/table into a contingency table (as df): 
+  # 1. Turn a table (a numeric array/contingency table with frequency counts) into a contingency table (as df): 
   if (is.table(x)){
     
     x <- as.data.frame(x, responseName = freq_var)  # Note: x is a contingency table (table > df)
