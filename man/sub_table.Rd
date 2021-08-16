@@ -30,6 +30,14 @@ dimensions and levels.
 by specifying a positive subset (i.e., levels to be included).
 }
 \examples{
+#' # Using Titanic table: 
+# (a) dim-level names:
+sub_table(Titanic, sub_dims = list(Class = c("1st", "2nd", "3rd", "Crew"), 
+                                   Sex = "Female", Age = "Adult", 
+                                   Survived = c("Yes", "No")))
+
+# (b) dim-level numbers:
+sub_table(Titanic, sub_dims = list(Class = 1:4, Sex = 2, Age = 2, Survived = 1:2))
 
 }
 \seealso{
