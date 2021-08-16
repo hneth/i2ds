@@ -595,6 +595,108 @@ expand_freq_table <- function(x, freq_var = "Freq", row_name_repair = TRUE){
 # head(ed)
 
 
+## sub_table: Get a sub-table of a table: ----- 
+
+# Source: Based on the subtable() function by 
+#         Norman Matloff (2011), The Art of R Programming (pp. 131--134): 
+
+#' Get a subset (or sub-table) of a table (as table). 
+#' 
+#' \code{sub_table} yields a subset of a table 
+#' by filtering or extracting a subset of table's 
+#' dimensions and levels. 
+#' 
+#' \code{sub_table} provides a filter or slice function for tables, 
+#' by specifying a positive subset (i.e., levels to be included). 
+#' 
+#' @return A table. 
+#' 
+#' @param t The original table (as \code{\link{table}}). 
+#' 
+#' @param sub_dims: A list specifying the desired subtable extraction. 
+#' Each element is named after a dimension of \code{t}, 
+#' and the value of that component is a vector of the names or numbers of the desired levels. 
+#' 
+#' @examples
+#' 
+#' @source Based on the \code{subtable} function by Norman Matloff, 
+#' The Art of R Programming (2011, pp. 131-134). 
+#' 
+#' @family array functions
+#' 
+#' @seealso
+#' \code{\link{table}} and \code{\link{array}} for the underlying data structures. 
+#' 
+#' @export
+
+sub_table <- function(t, sub_dims) {
+  
+  # (1) Deconstruction: 
+  # Get the array of cell counts in t:
+  t_array <- unclass(t)
+  
+  # (2) Preparation:
+  # Strategy: We get the sub_array of cell counts corresponding to sub_dims 
+  #           by calling do.call() on the "[" function; 
+  #           but build up a list of arguments first: 
+  
+  dc_args <- list(t_array)
+  # message(dc_args)  # 4debugging: List of count values
+  
+  n_dims  <- length(sub_dims)  # number of desired dimensions
+  
+  for (i in 1:n_dims) {
+    dc_args[[i + 1]] <- sub_dims[[i]]
+  }
+  
+  # message(dc_args)  # 4debugging: List of count values + desired dimension levels
+  
+  # (3) Main:   
+  sub_array <- do.call("[", dc_args)
+  
+  # (4) Reconstruction: 
+  # Build the new table, consisting of the sub_array, 
+  # the number of levels in each dimension, the dimnames() value, 
+  # plus the "table" class attribute: 
+  
+  dims   <- lapply(sub_dims, length)
+  subtbl <- array(sub_array, dims, dimnames = sub_dims) 
+  class(subtbl) <- "table"
+  
+  # (5) Output: 
+  return(subtbl)
+  
+} # sub_table(). 
+
+# # Check:
+# dims <- 4:2
+# v <- sample(1:100, size = prod(dims), replace = FALSE)
+# a <- array(v, dims)
+# a <- i2ds::add_dimnames(a)
+# (t <- as.table(a))
+# 
+# # standard case: 
+# sub_table(t, sub_dims = list(row = c("r1", "r2"),
+#                             col = c("c1", "c2"),
+#                             tab = c("t2")))
+# 
+# # works with numeric indexing:
+# sub_table(t, sub_dims = list(row = 1:2,
+#                             col = 1:2,
+#                             tab = 2))
+# 
+# # works without dimension names:
+# sub_table(t, sub_dims = list(1:2, 1:2, 2))
+
+# Using existing table:
+
+
+
+
+
+
+
+
 ## Key data structures: Contingency table (as data frame, with a freq_var): ------ 
 
 # Note: Contingency table (data frame) can easily be created from and transformed into an array/table:
