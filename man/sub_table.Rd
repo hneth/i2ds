@@ -13,7 +13,7 @@ sub_table(t, sub_dims)
 \arguments{
 \item{t}{The original table (as \code{\link{table}}).}
 
-\item{sub_dims:}{A list specifying the desired subtable extraction. 
+\item{sub_dims}{A list specifying the desired subtable extraction. 
 Each element is named after a dimension of \code{t}, 
 and the value of that component is a vector of the names or numbers of the desired levels.}
 }
