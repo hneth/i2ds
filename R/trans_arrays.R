@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 08 12
+## hn | uni.kn | 2021 08 16
 
 # Functions for transforming/manipulating arrays/tables. 
 
@@ -613,7 +613,7 @@ expand_freq_table <- function(x, freq_var = "Freq", row_name_repair = TRUE){
 #' 
 #' @param t The original table (as \code{\link{table}}). 
 #' 
-#' @param sub_dims: A list specifying the desired subtable extraction. 
+#' @param sub_dims A list specifying the desired subtable extraction. 
 #' Each element is named after a dimension of \code{t}, 
 #' and the value of that component is a vector of the names or numbers of the desired levels. 
 #' 
@@ -643,7 +643,7 @@ sub_table <- function(t, sub_dims) {
   dc_args <- list(t_array)
   # message(dc_args)  # 4debugging: List of count values
   
-  n_dims  <- length(sub_dims)  # number of desired dimensions
+  n_dims <- length(sub_dims)  # number of desired dimensions
   
   for (i in 1:n_dims) {
     dc_args[[i + 1]] <- sub_dims[[i]]
@@ -652,19 +652,19 @@ sub_table <- function(t, sub_dims) {
   # message(dc_args)  # 4debugging: List of count values + desired dimension levels
   
   # (3) Main:   
-  sub_array <- do.call("[", dc_args)
+  sub_array <- do.call(what = "[", args = dc_args)
   
   # (4) Reconstruction: 
   # Build the new table, consisting of the sub_array, 
   # the number of levels in each dimension, the dimnames() value, 
   # plus the "table" class attribute: 
   
-  dims   <- lapply(sub_dims, length)
-  subtbl <- array(sub_array, dims, dimnames = sub_dims) 
-  class(subtbl) <- "table"
+  dims  <- lapply(sub_dims, length)
+  sub_t <- array(sub_array, dims, dimnames = sub_dims) 
+  class(sub_t) <- "table"
   
   # (5) Output: 
-  return(subtbl)
+  return(sub_t)
   
 } # sub_table(). 
 
@@ -688,7 +688,7 @@ sub_table <- function(t, sub_dims) {
 # # works without dimension names:
 # sub_table(t, sub_dims = list(1:2, 1:2, 2))
 
-# Using existing table:
+# Using an existing table:
 
 
 
