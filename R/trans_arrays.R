@@ -618,6 +618,14 @@ expand_freq_table <- function(x, freq_var = "Freq", row_name_repair = TRUE){
 #' and the value of that component is a vector of the names or numbers of the desired levels. 
 #' 
 #' @examples
+#' #' # Using Titanic table: 
+#' # (a) dim-level names:
+#' sub_table(Titanic, sub_dims = list(Class = c("1st", "2nd", "3rd", "Crew"), 
+#'                                    Sex = "Female", Age = "Adult", 
+#'                                    Survived = c("Yes", "No")))
+#' 
+#' # (b) dim-level numbers:
+#' sub_table(Titanic, sub_dims = list(Class = 1:4, Sex = 2, Age = 2, Survived = 1:2))
 #' 
 #' @source Based on the \code{subtable} function by Norman Matloff, 
 #' The Art of R Programming (2011, pp. 131-134). 
@@ -669,6 +677,8 @@ sub_table <- function(t, sub_dims) {
 } # sub_table(). 
 
 # # Check:
+# 
+# # (A) Use with a dummy table (from array): 
 # dims <- 4:2
 # v <- sample(1:100, size = prod(dims), replace = FALSE)
 # a <- array(v, dims)
@@ -688,13 +698,21 @@ sub_table <- function(t, sub_dims) {
 # # works without dimension names:
 # sub_table(t, sub_dims = list(1:2, 1:2, 2))
 
-# Using an existing table:
+# # (B) Use an existing table: Titanic
+# 
+# # Used with level names:
+# sub_table(Titanic, sub_dims = list(Class = c("1st", "2nd", "3rd", "Crew"), 
+#                                    Sex = "Female", Age = "Adult", 
+#                                    Survived = c("Yes", "No")))
+# 
+# # Used with level numbers:
+# sub_table(Titanic, sub_dims = list(Class = 1:4, Sex = 2, Age = 2, Survived = 1:2))
 
-
-
-
-
-
+# ToDo: +++ here now +++ 
+# - Also return the original dim/level names when indexing by numbers
+#   by mapping supplied numbers to existing dimnames (first). 
+# - Create a negative version that filters/excludes specified dimensions and levels, 
+#   rather than including all and only specified dimensions and levels.
 
 
 ## Key data structures: Contingency table (as data frame, with a freq_var): ------ 
