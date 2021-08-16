@@ -595,6 +595,116 @@ expand_freq_table <- function(x, freq_var = "Freq", row_name_repair = TRUE){
 # head(ed)
 
 
+## table_names: Get the names of a table: -----
+
+# table_names returns the names of a table tbl that are specified in a list dim_list.
+# 
+# Crucially, for each element of dim_list, the list can specify levels as names OR numeric indices. 
+#
+# Constraints: 
+# - The table tbl is assumed to be named
+# - The length of dim_list is assumed to match the length of dimnames(tbl)
+#
+# Note: 
+# - Dimensions in tbl are considered in the order provided.
+# - The names of additional dimensions (without names or numbers in dim_list) 
+#   are fully included.
+
+table_names <- function(tbl, dim_list){
+  
+  # Initialize:
+  org_name_list <- dimnames(tbl)  # original list of dimnames
+  new_name_list <- org_name_list  # initialize a new list (to be reduced)
+  n_dim <- length(dim_list)  # N of desired dimensions
+  
+  # Main: 
+  for (i in 1:n_dim){
+    
+    # org_dim_name <- names(org_name_list[i])
+    # cur_dim_name <- names(dim_list[i])
+    
+    # if ( (is.null(cur_dim_name)) | (cur_dim_name == org_dim_name) ){
+    
+    cur_lev_ix <- dim_list[[i]]
+    
+    if (is.numeric(cur_lev_ix)){
+      
+      cur_lev_names <- org_name_list[[i]]  # all names of current levels
+      
+      wanted_cur_lev_names <- cur_lev_names[cur_lev_ix]  # desired subset
+      # print(wanted_cur_lev_names)  # 4debugging
+      
+    } else { # cur_lev_ix NOT numeric: use names as provided
+      
+      wanted_cur_lev_names <- dim_list[[i]]  # desired subset
+      
+    }
+    
+    new_name_list[[i]] <- wanted_cur_lev_names  # Reduce cur level names to desired subset
+    # print(new_name_list)[[i]]  # 4debugging  
+    
+    # } # if (cur_dim_name).
+    
+  }
+  
+  # Output:
+  return(new_name_list) 
+  
+} # table_names(). 
+
+## Check: 
+# # A purely numeric index as dim_list: 
+# table_names(Titanic, dim_list = list(c(1, 3), 2, 2, 1:2))
+# 
+# # A mix of names and numeric index:
+# table_names(Titanic, dim_list = list(c(1, 3), "Female", 2, 1:2))
+# 
+# # A Warning: If dim_list has fewer elements than dimensions:
+# table_names(Titanic, dim_list = list(c(1, 3), "Female", 1))  
+# # Note: 
+# # - Dimensions are considered in the order provided.
+# # - The names of additional dimensions (without names or numbers in dim_list) 
+# #   are fully included.
+
+# ## Tests:
+# 
+# # Reconstruct names from numeric index:
+# tbl <- Titanic
+# sub_dim_list <- list(1:4, 2, 2, 1:2)
+# sub_table(tbl, sub_dim_list)
+# 
+# dimnames(tbl)  # Dim names exist:
+# dimnames(tbl)[1]
+# names(dimnames(tbl)[1])  # dim name
+# dimnames(tbl)[[1]]       # level names
+# dimnames(tbl)[[1]][1:2]  # subset of level names
+# 
+# sub_dim_list[[1]]
+# 
+# (n_e <- length(sub_dim_list))  # N of list elements 
+# 
+# (lev_name_list <- dimnames(tbl))  # initialize new list (to be reduced)
+# lev_name_list[[1]]
+# 
+# for (i in 1:n_e){
+#   
+#   cur_dim_name <- names(dimnames(tbl)[i])
+#   cur_lev_names <- dimnames(tbl)[[i]]
+#   
+#   cur_lev_ix <- sub_dim_list[[i]]
+#   
+#   wanted_cur_lev_names <- cur_lev_names[cur_lev_ix]
+#   # print(wanted_cur_lev_names)  # 4debugging
+#   
+#   wanted_lev_name_list[[i]] <- wanted_cur_lev_names  # Reduce cur level names to wanted names!
+#   print(wanted_lev_name_list)[[i]]  # 4debugging  
+# }
+# 
+# wanted_lev_name_list
+
+# +++ here now +++ 
+
+
 ## sub_table: Get a sub-table of a table: ----- 
 
 # Source: Based on the subtable() function by 
@@ -705,12 +815,16 @@ sub_table <- function(t, sub_dims) {
 #                                    Sex = "Female", Age = "Adult", 
 #                                    Survived = c("Yes", "No")))
 # 
-# # Used with level numbers:
+# # Used with dim names and level numbers:
 # sub_table(Titanic, sub_dims = list(Class = 1:4, Sex = 2, Age = 2, Survived = 1:2))
+#
+# # Used with level numbers only:
+# sub_table(Titanic, sub_dims = list(1:4, 2, 2, 1:2))
 
-# ToDo: +++ here now +++ 
-# - Also return the original dim/level names when indexing by numbers
-#   by mapping supplied numbers to existing dimnames (first). 
+# ToDo: 
+# - Use table_names() to also return the original dim/level names 
+#   when indexing by numbers or a mix of names and numbers. 
+
 # - Create a negative version that filters/excludes specified dimensions and levels, 
 #   rather than including all and only specified dimensions and levels.
 
