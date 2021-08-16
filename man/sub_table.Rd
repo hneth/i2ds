@@ -2,43 +2,61 @@
 % Please edit documentation in R/trans_arrays.R
 \name{sub_table}
 \alias{sub_table}
-\title{Get a subset (or sub-table) of a table (as table).}
+\title{Extract a subset (or sub-table) of a table.}
 \source{
 Based on the \code{subtable} function by Norman Matloff, 
 The Art of R Programming (2011, pp. 131-134).
 }
 \usage{
-sub_table(t, sub_dims)
+sub_table(tbl, sub_dims)
 }
 \arguments{
-\item{t}{The original table (as \code{\link{table}}).}
+\item{tbl}{The original table (as \code{\link{table}}).}
 
 \item{sub_dims}{A list specifying the desired subtable extraction. 
-Each element is named after a dimension of \code{t}, 
-and the value of that component is a vector of the names or numbers of the desired levels.}
+Each element is named after a dimension of \code{tbl}, 
+and the value of that component is a vector of the names or a numeric index 
+of the desired levels.}
 }
 \value{
 A table.
 }
 \description{
-\code{sub_table} yields a subset of a table 
+\code{sub_table} yields a subset of a table \code{tbl}
 by filtering or extracting a subset of table's 
 dimensions and levels.
 }
 \details{
-\code{sub_table} provides a filter or slice function for tables, 
-by specifying a positive subset (i.e., levels to be included).
+\code{sub_table} provides a filter/slice function for tables, 
+by specifying a positive subset (i.e., levels to be included) 
+as a list \code{sub_dims}. 
+
+\code{sub_table} assumes that \code{dimnames(tbl)} exist, 
+but is flexible in allowing \code{sub_dims} to use   
+both names and numeric indices of the desired table levels.
 }
 \examples{
-#' # Using Titanic table: 
-# (a) dim-level names:
-sub_table(Titanic, sub_dims = list(Class = c("1st", "2nd", "3rd", "Crew"), 
-                                   Sex = "Female", Age = "Adult", 
-                                   Survived = c("Yes", "No")))
+t <- datasets::Titanic
+sub_table(t, sub_dims = dimnames(t))  # same as t
 
-# (b) dim-level numbers:
-sub_table(Titanic, sub_dims = list(Class = 1:4, Sex = 2, Age = 2, Survived = 1:2))
+# (a) Use level names:
+sub_table(t, sub_dims = list(Class = c("1st", "2nd", "3rd"),
+                             Sex = "Female", Age = "Adult",
+                             Survived = c("Yes")))
 
+# (b) Use dim names and level numbers:
+sub_table(t, sub_dims = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
+
+# (c) Use level numbers only:
+sub_table(t, sub_dims = list(1:3, 2, 2, 2))
+
+# (d) Use a mix of level names and numbers:
+sub_table(t, sub_dims = list(1:3, "Female", 2, "Yes"))
+
+# (e) Note: Different length of sub_dims than dimnamesI(tbl):
+sub_table(t, sub_dims = list(1:3, "Female", 2))   # use missing dim in full
+sub_table(t, sub_dims = list(1:3, "Female", 2, 2, 99))  # truncate sub_dims
+ 
 }
 \seealso{
 \code{\link{table}} and \code{\link{array}} for the underlying data structures.
