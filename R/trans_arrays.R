@@ -615,6 +615,7 @@ table_names <- function(tbl, dim_list){
   # Initialize:
   org_name_list <- dimnames(tbl)  # original list of dimnames
   new_name_list <- org_name_list  # initialize a new list (to be reduced)
+  
   n_dim <- length(dim_list)  # N of desired dimensions
   
   # Main: 
@@ -625,32 +626,33 @@ table_names <- function(tbl, dim_list){
     
     # if ( (is.null(cur_dim_name)) | (cur_dim_name == org_dim_name) ){
     
-    cur_lev_ix <- dim_list[[i]]
+    cur_dim_vec <- dim_list[[i]]
     
-    if (is.numeric(cur_lev_ix)){
+    if (is.numeric(cur_dim_vec)){  # a numeric index provided:
       
       cur_lev_names <- org_name_list[[i]]  # all names of current levels
       
-      wanted_cur_lev_names <- cur_lev_names[cur_lev_ix]  # desired subset
-      # print(wanted_cur_lev_names)  # 4debugging
+      sub_cur_lev_names <- cur_lev_names[cur_dim_vec]  # desired subset
+      # print(sub_cur_lev_names)  # 4debugging
       
-    } else { # cur_lev_ix NOT numeric: use names as provided
+    } else { # cur_dim_vec NOT numeric: use names as provided
       
-      wanted_cur_lev_names <- dim_list[[i]]  # desired subset
+      sub_cur_lev_names <- dim_list[[i]]  # desired subset
       
     }
     
-    new_name_list[[i]] <- wanted_cur_lev_names  # Reduce cur level names to desired subset
+    new_name_list[[i]] <- sub_cur_lev_names  # Reduce cur level names to desired subset
     # print(new_name_list)[[i]]  # 4debugging  
     
     # } # if (cur_dim_name).
     
-  }
+  } # loop end. 
   
   # Output:
   return(new_name_list) 
   
 } # table_names(). 
+
 
 ## Check: 
 # # A purely numeric index as dim_list: 
@@ -666,9 +668,8 @@ table_names <- function(tbl, dim_list){
 # # - The names of additional dimensions (without names or numbers in dim_list) 
 # #   are fully included.
 
-# ## Tests:
-# 
-# # Reconstruct names from numeric index:
+# ## Tests: 
+# # Reconstruct a list of table names from list of alpha-numeric index:
 # tbl <- Titanic
 # sub_dim_list <- list(1:4, 2, 2, 1:2)
 # sub_table(tbl, sub_dim_list)
@@ -688,12 +689,12 @@ table_names <- function(tbl, dim_list){
 # 
 # for (i in 1:n_e){
 #   
-#   cur_dim_name <- names(dimnames(tbl)[i])
+#   cur_dim_name  <- names(dimnames(tbl)[i])
 #   cur_lev_names <- dimnames(tbl)[[i]]
 #   
-#   cur_lev_ix <- sub_dim_list[[i]]
+#   cur_dim_vec <- sub_dim_list[[i]]
 #   
-#   wanted_cur_lev_names <- cur_lev_names[cur_lev_ix]
+#   wanted_cur_lev_names <- cur_lev_names[cur_dim_vec]
 #   # print(wanted_cur_lev_names)  # 4debugging
 #   
 #   wanted_lev_name_list[[i]] <- wanted_cur_lev_names  # Reduce cur level names to wanted names!
@@ -712,7 +713,7 @@ table_names <- function(tbl, dim_list){
 
 #' Get a subset (or sub-table) of a table (as table). 
 #' 
-#' \code{sub_table} yields a subset of a table 
+#' \code{sub_table} yields a subset of a table \code{tbl}
 #' by filtering or extracting a subset of table's 
 #' dimensions and levels. 
 #' 
@@ -721,7 +722,7 @@ table_names <- function(tbl, dim_list){
 #' 
 #' @return A table. 
 #' 
-#' @param t The original table (as \code{\link{table}}). 
+#' @param tbl The original table (as \code{\link{table}}). 
 #' 
 #' @param sub_dims A list specifying the desired subtable extraction. 
 #' Each element is named after a dimension of \code{t}, 
@@ -747,11 +748,11 @@ table_names <- function(tbl, dim_list){
 #' 
 #' @export
 
-sub_table <- function(t, sub_dims) {
+sub_table <- function(tbl, sub_dims) {
   
   # (1) Deconstruction: 
-  # Get the array of cell counts in t:
-  t_array <- unclass(t)
+  # Get the array of cell counts in tbl:
+  t_array <- unclass(tbl)
   
   # (2) Preparation:
   # Strategy: We get the sub_array of cell counts corresponding to sub_dims 
@@ -778,16 +779,15 @@ sub_table <- function(t, sub_dims) {
   # plus the "table" class attribute: 
   
   dims  <- lapply(sub_dims, length)
-  sub_t <- array(sub_array, dims, dimnames = sub_dims) 
-  class(sub_t) <- "table"
+  sub_tbl <- array(sub_array, dims, dimnames = sub_dims) 
+  class(sub_tbl) <- "table"
   
   # (5) Output: 
-  return(sub_t)
+  return(sub_tbl)
   
 } # sub_table(). 
 
-# # Check:
-# 
+# ## Check:
 # # (A) Use with a dummy table (from array): 
 # dims <- 4:2
 # v <- sample(1:100, size = prod(dims), replace = FALSE)
