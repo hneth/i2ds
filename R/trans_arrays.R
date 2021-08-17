@@ -912,7 +912,11 @@ sub_table <- function(tbl, sub_dims) {
 # sub_table(Titanic, sub_dims = list(1:3, "Female", 2, 2, 99))
 
 
-# ToDo: +++ here now +++ 
+# ToDo: +++ here now +++ [2021-08-16]
+#
+# - The filter() function from dplyr only includes cases that are specified.
+#   Consider changing sub_table() to only include specified dimensions 
+#   (when length(sub_dims) < length(dimnames(tbl))).
 #
 # - Create a negative version that filters/excludes specified dimensions and levels, 
 #   rather than including all and only specified dimensions and levels.
