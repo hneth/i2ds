@@ -768,48 +768,48 @@ sub_list_names <- function(name_list, dim_list){
 # - using 2 lists of targets (in_list vs. out_list) and 
 # - allowing for multiple mentions of dimensions in each (considering each element in target list in turn). 
 
-sub_list_2 <- function(name_list, in_list){
+sub_list_2 <- function(org_list, in_list){
   
   # Initialize:
-  # name_list <- dimnames(tbl)  # original list of dimnames
-  org_dim_names <- names(name_list)  # names of name_list (as a vector)
-  new_name_list <- name_list    # initialize a new list (to be reduced)
-  n_in <- length(in_list)       # N of desired dimensions
+  # org_list <- dimnames(tbl)  # original list of dimnames
+  org_dim_names <- names(org_list)  # names of org_list (as a vector)
+  new_name_list <- org_list    # initialize a new list (to be reduced)
+  n_in <- length(in_list)      # N of desired dimensions
   
   # Verify correspondence of list lengths:
-  if (n_in < length(name_list)){  # Notify user: 
-    message("sub_list_2: in_list is shorter than name_list. Using elements of in_list in turn:")
+  if (n_in < length(org_list)){  # Notify user: 
+    message("sub_list_2: in_list is shorter than org_list. Using elements of in_list in turn:")
   }
   
-  if (n_in > length(name_list)){  # Notify user: 
-    message("sub_list_2: in_list is longer than name_list. Using elements of in_list in turn:")
-    # n_in <- length(name_list)
+  if (n_in > length(org_list)){  # Notify user: 
+    message("sub_list_2: in_list is longer than org_list. Using elements of in_list in turn:")
+    # n_in <- length(org_list)
   }
   
   # Main: 
-  for (i in 1:n_in){ # Consider elements of in_list in turn:
+  for (i in 1:n_in){ # Consider each element of in_list:
     
     # Name of current dimension: 
     cur_dim_name <- names(in_list[i])
     print(cur_dim_name)  # 4debugging
     
     # Get corresponding index in original names (org_dim_names): 
-    if (is.character(cur_dim_name)){
+    if (is.character(cur_dim_name) & (nchar(cur_dim_name) > 0)){
       
-      org_name_idx  <- which(org_dim_names == cur_dim_name)
-      print(paste0("cur_dim_name = ", cur_dim_name, " is element ", org_name_idx, " of name_list."))  # 4debugging
+      org_name_idx <- which(org_dim_names == cur_dim_name)
+      print(paste0("cur_dim_name = ", cur_dim_name, " is element ", org_name_idx, " of org_list."))  # 4debugging
       
-    } 
+    } else { # no dim name: 
     
-    if (!is.numeric(org_name_idx)){  # No org_name_idx:
+    # if (!is.numeric(org_name_idx)){  # No org_name_idx:
       
-      message(paste0("Element ", i, " of in_list is unnamed. Using ", i, "-th element of name_list:"))
+      message(paste0("Element ", i, " of in_list is unnamed. Using ", i, "-th element of org_list:"))
       org_name_idx <- i
       
     }
     
     # Levels:
-    org_lev_names <- name_list[[org_name_idx]]  # all names of original levels
+    org_lev_names <- org_list[[org_name_idx]]  # all names of original levels
     cur_lev_vec   <- in_list[[i]]  # extract desired levels (element: names or numeric)
     
     if (is.numeric(cur_lev_vec)){  # provided a numeric index:
@@ -838,12 +838,12 @@ sub_list_2 <- function(name_list, in_list){
 } # sub_list_2(). 
 
 # # Check:
-# org_list <- dimnames(Titanic)
-# names(org_list)
+t_list <- dimnames(Titanic)
+names(t_list)
 
-# sub_list_2(org_list, in_list = list(Age = "Adult", Class = c("3rd", "1st", "stuff")))
+sub_list_2(t_list, in_list = list(Age = "Adult", Class = c("3rd", "1st", "stuff")))
 
-# sub_list_2(org_list, in_list = list("Adult", Class = c("3rd", "1st", "stuff")))
+sub_list_2(t_list, in_list = list("Adult", Class = c("3rd", "1st", "stuff")))
 
 # +++ here now +++ 
 
