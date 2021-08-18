@@ -803,7 +803,7 @@ sub_list_2 <- function(org_list, in_list){
     
     # if (!is.numeric(org_name_idx)){  # No org_name_idx:
       
-      message(paste0("Element ", i, " of in_list is unnamed. Using ", i, "-th element of org_list:"))
+      message(paste0("Element ", i, " of in_list is unnamed. Using element ", i, " of org_list:"))
       org_name_idx <- i
       
     }
@@ -838,8 +838,9 @@ sub_list_2 <- function(org_list, in_list){
 } # sub_list_2(). 
 
 # # Check:
-t_list <- dimnames(Titanic)
+(t_list <- dimnames(Titanic))
 names(t_list)
+# as.data.frame(t_list)
 
 sub_list_2(t_list, in_list = list(Age = "Adult", Class = c("3rd", "1st", "stuff")))
 
