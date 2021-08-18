@@ -1,10 +1,9 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 08 16
+## hn | uni.kn | 2021 08 18
 
-# Functions for transforming/manipulating arrays and tables. 
+# Functions for transforming/manipulating arrays and tables: ------ 
 #
 # Note that objects of type "table" are specific cases of arrays (contingency tables with freq. counts).
-
 
 ## add_dimnames: Add default names to array dimensions: ------ 
 
@@ -613,7 +612,7 @@ expand_freq_table <- function(x, freq_var = "Freq", row_name_repair = TRUE){
 # - The names of additional dimensions (without names or numbers in dim_list) are fully included.
 # - Additional/extra dim_list arguments are truncated.
 #
-# Currently not used or exported. 
+# Currently NOT USED or exported. 
 
 sub_table_names <- function(tbl, dim_list){
   
@@ -640,18 +639,18 @@ sub_table_names <- function(tbl, dim_list){
     
     # if ( (is.null(cur_dim_name)) | (cur_dim_name == org_dim_name) ){
     
-    cur_dim_vec <- dim_list[[i]]  # extract element
+    cur_lev_vec <- dim_list[[i]]  # extract current levels (element of dim_list)
     
-    if (is.numeric(cur_dim_vec)){  # provided a numeric index
+    if (is.numeric(cur_lev_vec)){  # provided a numeric index
       
       cur_lev_names <- org_name_list[[i]]  # all names of current levels
       
-      sub_cur_lev_names <- cur_lev_names[cur_dim_vec]  # desired subset
+      sub_cur_lev_names <- cur_lev_names[cur_lev_vec]  # desired subset
       # print(sub_cur_lev_names)  # 4debugging
       
-    } else { # cur_dim_vec is NOT numeric: use names as provided
+    } else { # cur_lev_vec is NOT numeric: use names as provided
       
-      sub_cur_lev_names <- dim_list[[i]]  # desired subset
+      sub_cur_lev_names <- cur_lev_vec  # copy desired subset
       
     }
     
@@ -710,25 +709,25 @@ sub_list_names <- function(name_list, dim_list){
   }
   
   # Main: 
-  for (i in 1:n_dim){
+  for (i in 1:n_dim){  # Consider 1:n_dim elements of name_list(!) in turn:
     
     # org_dim_name <- names(name_list[i])
     # cur_dim_name <- names(dim_list[i])
     
     # if ( (is.null(cur_dim_name)) | (cur_dim_name == org_dim_name) ){
     
-    cur_dim_vec <- dim_list[[i]]  # extract element
+    cur_lev_vec <- dim_list[[i]]  # extract current levels (element on dim_list)
     
-    if (is.numeric(cur_dim_vec)){  # provided a numeric index:
+    if (is.numeric(cur_lev_vec)){  # provided a numeric index:
       
       cur_lev_names <- name_list[[i]]  # all names of current levels
       
-      sub_cur_lev_names <- cur_lev_names[cur_dim_vec]  # desired subset
+      sub_cur_lev_names <- cur_lev_names[cur_lev_vec]  # desired subset
       # print(sub_cur_lev_names)  # 4debugging
       
-    } else { # cur_dim_vec is NOT numeric: use names as provided
+    } else { # cur_lev_vec is NOT numeric: use names as provided
       
-      sub_cur_lev_names <- dim_list[[i]]  # desired subset
+      sub_cur_lev_names <- cur_lev_vec  # copy desired subset
       
     }
     
@@ -757,10 +756,112 @@ sub_list_names <- function(name_list, dim_list){
 # sub_list_names(org_list, dim_list = list(c(1, 3), "Female", 1))
 # sub_list_names(org_list, dim_list = list(c(1, 3), "Female", 1, 2, 99))
 # 
-# # Note:
-# # - Dimensions are considered in the order provided.
+# # Note some features:
+# # - Dimensions are considered in the order provided in dim_list.
 # # - The names of additional dimensions (without names or numbers in dim_list) are fully included.
 # # - Additional/extra dim_list arguments are truncated. 
+
+
+## sub_list_2: Variant of sub_list_names() with in_list and out_list: ------ 
+
+# A more specific and powerful version, 
+# - using 2 lists of targets (in_list vs. out_list) and 
+# - allowing for multiple mentions of dimensions in each (considering each element in target list in turn). 
+
+sub_list_2 <- function(name_list, in_list){
+  
+  # Initialize:
+  # name_list <- dimnames(tbl)  # original list of dimnames
+  org_dim_names <- names(name_list)  # names of name_list (as a vector)
+  new_name_list <- name_list    # initialize a new list (to be reduced)
+  n_in <- length(in_list)       # N of desired dimensions
+  
+  # Verify correspondence of list lengths:
+  if (n_in < length(name_list)){  # Notify user: 
+    message("sub_list_2: in_list is shorter than name_list. Using elements of in_list in turn:")
+  }
+  
+  if (n_in > length(name_list)){  # Notify user: 
+    message("sub_list_2: in_list is longer than name_list. Using elements of in_list in turn:")
+    # n_in <- length(name_list)
+  }
+  
+  # Main: 
+  for (i in 1:n_in){ # Consider elements of in_list in turn:
+    
+    # Name of current dimension: 
+    cur_dim_name <- names(in_list[i])
+    print(cur_dim_name)  # 4debugging
+    
+    # Get corresponding index in original names (org_dim_names): 
+    if (is.character(cur_dim_name)){
+      
+      org_name_idx  <- which(org_dim_names == cur_dim_name)
+      print(paste0("cur_dim_name = ", cur_dim_name, " is element ", org_name_idx, " of name_list."))  # 4debugging
+      
+    } 
+    
+    if (!is.numeric(org_name_idx)){  # No org_name_idx:
+      
+      message(paste0("Element ", i, " of in_list is unnamed. Using ", i, "-th element of name_list:"))
+      org_name_idx <- i
+      
+    }
+    
+    # Levels:
+    org_lev_names <- name_list[[org_name_idx]]  # all names of original levels
+    cur_lev_vec   <- in_list[[i]]  # extract desired levels (element: names or numeric)
+    
+    if (is.numeric(cur_lev_vec)){  # provided a numeric index:
+      
+      sub_org_lev_names <- org_lev_names[cur_lev_vec]  # desired subset
+      # print(sub_org_lev_names)  # 4debugging
+      
+    } else { # cur_lev_vec is NOT numeric: use names as provided
+      
+      # sub_org_lev_names <- cur_lev_vec  # Option 1: Copy desired subset of levels
+      sub_org_lev_names <- intersect(org_lev_names, cur_lev_vec)  # Option 2: Drop non-existing levels!
+      
+    }
+    
+    # Reduce levels of (org_name_idx-th element) new_name_list to desired subset: 
+    new_name_list[[org_name_idx]] <- sub_org_lev_names  
+    # print(new_name_list)[[org_name_idx]]  # 4debugging  
+    
+    # } # if (cur_dim_name).
+    
+  } # loop end. 
+  
+  # Output:
+  return(new_name_list) 
+  
+} # sub_list_2(). 
+
+# # Check:
+# org_list <- dimnames(Titanic)
+# names(org_list)
+
+# sub_list_2(org_list, in_list = list(Age = "Adult", Class = c("3rd", "1st", "stuff")))
+
+# sub_list_2(org_list, in_list = list("Adult", Class = c("3rd", "1st", "stuff")))
+
+# +++ here now +++ 
+
+# A purely numeric index as dim_list (without dim names):
+# sub_list_2(org_list, in_list = list(c(1, 3), 2, 2, 2))
+
+# A mix of names and numeric index:
+# sub_list_names(org_list, dim_list = list(c(1, 3), "Female", 2, "Yes"))
+
+# A Warning: If dim_list has fewer OR more elements than dimensions:
+# sub_list_names(org_list, dim_list = list(c(1, 3), "Female", 1))
+# sub_list_names(org_list, dim_list = list(c(1, 3), "Female", 1, 2, 99))
+# 
+# # Note some features:
+# # - Dimensions are considered in the order provided in dim_list.
+# # - The names of additional dimensions (without names or numbers in dim_list) are fully included.
+# # - Additional/extra dim_list arguments are truncated. 
+
 
 
 ## sub_table: Extract a subset or sub-table of a table: ----- 
@@ -827,7 +928,7 @@ sub_table <- function(tbl, sub_dims) {
   
   # (0) Preparation:
   tbl_names <- dimnames(tbl)
-  sub_dims  <- sub_list_names(tbl_names, sub_dims)
+  sub_dims  <- sub_list_names(tbl_names, sub_dims)  # list of dims/levels to include
   
   # (1) Deconstruction: 
   # Get the array of cell counts in tbl:
@@ -918,7 +1019,7 @@ sub_table <- function(tbl, sub_dims) {
 #   Consider changing sub_table() to only include specified dimensions 
 #   (when length(sub_dims) < length(dimnames(tbl))).
 #
-# - Create a negative version that filters/excludes specified dimensions and levels, 
+# - Create a negative version that filters out/excludes specified dimensions and levels, 
 #   rather than including all and only specified dimensions and levels.
 
 
