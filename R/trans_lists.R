@@ -223,125 +223,190 @@ sub_list_names <- function(name_list, dim_list){
 
 ## sub_list_2: Variant of sub_list_names() with in_list and out_list: ------ 
 
-# A more specific and powerful version, 
+# Extract a subset of elements (dimensions OR levels) from org_list:
+# - include only elements (dimensions OR levels) specified in in_list
+# - exclude any elements (dimension OR levels) specified in out_list
+
+# A more specific and powerful version of sub_list() (above), 
 # - using 2 lists of targets (in_list vs. out_list) and 
 # - allowing for multiple mentions of dimensions in each (considering each element in target list in turn). 
 
 sub_list_2 <- function(org_list, in_list){
   
   # Initialize:
-  # org_list <- dimnames(tbl)  # original list of dimnames
-  org_dim_names <- names(org_list)  # names of org_list (as a vector)
-  new_name_list <- org_list    # initialize a new list (to be reduced)
-  n_in <- length(in_list)      # N of desired dimensions
+  # org_list <- dimnames(tbl)   # original list of dimnames
+  org_names <- names(org_list)  # names of org_list (as a vector)
+  n_in <- length(in_list)       # N of desired dimensions
   
-  # Verify correspondence of list lengths:
-  if (n_in < length(org_list)){  # Notify user: 
-    message("sub_list_2: in_list is shorter than org_list. Using elements of in_list in turn:")
+  # Initialize output list: 
+  # new_list <- org_list  # (s1) keep elements not mentioned in in_list
+  new_list <- vector("list", n_in) # (s2) pre-allocate an empty list of length n_in
+  
+  if (is.null(org_names)){
+    print("org_list contains NO names.")  # 4debugging 
   }
   
-  if (n_in > length(org_list)){  # Notify user: 
-    message("sub_list_2: in_list is longer than org_list. Using elements of in_list in turn:")
-    # n_in <- length(org_list)
-  }
+  # # Verify correspondence of list lengths:
+  # if (n_in < length(org_list)){  # Notify user: 
+  #   message("sub_list_2: in_list is shorter than org_list. Using elements of in_list in turn:")
+  # }
+  # 
+  # if (n_in > length(org_list)){  # Notify user: 
+  #   message("sub_list_2: in_list is longer than org_list. Using elements of in_list in turn:")
+  #   # n_in <- length(org_list)
+  # }
   
   # Main: 
   for (i in 1:n_in){ # Consider each element of in_list:
     
     cur_dim_name <- names(in_list[i])  # name of desired dimension
-    print(cur_dim_name)  # 4debugging
     
-    cur_lev_vec  <- in_list[[i]]  # desired levels (as names or numeric)
+    if (is.null(names(in_list))){
+      
+      print("NOTE: in_list contains NO names.")  # 4debugging 
+      cur_dim_name <- NA
+      
+    }
+    # print(cur_dim_name)  # 4debugging
     
-    # Get corresponding index in original names (org_dim_names): 
-    if (is.character(cur_dim_name) & (nchar(cur_dim_name) > 0)){
+    cur_lev_vec <- in_list[[i]]  # desired levels (as names or numeric)
+    
+    # Determine relevant dimension of org_list (meant by current element of in_list):
+    if ((!is.na(cur_dim_name)) & (is.character(cur_dim_name)) & (nchar(cur_dim_name) > 0)){ # (A) cur_dim_name was provided:
       
-      org_name_idx <- which(org_dim_names == cur_dim_name)
-      print(paste0("cur_dim_name = ", cur_dim_name, " is element ", org_name_idx, " of org_list."))  # 4debugging
+      # Get corresponding index in vector of original names (org_names):   
+      # org_name_idx <- which(org_names == cur_dim_name)
+      org_name_idx <- match(x = cur_dim_name, table = org_names, nomatch = NA)
       
-    } else { # no dim name provided: 
+      # 2 cases: 
+      if (is.na(org_name_idx)){
+        
+        message(paste0("sub_list_2: ", cur_dim_name, " is no dimension name in org_list."))  # 4debugging
+        return(NA)
+        
+      } else {
+        
+        print(paste0("cur_dim_name = ", cur_dim_name, " is element ", org_name_idx, " of org_list."))  # 4debugging  
+        
+      }
+      
+    } else { # (B) cur_dim_name was NOT provided:
       
       # +++ here now +++:
       
-      if (is.character(cur_lev_vec)){
+      if (is.character(cur_lev_vec)){ # (B1) named levels:
         
         element_matches <- match_list(x = cur_lev_vec, list = org_list)  # using utility function (above)
         
         if (length(unique(element_matches)) == 1){  # names in cur_lev_vec match 1 unique element in org_list:
           
           org_name_idx <- unique(element_matches)
-          print(paste0("Levels of element ", i, " correspond to element ", org_name_idx, " of org_list."))  # 4debugging
+          print(paste0("Levels of element ", i, " correspond to element ", org_name_idx, " of org_list: ", org_names[org_name_idx]))  # 4debugging
           
         } else { # no unique element identified:
           
-          message("sub_list_2: Specified levels do not correspond to a unique element of org_list.")
+          message(paste0("sub_list_2: Levels of element ", i, " of in_list are no unique element of org_list."))
           return(NA)
           
         }
         
-      } else {
+      } else { # (B2) numeric levels: 
         
-        message(paste0("Element ", i, " of in_list is unnamed and numeric. Using element ", i, " of org_list:"))
+        message(paste0("sub_list_2: Element ", i, " of in_list is unnamed and numeric. Using element ", i, " of org_list:"))
         org_name_idx <- i
         
       }
     }
     
-    # Levels:
-    org_lev_names <- org_list[[org_name_idx]]  # all names of original levels
+    # Determine original and new levels (or level names):
+    org_levels <- org_list[[org_name_idx]]  # all original levels
     
     if (is.numeric(cur_lev_vec)){  # provided a numeric index:
       
-      sub_org_lev_names <- org_lev_names[cur_lev_vec]  # desired subset
-      # print(sub_org_lev_names)  # 4debugging
+      new_levels <- org_levels[cur_lev_vec]  # desired subset
+      # print(new_levels)  # 4debugging
+      # NOTE: Non-existing indices yield NA values. 
       
-    } else { # cur_lev_vec is NOT numeric: use names as provided
+    } else { # cur_lev_vec is NOT numeric: use names provided
       
-      # sub_org_lev_names <- cur_lev_vec  # Option 1: Copy desired subset of levels
-      sub_org_lev_names <- intersect(org_lev_names, cur_lev_vec)  # Option 2: Drop non-existing levels!
+      # new_levels <- cur_lev_vec  # 1: Copy desired subset of levels
+      new_levels <- intersect(org_levels, cur_lev_vec)  # 2: Drop any non-existing levels!
       
     }
     
-    # Reduce levels of (org_name_idx-th element) new_name_list to desired subset: 
-    new_name_list[[org_name_idx]] <- sub_org_lev_names  
-    # print(new_name_list)[[org_name_idx]]  # 4debugging  
+    # Populate new_list by new_levels:
+    
+    # (s1) Reduce the levels of (org_name_idx-th element) new_list to desired subset: 
+    # new_list[[org_name_idx]] <- new_levels  
+    # print(new_list)[[org_name_idx]]  # 4debugging  
+    
+    # (s2) Add levels to new_list:
+    new_list[[i]] <- new_levels  
+    names(new_list)[i] <- org_names[org_name_idx]  # Assign corresponding name of org_list to element
     
     # } # if (cur_dim_name).
     
   } # loop end. 
   
   # Output:
-  return(new_name_list) 
+  return(new_list) 
   
 } # sub_list_2(). 
 
 # # Check:
-# (t_list <- dimnames(Titanic))
-# names(t_list)
-# # as.data.frame(t_list)
+# (t_list <- dimnames(Titanic))  # A test list (with dimension and level names)
+# names(t_list)  # names of t_list
 # 
-# sub_list_2(t_list, in_list = list(Age = "Adult", Class = c("3rd", "1st", "stuff")))
 # 
-# sub_list_2(t_list, in_list = list("Adult", Class = c("3rd", "1st", "stuff")))
+# ## (A) Working for:
+# 
+# # # in_list provides dimnames (dropping non-existent levels):
+# # sub_list_2(t_list, in_list = list(Age = "Adult", Class = c("3rd", "1st", "stuff")))
+# # 
+# 
+# # # in_list provides a mix of dimnames and no names (dropping non-existent levels):
+# # sub_list_2(t_list, in_list = list("Adult", Class = c("3rd", "1st", "stuff")))
+# # 
+# 
+# # in_list provides NO names: Note: If levels are identified, names of org_list are used: 
+# sub_list_2(t_list, in_list = list("Adult", c("3rd", "1st")))
+# 
+# # in_list provides names and numeric levels:
+# sub_list_2(t_list, in_list = list(Age = 2, Class = c(3, 1)))
+# 
+# # in_list provides a mix of numeric levels and names:
+# sub_list_2(t_list, in_list = list("Adult", Class = c(3, 1)))
+# sub_list_2(t_list, in_list = list(c(3, 1), "Adult"))
+# sub_list_2(t_list, in_list = list(c(1, 3), "Female", 2, "Yes"))
+# 
+# # in_list provides no names and only numeric levels:
+# sub_list_2(t_list, in_list = list(c(3, 1), NA, 2))
+# sub_list_2(t_list, in_list = list(c(3, 1), 99, 2))
+# sub_list_2(t_list, in_list = list(c(1, 3), 2, 2, 2))
+# 
+# ## (B) Returning NA for: 
+# 
+# # NA if no names provided at all (WHY?):
+# names(list("Adult", c("3rd", "1st", "stuff")))  # is NULL!
+# sub_list_2(t_list, in_list = list("Adult", c("3rd", "1st", "stuff")))
+# 
+# # NA for providing a non-existing dimname:
+# sub_list_2(t_list, in_list = list(Age = "Adult", Status = c("3rd", "1st", "stuff")))
+# 
+# # NA for providing no dimname and a non-existent level combination:
+# sub_list_2(t_list, in_list = list("Adult", c("3rd", "1st", "stuff")))
+# 
+# 
+# ## (C) Failing for:
+# 
+# # Using only dimname but no level:
+# # sub_list_2(t_list, in_list = list("Adult", Class))
 
 # +++ here now +++ 
 
-# A purely numeric index as dim_list (without dim names):
-# sub_list_2(org_list, in_list = list(c(1, 3), 2, 2, 2))
-
-# A mix of names and numeric index:
-# sub_list_names(org_list, dim_list = list(c(1, 3), "Female", 2, "Yes"))
-
-# A Warning: If dim_list has fewer OR more elements than dimensions:
-# sub_list_names(org_list, dim_list = list(c(1, 3), "Female", 1))
-# sub_list_names(org_list, dim_list = list(c(1, 3), "Female", 1, 2, 99))
-# 
-# # Note some features:
-# # - Dimensions are considered in the order provided in dim_list.
-# # - The names of additional dimensions (without names or numbers in dim_list) are fully included.
-# # - Additional/extra dim_list arguments are truncated. 
-
-
+# ToDo: 
+# - Simplify function (e.g., by making more conservative/strict)
+# - Analog version: out_list uses all, but excludes all mentioned dimensions/levels
 
 
 
