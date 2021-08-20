@@ -393,6 +393,11 @@ list_element_ix <- function(list, tag = NA, values = NA){
 # # (d) numeric values only:
 # list_element_ix(t_list, values = 1:4)
 
+# # Numeric list:
+# (n_list <- list(A = 1:3, B = 3:7, C = 7:9))
+# list_element_ix(n_list, tag = "B", values = 2:3)
+# list_element_ix(n_list, values = 4:6)
+
 
 ## sublist_in: Variant of sub_list_names() taking 2 arguments (in_list and out_list): ------ 
 
@@ -404,22 +409,22 @@ list_element_ix <- function(list, tag = NA, values = NA){
 # - using 2 lists of targets (in_list vs. out_list) and 
 # - allowing for multiple mentions of dimensions in each (considering each element in target list in turn). 
 
-sublist_in <- function(org_list, in_list = "all"){
+sublist_in <- function(org_list, in_list = org_list){
   
   # Early returns:
   if (!is.list(org_list)){ message("sublist_in: org_list is not a list."); return(NA) }
   if (!is.list(in_list)) { message("sublist_in: in_list is not a list.");  return(NA) }
-  if (tolower(in_list) == "all") { return(org_list) } 
+  if (identical(in_list, org_list)) { return(org_list) }
   
   # Goal: Extract only the name/tags/values of in_list from org_list: 
   
   # Get list names:
   # org_list <- dimnames(tbl)   # Use case: org_list are dimnames of a table tbl 
   org_names <- names(org_list)  # names of org_list (as a vector)
-  if (is.null(org_names)){ print("org_list contains NO names/tags.") }  # 4debugging 
+  # if (is.null(org_names)){ print("org_list contains NO names/tags.") }  # 4debugging 
   
   in_names <- names(in_list)    # names of in_list (as a vector)
-  if (is.null(in_names)){ print("in_list contains NO names/tags.") }  # 4debugging 
+  # if (is.null(in_names)){ print("in_list contains NO names/tags.") }  # 4debugging 
   
   # Initialize: 
   n_in <- length(in_list)           # N of desired elements/dimensions
@@ -499,7 +504,7 @@ sublist_in <- function(org_list, in_list = "all"){
 # names(t_list)  # names of t_list
 # 
 # # Trivial case:
-# sublist_in(t_list, in_list = "all")  # returns original t_list
+# sublist_in(t_list)  # returns original t_list
 # 
 # ## (A) Working for:
 # # # in_list provides dimnames (dropping non-existent levels):
@@ -525,7 +530,6 @@ sublist_in <- function(org_list, in_list = "all"){
 # sublist_in(t_list, in_list = list(c(1, 3), 2))
 # sublist_in(t_list, in_list = list(c(3, 1), NA, 2))  # Note missing level
 # sublist_in(t_list, in_list = list(c(3, 1), 99, 2))  # Note missing level
-# 
 # 
 # ## (B) Returning partial results/NA for:
 # 
