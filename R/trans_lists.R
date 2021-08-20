@@ -1,5 +1,5 @@
 ## trans_lists.R | i2ds
-## hn | uni.kn | 2021 08 19
+## hn | uni.kn | 2021 08 20
 
 # Functions for transforming/manipulating lists: ------ 
 #
@@ -13,6 +13,10 @@
 
 
 ## is_list_element: Which list elements contain some x (as a logical vector): ------ 
+
+# Goal: Verify if a list has some x as an element in EACH of its sub-lists.
+
+# Returns a logical vector of length(list). 
 
 # Note: If x has multiple elements (as a vector), 
 #       is_list_element() returns a matrix, 
@@ -55,19 +59,19 @@ match_list <- function(x, list, nomatch = 0L){
   # All element matches (as matrix, if x has multiple elements):
   match_mx <- is_list_element(x, list)
   
-  if (is.matrix(match_mx)){
+  if (is.matrix(match_mx)){ # x had multiple elements:
     
-    # match TRUE values of each row of match_mx: 
+    # match TRUE values of each ROW of match_mx: 
     apply(match_mx, MARGIN = 1, FUN = match, x = TRUE, nomatch = nomatch)
     
   } else { # match_mx is a logical vector:
     
-    # match TRUE values of logical vector:
+    # match TRUE values of the logical vector:
     match(x = TRUE, table = match_mx, nomatch = 0L)
     
   }
   
-} # match_list(). 
+} # match_list().
 
 # # Check:
 # # (a) vector:
@@ -139,6 +143,41 @@ which_list <- function(x, list){
 # which_list(x, l)
 # which_list("C", l)
 # which_list(x3, l)
+
+
+## is_list_tag: Get the position of first list name matching a tag t: ------ 
+
+# - get the list element position that matches a tag t
+
+# Notes: 
+# - Using match() to return position of first match!
+# - Approximate name/tag matching not supported.
+
+is_list_tag <- function(t, list, nomatch = 0L){
+  
+  tags <- names(list)
+  
+  if (is.null(tags)){ message("The list contains no names/tags.") }
+  
+  match(x = t, table = tags, nomatch = nomatch)
+  
+} # is_list_tag(). 
+
+# # Check:
+# (l <- list(one = "A", two = c("A", "B"), three = "C", c("L", "M"), "Y", six = "Z"))
+# names(l)
+# (n <- list("A", c("A", "B"), "C", c("L", "M"), "y", "Z"))
+# names(n)
+# 
+# is_list_tag("two", l)
+# is_list_tag("", l)  # works for (1st) un-named element
+# is_list_tag("else", l, nomatch = -1)
+# is_list_tag("any", n) # Note message that list contains no names/tags.
+# is_list_tag("any", n, nomatch = -99)
+# 
+# # multiple targets in t:
+# is_list_tag(c("two", "", "three"), l)  # works by yielding 1st matches (as vector)
+# is_list_tag(c("t", "th", "three"), l)  # NO approximate matching!
 
 
 ## sub_list_names: Utility function to get the names of a name_list specified in dim_list: -----
