@@ -270,126 +270,145 @@ sub_list_names <- function(name_list, dim_list){
 # - using 2 lists of targets (in_list vs. out_list) and 
 # - allowing for multiple mentions of dimensions in each (considering each element in target list in turn). 
 
-sub_list_2 <- function(org_list, in_list){
+sub_list_2 <- function(org_list, in_list = "all"){
   
-  # Get list names:
-  # org_list <- dimnames(tbl)   # Use case: org_list are dimnames of a table tbl 
-  org_names <- names(org_list)  # names of org_list (as a vector)
-  if (is.null(org_names)){ print("org_list contains NO names/tags.") }  # 4debugging 
-  
-  in_names <- names(in_list)    # names of in_list (as a vector)
-  if (is.null(in_names)){ print("in_list contains NO names/tags.") }  # 4debugging 
-  
-  # Initialize output list: 
-  # new_list <- org_list            # (s1) keep elements not mentioned in in_list
-  n_in <- length(in_list)           # N of desired elements/dimensions
-  # new_list <- vector("list", n_in)# (s2a) pre-allocate an empty list of length n_in
-  new_list <- vector("list", 0)     # (s2b) pre-allocate an empty list of length 0
-  
-  # Loop_1: 
-  for (i in 1:n_in){ # each element of in_list:
+  if (!is.na(in_list) && (in_list == "all")) {
     
-    # Determine 2 features of desired element:
-    # cur_tag <- names(in_list[i])  # (a) tag/name of desired list dimension
-    cur_tag <- in_names[i]        # (a) tag/name of desired list dimension    
+    new_list <- org_list  # copy & skip else part
     
-    if (is.null(cur_tag)){ # fix NULL cases:
-      # print("NOTE: in_list contains NO names.")  # 4debugging 
-      cur_tag <- NA
-    }
-    # print(cur_tag)  # 4debugging
+  } else if (!is.list(in_list)){
     
-    cur_lev_vec <- in_list[[i]]  # (b) desired levels (as vector of names or numeric)
+    message("sub_list_2: in_list is not a list.")
     
-    # Determine relevant dimension of org_list (corresponding to current element of in_list):
-    if ((!is.na(cur_tag)) & (is.character(cur_tag)) & (nchar(cur_tag) > 0)){ # (A) cur_tag was provided:
+    return(NA)
+    
+  } else { # (1) Get elements of in_list from org_list: 
+    
+    # Get list names:
+    # org_list <- dimnames(tbl)   # Use case: org_list are dimnames of a table tbl 
+    org_names <- names(org_list)  # names of org_list (as a vector)
+    if (is.null(org_names)){ print("org_list contains NO names/tags.") }  # 4debugging 
+    
+    in_names <- names(in_list)    # names of in_list (as a vector)
+    if (is.null(in_names)){ print("in_list contains NO names/tags.") }  # 4debugging 
+    
+    # Initialize: 
+    n_in <- length(in_list)           # N of desired elements/dimensions
+    # new_list <- org_list            # (s1) keep elements not mentioned in in_list
+    # new_list <- vector("list", n_in)# (s2a) pre-allocate an empty list of length n_in
+    new_list <- vector("list", 0)     # (s2b) pre-allocate an empty list of length 0
+    
+    # Loop_1: 
+    for (i in 1:n_in){ # each element of in_list:
       
-      # Get corresponding index in vector of original names (org_names):   
-      # org_list_ix <- which(org_names == cur_tag)
-      org_list_ix <- match(x = cur_tag, table = org_names, nomatch = NA)
+      # Determine 2 features of desired element:
+      # cur_tag <- names(in_list[i])  # (a) tag/name of desired list dimension
+      cur_tag <- in_names[i]        # (a) tag/name of desired list dimension    
       
-      # 2 cases: 
-      if (is.na(org_list_ix)){
-        
-        message(paste0("sub_list_2: ", cur_tag, " is no dimension name in org_list."))  # 4debugging
-        return(NA)
-        
-      } else {
-        
-        print(paste0("cur_tag = ", cur_tag, " is element ", org_list_ix, " of org_list."))  # 4debugging  
-        
+      if (is.null(cur_tag)){ # fix NULL cases:
+        # print("NOTE: in_list contains NO names.")  # 4debugging 
+        cur_tag <- NA
       }
+      # print(cur_tag)  # 4debugging
       
-    } else { # cur_tag was NOT provided or NOT found in org_names: 
+      cur_lev_vec <- in_list[[i]]  # (b) desired levels (as vector of names or numeric)
       
-      if (is.character(cur_lev_vec)){ # (B) Use named levels:
+      # Determine relevant dimension of org_list (corresponding to current element of in_list):
+      if ((!is.na(cur_tag)) & (is.character(cur_tag)) & (nchar(cur_tag) > 0)){ # (A) cur_tag was provided:
         
-        element_matches <- match_list(x = cur_lev_vec, list = org_list, nomatch = 0L)  # using utility function (above)
-        unique_matches <- unique(element_matches)
-        print(unique_matches)  # 4debugging
+        # Get corresponding index in vector of original names (org_names):   
+        # org_list_ix <- which(org_names == cur_tag)
+        org_list_ix <- match(x = cur_tag, table = org_names, nomatch = NA)
         
-        if ( !all(unique_matches == 0) & (length(unique_matches) == 1) ){  # names in cur_lev_vec match a unique element in org_list:
+        # 2 cases: 
+        if (is.na(org_list_ix)){
           
-          org_list_ix <- unique_matches
-          print(paste0("Levels of element ", i, " correspond to element ", org_list_ix, " of org_list: ", org_names[org_list_ix]))  # 4debugging
-          
-        } else { # no unique matching element identified:
-          
-          message(paste0("sub_list_2: Levels of element ", i, " of in_list correspond to no unique element of org_list."))
+          message(paste0("sub_list_2: ", cur_tag, " is no dimension name in org_list."))  # 4debugging
           return(NA)
+          
+        } else {
+          
+          print(paste0("cur_tag = ", cur_tag, " is element ", org_list_ix, " of org_list."))  # 4debugging  
           
         }
         
-      } else { # (C) Use numeric levels: 
+      } else { # cur_tag was NOT provided or NOT found in org_names: 
         
-        message(paste0("sub_list_2: Element ", i, " of in_list is unnamed/untagged and numeric. Using element ", i, " of org_list:"))
-        org_list_ix <- i
+        if (is.character(cur_lev_vec)){ # (B) Use named levels:
+          
+          element_matches <- match_list(x = cur_lev_vec, list = org_list, nomatch = 0L)  # using utility function (above)
+          unique_matches <- unique(element_matches)
+          print(unique_matches)  # 4debugging
+          
+          if ( !all(unique_matches == 0) & (length(unique_matches) == 1) ){  # names in cur_lev_vec match a unique element in org_list:
+            
+            org_list_ix <- unique_matches
+            print(paste0("Levels of element ", i, " correspond to element ", org_list_ix, " of org_list: ", org_names[org_list_ix]))  # 4debugging
+            
+          } else { # no unique matching element identified:
+            
+            message(paste0("sub_list_2: Levels of element ", i, " of in_list correspond to no unique element of org_list."))
+            return(NA)
+            
+          }
+          
+        } else { # (C) Use numeric levels: 
+          
+          message(paste0("sub_list_2: Element ", i, " of in_list is unnamed/untagged and numeric. Using element ", i, " of org_list:"))
+          org_list_ix <- i
+          
+        }
+      }
+      
+      # Determine original levels (at org_list_ix) and new levels (as subset/intersection) :
+      org_levels <- org_list[[org_list_ix]]  # original levels of element org_list_ix
+      
+      if (is.numeric(cur_lev_vec)){  # provided a numeric index:
+        
+        new_levels <- org_levels[cur_lev_vec]  # desired subset (by numeric indexing)
+        # print(new_levels)  # 4debugging
+        # NOTE: Non-existing index values yield and keep NA values. 
+        new_levels <- new_levels[!is.na(new_levels)]  # remove NA values
+        # NOTE: Non-existing levels are dropped!
+        
+      } else { # cur_lev_vec is NOT numeric: use provided names: 
+        
+        # new_levels <- cur_lev_vec  # 1: Copy desired subset of levels
+        new_levels <- intersect(org_levels, cur_lev_vec)  # 2a: Prioritize org_levels and drop any non-existing levels!
+        new_levels <- intersect(cur_lev_vec, org_levels)  # 2b: Prioritize org_levels and drop any non-existing levels!      
+        # NOTE: Non-existing levels are dropped!
         
       }
-    }
-    
-    # Determine original levels (at org_list_ix) and new levels (as subset/intersection) :
-    org_levels <- org_list[[org_list_ix]]  # original levels of element org_list_ix
-    
-    if (is.numeric(cur_lev_vec)){  # provided a numeric index:
       
-      new_levels <- org_levels[cur_lev_vec]  # desired subset (by numeric indexing)
-      # print(new_levels)  # 4debugging
-      # NOTE: Non-existing index values yield and keep NA values. 
-      new_levels <- new_levels[!is.na(new_levels)]  # remove NA values
-      # NOTE: Non-existing levels are dropped!
+      # Populate new_list by new_levels:
       
-    } else { # cur_lev_vec is NOT numeric: use provided names: 
+      # (s1) Reduce the levels of (org_list_ix-th element) new_list to desired subset: 
+      # new_list[[org_list_ix]] <- new_levels  
+      # print(new_list)[[org_list_ix]]  # 4debugging  
       
-      # new_levels <- cur_lev_vec  # 1: Copy desired subset of levels
-      new_levels <- intersect(org_levels, cur_lev_vec)  # 2a: Prioritize org_levels and drop any non-existing levels!
-      new_levels <- intersect(cur_lev_vec, org_levels)  # 2b: Prioritize org_levels and drop any non-existing levels!      
-      # NOTE: Non-existing levels are dropped!
+      # (s2) Add elements to new_list:
+      new_list[[i]] <- new_levels  # ADD list element  
+      names(new_list)[i] <- org_names[org_list_ix]  # Assign corresponding name/tag of org_list to list element
       
-    }
+      # } # if (cur_tag).
+      
+    } # loop end. 
     
-    # Populate new_list by new_levels:
-    
-    # (s1) Reduce the levels of (org_list_ix-th element) new_list to desired subset: 
-    # new_list[[org_list_ix]] <- new_levels  
-    # print(new_list)[[org_list_ix]]  # 4debugging  
-    
-    # (s2) Add elements to new_list:
-    new_list[[i]] <- new_levels  # ADD list element  
-    names(new_list)[i] <- org_names[org_list_ix]  # Assign corresponding name/tag of org_list to list element
-    
-    # } # if (cur_tag).
-    
-  } # loop end. 
+  } # if (in_list == "all") else end.
   
   # Output:
   return(new_list) 
   
 } # sub_list_2(). 
 
+# +++ here now +++ 
+
 # # Check:
 # (t_list <- dimnames(Titanic))  # A test list (with dimension and level names)
 # names(t_list)  # names of t_list
+# 
+# # Trivial case: 
+# sub_list_2(t_list, in_list = "all")  # returns t_list
 # 
 # ## (A) Working for:
 # # # in_list provides dimnames (dropping non-existent levels):
@@ -430,8 +449,12 @@ sub_list_2 <- function(org_list, in_list){
 # 
 # # NA for providing existing dim-name/tag as a level:
 # sub_list_2(t_list, in_list = list("Adult", "Class"))
-
-# +++ here now +++ 
+# 
+# 
+# ## Handling NA inputs: 
+# sub_list_2(t_list, in_list = NA)
+# sub_list_2(t_list, in_list = c(NA, NA))
+# sub_list_2(t_list, in_list = list(NA, NA))
 
 # ToDo: 
 # - Simplify function (e.g., by making more conservative/strict)
