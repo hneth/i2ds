@@ -291,10 +291,10 @@ list_element_ix <- function(list, tag = NA, values = NA){
       
       # Note: Multiple matches are possible when x = tag contains multiple elements!
       
-      # # 2 cases: 
+      # # Detect 2 cases: 
       # if (is.na(tag_ix)){
       #  
-      #  message(paste0("list_element_ix: ", tag, " is no name/tag in list."))  # 4debugging
+      #  message(paste0("list_element_ix: tag = ", tag, " is no name/tag in list."))  # 4debugging
       #  # return(NA)
       #  
       # } # else {
@@ -308,10 +308,10 @@ list_element_ix <- function(list, tag = NA, values = NA){
   # 2. Use values:
   if (!all(is.na(values))){
     
-    if (is.character(values)){ # (B) Use values:
+    if (is.character(values)){ # (B) Match character values:
       
       element_matches <- match_list(x = values, list = list, nomatch = 0L)  # using utility function (above)
-      unique_matches <- unique(element_matches)
+      unique_matches  <- unique(element_matches)
       # print(unique_matches)  # 4debugging
       
       if ( !all(unique_matches == 0) & (length(unique_matches) == 1) ){  # names in values match a unique element in org_list:
@@ -321,14 +321,14 @@ list_element_ix <- function(list, tag = NA, values = NA){
         
       } else { # no unique matching element identified:
         
-        message(paste0("list_element_ix: Values correspond to no unique element of list."))
+        message(paste0("list_element_ix: values = ", paste(values, collapse = ", "), " correspond to no unique element of list."))
         # return(NA)
         
       }
       
-    } else { # (C) Use numeric levels: 
+    } else { # (C) Numeric levels provided: 
       
-      message(paste0("list_element_ix: No name/tag and numeric values."))
+      message(paste0("list_element_ix: Not matching numeric values = ", paste(values, collapse = ", "), " to list levels (character)."))
       # return(NA)
       
     } # if (is.character(values)).
@@ -552,8 +552,8 @@ sub_list_in <- function(org_list, in_list = "all"){
 # (t_list <- dimnames(Titanic))  # A test list (with dimension and level names)
 # names(t_list)  # names of t_list
 # 
-# # Trivial case: 
-# sub_list_in(t_list, in_list = "all")  # returns t_list
+# # Trivial case:
+# sub_list_in(t_list, in_list = "all")  # returns original t_list
 # 
 # ## (A) Working for:
 # # # in_list provides dimnames (dropping non-existent levels):
@@ -577,11 +577,11 @@ sub_list_in <- function(org_list, in_list = "all"){
 # # in_list provides no names/tags and only numeric levels:
 # sub_list_in(t_list, in_list = list(c(1, 3), 2, 2, 2))
 # sub_list_in(t_list, in_list = list(c(1, 3), 2))
-# sub_list_in(t_list, in_list = list(c(3, 1), NA, 2))  # Note: missing level
-# sub_list_in(t_list, in_list = list(c(3, 1), 99, 2))  # Note: missing level
+# sub_list_in(t_list, in_list = list(c(3, 1), NA, 2))  # Note missing level
+# sub_list_in(t_list, in_list = list(c(3, 1), 99, 2))  # Note missing level
 # 
 # 
-# ## (B) Returning NA for:
+# ## (B) Returning partial results/NA for:
 # 
 # # NA if no names/tags provided and a level cannot be identified:
 # sub_list_in(t_list, in_list = list("Adult", c("3rd", "1st", "stuff")))  # Class levels not recognized
@@ -596,23 +596,24 @@ sub_list_in <- function(org_list, in_list = "all"){
 # sub_list_in(t_list, in_list = list("Adult", "Class"))
 # 
 # 
-# ## Handling NA inputs: 
+# ## Handling NA inputs:
 # sub_list_in(t_list, in_list = NA)
 # sub_list_in(t_list, in_list = c(NA, NA))
 # sub_list_in(t_list, in_list = list(NA, NA))
+
 
 # ToDo: 
 # - Simplify function (e.g., by making more conservative/strict)
 # - Analog version: out_list uses all, but excludes all mentioned dimensions/levels
 
 
-
-
 ## ToDo: ------
 
-# - match for lists: in which sublist is an element (e.g., name)?
-# - sublist for lists: include and exclude elements of lists in org_list
-#                      to use in a subtable() function.
+# - match for lists: in which sublist is an element (e.g., name).
 
+# - sublist() for lists: with 2 arguments to include and exclude elements of lists in org_list
+#                        to use in a subtable() function.
+
+# - write a function that removes empty list elements (i.e., elements with no values/vector)
 
 ## eof. ----------
