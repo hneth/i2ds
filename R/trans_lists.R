@@ -409,6 +409,10 @@ list_element_ix <- function(list, tag = NA, values = NA){
 # - using 2 lists of targets (in_list vs. out_list) and 
 # - allowing for multiple mentions of dimensions in each (considering each element in target list in turn). 
 
+# Note: Function assumes that org_list and in_list denote  
+#       element names/tags and level/dim names of type "character" 
+#       (as returned by dimnames(tbl)). 
+
 sublist_in <- function(org_list, in_list = org_list){
   
   # Early returns:
@@ -418,7 +422,7 @@ sublist_in <- function(org_list, in_list = org_list){
   
   # Goal: Extract only the name/tags/values of in_list from org_list: 
   
-  # Get list names:
+  # List names: 
   # org_list <- dimnames(tbl)   # Use case: org_list are dimnames of a table tbl 
   org_names <- names(org_list)  # names of org_list (as a vector)
   # if (is.null(org_names)){ print("org_list contains NO names/tags.") }  # 4debugging 
@@ -450,16 +454,17 @@ sublist_in <- function(org_list, in_list = org_list){
     cur_lev_vec <- in_list[[i]]  # (b) desired levels (as vector of names or numeric)
     
     # Determine relevant dimension of org_list (corresponding to current element of in_list):
-    org_list_ix <- list_element_ix(org_list, tag = cur_tag, values = cur_lev_vec)  # using utility function (above)
+    org_list_ix <- NA  # initialize
+    org_list_ix <- list_element_ix(org_list, tag = cur_tag, values = cur_lev_vec)  # assign using utility function (above)
     
     if ( all(is.na(org_list_ix)) ){ # org_list_ix could not be assigned:
       
       message(paste0("sublist_in: Element ", i, " of in_list is unnamed/untagged and numeric. Using element ", i, " of org_list:"))
-      org_list_ix <- i
+      org_list_ix <- i  # Heuristic: Assume same position i in org_list
       
     }
     
-    # Determine original levels (at org_list_ix) and new levels (as subset/intersection) :
+    # Determine original levels (at org_list_ix) and new levels (as subset/intersection):
     org_levels <- org_list[[org_list_ix]]  # original levels of element org_list_ix
     
     if (is.numeric(cur_lev_vec)){  # provided a numeric index:
