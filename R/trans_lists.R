@@ -96,6 +96,17 @@ match_list <- function(x, list, nomatch = 0L){
 # match_list(x, l)
 # match_list("C", l)
 # match_list(x3, l, nomatch = -1)
+# 
+# # numeric list:
+# (nl <- list(1:3, 3:7, 7:9))
+# match_list(7, nl)
+# match_list("X", nl)
+# 
+# # mixed list:
+# (ml <- list(letters[1:3], 3:7, letters[7:3], 7:9))
+# match_list(7, ml)
+# match_list("f", ml)
+# match_list("X", ml)
 
 # Use case (for sub_list() function below): 
 # When looking for specific targets in list elements:
@@ -152,11 +163,23 @@ which_list <- function(x, list){
 # which_list(x, l)
 # which_list("C", l)
 # which_list(x3, l)
+# 
+# # numeric list:
+# (nl <- list(1:3, 3:7, 7:9))
+# which_list(7, nl)
+# which_list("X", nl)
+# 
+# # mixed list:
+# (ml <- list(letters[1:3], 3:7, letters[7:3], 7:9))
+# which_list(7, ml)
+# which_list("c", ml)
+# which_list("X", ml)
+
 
 
 ## is_list_tag: Get the position of first list name matching a tag t: ------ 
 
-# - get the list element position that matches a tag t
+# Goal: Get the list element position that matches a name/tag t. 
 
 # Notes: 
 # - Using match() to return position of first match!
@@ -181,12 +204,23 @@ is_list_tag <- function(t, list, nomatch = 0L){
 # is_list_tag("two", l)
 # is_list_tag("", l)  # works for (1st) un-named element
 # is_list_tag("else", l, nomatch = -1)
-# is_list_tag("any", n) # Note message that list contains no names/tags.
+# is_list_tag("any", n)  # Note: Returns nomatch value + message.
 # is_list_tag("any", n, nomatch = -99)
 # 
 # # multiple targets in t:
 # is_list_tag(c("two", "", "three"), l)  # works by yielding 1st matches (as vector)
 # is_list_tag(c("t", "th", "three"), l)  # NO approximate matching!
+# 
+# # numeric list:
+# (nl <- list(a = 1:3, b = 3:7, c = 7:9))
+# is_list_tag("c", nl)
+# is_list_tag("X", nl)
+# 
+# # mixed list, some tags:
+# (ml <- list(a1 = letters[1:3], n1 = 3:7, letters[7:3], 7:9))
+# is_list_tag("n1", ml)
+# is_list_tag(c("n1", "n9"), ml)
+# is_list_tag("XX", ml)
 
 
 ## sub_list_names: Utility function to get the names of a name_list specified in dim_list: -----
