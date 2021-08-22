@@ -336,6 +336,14 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
       tag_ix <- match(x = tag, table = org_names, nomatch = NA)
       # Note: Multiple matches are possible when x = tag contains multiple elements!
       
+      # print(tag_ix) # 4debugging
+      
+      if (any(is.na(tag_ix))){
+        
+        message("list_element_ix: Some tag not found in list.")
+        
+      }
+      
     } # if (is.character(tag)).
     
   } # if (!is.null(tag)).
@@ -343,61 +351,87 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
   
   # 2. values:
   # if (!all(is.na(values))){
-  if (!is.null(values)){  
+  if (!is.null(values)){
     
-    # if (!is.numeric(values)){ # (B) Match character values:
+    n_elements <- length(list)
+    n_values   <- length(values)
+    n_matches  <- rep(NA, n_elements)  # counter for nr. of matches per element
     
-    first_matches <- match_list(x = values, list = list, nomatch = 0L)  # using utility function (above)
-    # ERROR: first_matches returns only 1st matches of values in list!
+    for (i in 1:n_elements){  # for each list element:
+      n_matches[i] <- sum(values %in% list[[i]])  # sum of matches
+    }
     
-    # +++ here now +++ 
+    candidate_ix <- which(n_matches == n_values)  # positions with correspondence 
+    # print(candidate_ix)  # 4debugging 
     
-    all_matches <- which_list(x = values, list = list)
-    # print(all_matches)  # 4debugging
-    
-    if (is.list(all_matches)){ # matches in multiple elements: 
+    if (length(candidate_ix) == 0){
       
-      # if exactly 1 list contains the same number of elements as in values: that's it.
-      n_val <- length(values)
-      l_len <- sapply(all_matches, length)  # length of list elements
-      cand_ix <- which(l_len == n_val)
+      message(paste0("list_element_ix: values match no list element.")) # 4debugging 
       
-      if (length(unique(cand_ix)) == 1){  # exactly 1 element of all_matches contains all values:
-        
-        values_ix <- unique(cand_ix)
-        
-      } else {  # no unique sublist: 
-        
-        message(paste0("list_element_ix: values = ", paste(values, collapse = ", "), " correspond to no unique element of list."))
-        
-      }
+    } else if (length(candidate_ix) == 1){
       
-    } else { # check vector of matches: 
+      # print(paste0("list_element_ix: values match exactly 1 list element = ", candidate_ix, ".")) # 4debugging 
+      values_ix <- candidate_ix
       
-      # Check if matches are unique: 
-      unique_matches  <- unique(all_matches)
-      print(unique_matches)  # 4debugging
+    } else {
       
-      if ( !all(unique_matches == 0) & (length(unique_matches) == 1) ){  # names in values match a unique element in org_list:
-        
-        values_ix <- unique_matches
-        # print(paste0("list_element_ix: Values correspond to element ", values_ix, " of list: name/tag = ", org_names[values_ix]))  # 4debugging
-        
-      } else { # no unique matching element identified:
-        
-        message(paste0("list_element_ix: values = ", paste(values, collapse = ", "), " correspond to no unique element of list."))
-        # return(NA)
-        
-      }
+      message(paste0("list_element_ix: values match multiple list elements: ", paste(candidate_ix, collapse = ", "), ".")) # 4debugging 
       
     }
     
-    # } else { # (C) Numeric levels provided: 
+    # +++ here now +++ 
     
-    #  print(paste0("list_element_ix: Not matching numeric values = ", paste(values, collapse = ", "), " to list levels (character)."))
-    # return(NA)
-    
-    # } # if (!is.numeric(values)).
+    #   # if (!is.numeric(values)){ # (B) Match character values:
+    #   
+    #   first_matches <- match_list(x = values, list = list, nomatch = 0L)  # using utility function (above)
+    #   # ERROR: first_matches returns only 1st matches of values in list!
+    #   
+    #   all_matches <- which_list(x = values, list = list)
+    #   print(all_matches)  # 4debugging
+    #   
+    #   if (is.list(all_matches)){ # matches in multiple elements: 
+    #     
+    #     # if exactly 1 list contains the same number of elements as in values: that's it.
+    #     n_val <- length(values)
+    #     l_len <- sapply(all_matches, length)  # length of list elements
+    #     cand_ix <- which(l_len == n_val)  # ERROR: This is NOT the target list!
+    #     
+    #     if (length(unique(cand_ix)) == 1){  # exactly 1 element of all_matches contains all values:
+    #       
+    #       values_ix <- unique(cand_ix)
+    #       
+    #     } else {  # no unique sublist: 
+    #       
+    #       message(paste0("list_element_ix: values = ", paste(values, collapse = ", "), " correspond to no unique element of list."))
+    #       
+    #     }
+    #     
+    #   } else { # check vector of matches: 
+    #     
+    #     # Check if matches are unique: 
+    #     unique_matches  <- unique(all_matches)
+    #     print(unique_matches)  # 4debugging
+    #     
+    #     if ( !all(unique_matches == 0) & (length(unique_matches) == 1) ){  # names in values match a unique element in org_list:
+    #       
+    #       values_ix <- unique_matches
+    #       # print(paste0("list_element_ix: Values correspond to element ", values_ix, " of list: name/tag = ", org_names[values_ix]))  # 4debugging
+    #       
+    #     } else { # no unique matching element identified:
+    #       
+    #       message(paste0("list_element_ix: values = ", paste(values, collapse = ", "), " correspond to no unique element of list."))
+    #       # return(NA)
+    #       
+    #     }
+    #     
+    #   }
+    #   
+    #   # } else { # (C) Numeric levels provided: 
+    #   
+    #   #  print(paste0("list_element_ix: Not matching numeric values = ", paste(values, collapse = ", "), " to list levels (character)."))
+    #   # return(NA)
+    #   
+    #   # } # if (!is.numeric(values)).
     
   } # if (!is.null(values)).
   
@@ -459,24 +493,46 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 # # (d) numeric values only:
 # list_element_ix(t_list, values = 1:4)
 
-# # Numeric list:
-(nl <- list(A = 1:3, B = 3:7, C = 7:9))
-list_element_ix(nl, tag = "B")
-list_element_ix(nl, tag = "B", values = c(4, 6))
-list_element_ix(nl, values = 4)
-list_element_ix(nl, values = 3)
+# ## Numeric list:
+# (nl <- list(A = 1:3, B = 3:5, C = 2:4))
+# list_element_ix(nl, tag = "B")
+# list_element_ix(nl, tag = "B", values = c(5, 3))
+# list_element_ix(nl, values = 5)
+# list_element_ix(nl, values = 5:3)
+# 
+# # works with message:
+# list_element_ix(nl, tag = c("C", "X", "A"))
+# list_element_ix(nl, tag = "X", values = 5)
+# list_element_ix(nl, tag = "B", values = c(4, 3))
+# 
+# # fails with message:
+# list_element_ix(nl, tag = c("X"))
+# list_element_ix(nl, tag = "B", values = c(4, 2))
+# list_element_ix(nl, values = c(3, 99))
+# list_element_ix(nl, values = c(4, 3))
+# list_element_ix(nl, values = 4)
+# list_element_ix(nl, values = 2:3)
+# 
+# # list with NA values:
+# (na <- list(a = c(1, 3), b = c(3, NA, 5), c = c(6, NA, 7, NA)))  
+# 
+# list_element_ix(na, values = c(3, 1))
+# list_element_ix(na, values = c(5, 3))
+# list_element_ix(na, values = c(NA, 5))
+# list_element_ix(na, values = c(NA, 3))
+# list_element_ix(na, values = c(NA, 1))
+# list_element_ix(na, values = NA)
+# list_element_ix(na, values = c(NA, NA))  # Note: NAs do not count twice. 
+# 
+# # mixed list, some tags:
+# (ml <- list(a1 = letters[1:3], n1 = 3:7, a2 = letters[7:3], 7:9))
+# list_element_ix(ml, tag = "a2", values = 4:5)
+# list_element_ix(ml, tag = "XX", values = 4:5)
+# list_element_ix(ml, tag = c("a1", "XX", "a2"))
+# list_element_ix(ml, tag = "XX", values = 7:6)
+# list_element_ix(ml, tag = "XX", values = 5)
+# list_element_ix(ml, tag = "XX", values = 7)
 
-(na <- list(a = c(1, NA, 3), b = c(3, NA, 5), c = 6:7))  # with NA values
-list_element_ix(na, values = c(3, 1))
-list_element_ix(na, values = c(NA, 5))  # ERROR. +++ here now +++ 
-list_element_ix(na, values = c(NA, 3))
-
-# mixed list, some tags:
-(ml <- list(a1 = letters[1:3], n1 = 3:7, a2 = letters[7:3], 7:9))
-list_element_ix(ml, tag = "a2", values = 4:5)
-list_element_ix(ml, tag = "XX", values = 4:5)
-list_element_ix(ml, tag = c("a1", "XX", "a2"))
-list_element_ix(ml, tag = "XX", values = 2)
 
 
 ## sublist_in: Variant of sub_list_names() taking 2 arguments (in_list and out_list): ------ 
