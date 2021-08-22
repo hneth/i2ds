@@ -36,12 +36,21 @@ is_list_element <- function(x, list){
 # is.element(x, v)
 # is.element(x3, v)  # vector of 1st match positions for each element of x2
 # 
-# # # # For list:
+# # (b) list:
 # (l <- list("A", c("A", "B"), c("A", "B", "C"), c("Z")))
 # # is.element(x, l)  # Note: fails for lists!
 # 
 # is_list_element(x, l)
 # is_list_element(x3, l)  # returns a matrix, with each row corresponding to an element of x
+# 
+# # numeric list: 
+# (nl <- list(1:3, 3:7, 7:9))
+# is_list_element(7, nl)
+# 
+# # mixed list:
+# (ml <- list(letters[1:3], 3:7, letters[7:3], 7:9))
+# is_list_element(7, ml)
+# is_list_element("c", ml)
 
 
 ## match_list: Get the positions of first matches of x in (elements of) list: ------ 
