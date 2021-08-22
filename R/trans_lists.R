@@ -168,6 +168,8 @@ which_list <- function(x, list){
 # (nl <- list(1:3, 3:7, 7:9))
 # which_list(7, nl)
 # which_list("X", nl)
+# which_list(c(2, 5), nl)  # multiple targets: unique matches
+# which_list(c(2, 7), nl)  # multiple targets: multiple matches
 # 
 # # mixed list:
 # (ml <- list(letters[1:3], 3:7, letters[7:3], 7:9))
@@ -346,26 +348,47 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
     # if (!is.numeric(values)){ # (B) Match character values:
     
     first_matches <- match_list(x = values, list = list, nomatch = 0L)  # using utility function (above)
-    # ERROR: match_list returns only 1st matches of values in list!
+    # ERROR: first_matches returns only 1st matches of values in list!
     
     # +++ here now +++ 
     
-    # all_matches <- which_list(x = values, list = list)
+    all_matches <- which_list(x = values, list = list)
     # print(all_matches)  # 4debugging
     
-    # Check if matches are unique: 
-    unique_matches  <- unique(first_matches)
-    print(unique_matches)  # 4debugging
-    
-    if ( !all(unique_matches == 0) & (length(unique_matches) == 1) ){  # names in values match a unique element in org_list:
+    if (is.list(all_matches)){ # matches in multiple elements: 
       
-      values_ix <- unique_matches
-      # print(paste0("list_element_ix: Values correspond to element ", values_ix, " of list: name/tag = ", org_names[values_ix]))  # 4debugging
+      # if exactly 1 list contains the same number of elements as in values: that's it.
+      n_val <- length(values)
+      l_len <- sapply(all_matches, length)  # length of list elements
+      cand_ix <- which(l_len == n_val)
       
-    } else { # no unique matching element identified:
+      if (length(unique(cand_ix)) == 1){  # exactly 1 element of all_matches contains all values:
+        
+        values_ix <- unique(cand_ix)
+        
+      } else {  # no unique sublist: 
+        
+        message(paste0("list_element_ix: values = ", paste(values, collapse = ", "), " correspond to no unique element of list."))
+        
+      }
       
-      message(paste0("list_element_ix: values = ", paste(values, collapse = ", "), " correspond to no unique element of list."))
-      # return(NA)
+    } else { # check vector of matches: 
+      
+      # Check if matches are unique: 
+      unique_matches  <- unique(all_matches)
+      print(unique_matches)  # 4debugging
+      
+      if ( !all(unique_matches == 0) & (length(unique_matches) == 1) ){  # names in values match a unique element in org_list:
+        
+        values_ix <- unique_matches
+        # print(paste0("list_element_ix: Values correspond to element ", values_ix, " of list: name/tag = ", org_names[values_ix]))  # 4debugging
+        
+      } else { # no unique matching element identified:
+        
+        message(paste0("list_element_ix: values = ", paste(values, collapse = ", "), " correspond to no unique element of list."))
+        # return(NA)
+        
+      }
       
     }
     
@@ -443,8 +466,9 @@ list_element_ix(nl, tag = "B", values = c(4, 6))
 list_element_ix(nl, values = 4)
 list_element_ix(nl, values = 3)
 
-(na <- list(a = c(1, NA, 3), b = c(3, NA, 5), c = 5:7))
+(na <- list(a = c(1, NA, 3), b = c(3, NA, 5), c = 6:7))  # with NA values
 list_element_ix(na, values = c(3, 1))
+list_element_ix(na, values = c(NA, 5))  # ERROR. +++ here now +++ 
 list_element_ix(na, values = c(NA, 3))
 
 # mixed list, some tags:
