@@ -312,71 +312,71 @@ sub_list_names <- function(name_list, dim_list){
 # Note: 
 # - Multiple matches are possible when x = tag contains multiple elements! 
 
-list_element_ix <- function(list, tag = NA, values = NA){
+list_element_ix <- function(list, tag = NULL, values = NULL){
   
-  # Determine relevant dimension/position of list element (that corresponds to current tag AND/OR value):
+  # Determine relevant dimension/position of list element (that corresponds to current name/tag AND/OR value):
   
   # Initialize 3 indices:
-  tag_ix    <- NA  # ix corresponding to tag
-  values_ix <- NA  # ix corresponding to values 
+  tag_ix    <- NA  # sub-ix corresponding to tag
+  values_ix <- NA  # sub-ix corresponding to values 
   list_ix   <- NA  # to output
   
   org_names <- names(list)
   
-  # 1. Use tag:
-  if (!all(is.na(tag))){
+  # 1. tag:
+  # if (!all(is.na(tag))){
+  if (!is.null(tag)){
     
     if (all(is.character(tag)) & all((nchar(tag) > 0)) ){ # (A) A tag was provided:
       
       # Get corresponding index in vector of original names (org_names):   
       # tag_ix <- which(org_names == tag)
       tag_ix <- match(x = tag, table = org_names, nomatch = NA)
-      
       # Note: Multiple matches are possible when x = tag contains multiple elements!
-      
-      # # Detect 2 cases: 
-      # if (is.na(tag_ix)){
-      #  
-      #  message(paste0("list_element_ix: tag = ", tag, " is no name/tag in list."))  # 4debugging
-      #  # return(NA)
-      #  
-      # } # else {
-      # # print(paste0("list_element_ix: tag = ", tag, " corresponds to element ", tag_ix, " of list."))  # 4debugging  
-      # # }
       
     } # if (is.character(tag)).
     
-  } # if (!is.na(tag)).
+  } # if (!is.null(tag)).
   
-  # 2. Use values:
-  if (!all(is.na(values))){
+  
+  # 2. values:
+  # if (!all(is.na(values))){
+  if (!is.null(values)){  
     
-    if (is.character(values)){ # (B) Match character values:
+    # if (!is.numeric(values)){ # (B) Match character values:
+    
+    first_matches <- match_list(x = values, list = list, nomatch = 0L)  # using utility function (above)
+    # ERROR: match_list returns only 1st matches of values in list!
+    
+    # +++ here now +++ 
+    
+    # all_matches <- which_list(x = values, list = list)
+    # print(all_matches)  # 4debugging
+    
+    # Check if matches are unique: 
+    unique_matches  <- unique(first_matches)
+    print(unique_matches)  # 4debugging
+    
+    if ( !all(unique_matches == 0) & (length(unique_matches) == 1) ){  # names in values match a unique element in org_list:
       
-      element_matches <- match_list(x = values, list = list, nomatch = 0L)  # using utility function (above)
-      unique_matches  <- unique(element_matches)
-      # print(unique_matches)  # 4debugging
+      values_ix <- unique_matches
+      # print(paste0("list_element_ix: Values correspond to element ", values_ix, " of list: name/tag = ", org_names[values_ix]))  # 4debugging
       
-      if ( !all(unique_matches == 0) & (length(unique_matches) == 1) ){  # names in values match a unique element in org_list:
-        
-        values_ix <- unique_matches
-        # print(paste0("list_element_ix: Values correspond to element ", values_ix, " of list: name/tag = ", org_names[values_ix]))  # 4debugging
-        
-      } else { # no unique matching element identified:
-        
-        message(paste0("list_element_ix: values = ", paste(values, collapse = ", "), " correspond to no unique element of list."))
-        # return(NA)
-        
-      }
+    } else { # no unique matching element identified:
       
-    } else { # (C) Numeric levels provided: 
-      
-      print(paste0("list_element_ix: Not matching numeric values = ", paste(values, collapse = ", "), " to list levels (character)."))
+      message(paste0("list_element_ix: values = ", paste(values, collapse = ", "), " correspond to no unique element of list."))
       # return(NA)
       
-    } # if (is.character(values)).
+    }
     
-  } # if (!all(is.na(values))).
+    # } else { # (C) Numeric levels provided: 
+    
+    #  print(paste0("list_element_ix: Not matching numeric values = ", paste(values, collapse = ", "), " to list levels (character)."))
+    # return(NA)
+    
+    # } # if (!is.numeric(values)).
+    
+  } # if (!is.null(values)).
   
   
   # 3. Compare and use indices: 
@@ -437,9 +437,22 @@ list_element_ix <- function(list, tag = NA, values = NA){
 # list_element_ix(t_list, values = 1:4)
 
 # # Numeric list:
-# (n_list <- list(A = 1:3, B = 3:7, C = 7:9))
-# list_element_ix(n_list, tag = "B", values = 2:3)
-# list_element_ix(n_list, values = 4:6)
+(nl <- list(A = 1:3, B = 3:7, C = 7:9))
+list_element_ix(nl, tag = "B")
+list_element_ix(nl, tag = "B", values = c(4, 6))
+list_element_ix(nl, values = 4)
+list_element_ix(nl, values = 3)
+
+(na <- list(a = c(1, NA, 3), b = c(3, NA, 5), c = 5:7))
+list_element_ix(na, values = c(3, 1))
+list_element_ix(na, values = c(NA, 3))
+
+# mixed list, some tags:
+(ml <- list(a1 = letters[1:3], n1 = 3:7, a2 = letters[7:3], 7:9))
+list_element_ix(ml, tag = "a2", values = 4:5)
+list_element_ix(ml, tag = "XX", values = 4:5)
+list_element_ix(ml, tag = c("a1", "XX", "a2"))
+list_element_ix(ml, tag = "XX", values = 2)
 
 
 ## sublist_in: Variant of sub_list_names() taking 2 arguments (in_list and out_list): ------ 
