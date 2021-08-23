@@ -319,6 +319,7 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
   # Determine relevant dimension/position of list element (that corresponds to current name/tag AND/OR value):
   
   # Inputs:
+  if (!is.list(list)){ message("list_element_ix: list is not a list."); return(NA) }
   if (is.null(tag) & is.null(values)){
     message("list_element_ix: Neither tag nor value specified.")
     return(NA)
@@ -331,7 +332,7 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
   
   org_names <- names(list)
   
-  # 1. tag:
+  # 1. Find tag:
   # if (!all(is.na(tag))){
   if (!is.null(tag)){
     
@@ -350,38 +351,54 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
         
       }
       
+    } else {
+      
+      message("list_element_ix: tag must contain non-empty characters.")
+      
     } # if (is.character(tag)).
     
   } # if (!is.null(tag)).
   
   
-  # 2. values:
+  # 2. Find values:
   # if (!all(is.na(values))){
   if (!is.null(values)){
     
-    n_elements <- length(list)
-    n_values   <- length(values)
-    n_matches  <- rep(NA, n_elements)  # counter for nr. of matches per element
-    
-    for (i in 1:n_elements){  # for each list element:
-      n_matches[i] <- sum(values %in% list[[i]])  # sum of matches
-    }
-    
-    candidate_ix <- which(n_matches == n_values)  # positions with correspondence 
-    # print(candidate_ix)  # 4debugging 
-    
-    if (length(candidate_ix) == 0){
+    if (!is.vector(values, mode = "any") | is.list(values)){
       
-      message(paste0("list_element_ix: values match no list element.")) # 4debugging 
-      
-    } else if (length(candidate_ix) == 1){
-      
-      # print(paste0("list_element_ix: values match exactly 1 list element = ", candidate_ix, ".")) # 4debugging 
-      values_ix <- candidate_ix
+      message("list_element_ix: values must be a vector and no list.")
       
     } else {
       
-      message(paste0("list_element_ix: values match multiple list elements: ", paste(candidate_ix, collapse = ", "), ".")) # 4debugging 
+      # Count matches of values in each element of list: 
+      n_elements <- length(list)
+      n_values   <- length(values)
+      n_matches  <- rep(NA, n_elements)  # count matches per element
+      
+      for (i in 1:n_elements){  # for each list element:
+        
+        n_matches[i] <- sum(values %in% list[[i]])  # total number of matches
+        
+      }
+      
+      # Have ALL values been matched in the same element?
+      allmatch_ix <- which(n_matches == n_values)  # positions with correspondence 
+      # print(allmatch_ix)  # 4debugging 
+      
+      if (length(allmatch_ix) == 0){
+        
+        message(paste0("list_element_ix: values match no list element.")) # 4debugging 
+        
+      } else if (length(allmatch_ix) == 1){
+        
+        # print(paste0("list_element_ix: values match exactly 1 list element = ", allmatch_ix, ".")) # 4debugging 
+        values_ix <- allmatch_ix
+        
+      } else { # (length(allmatch_ix) > 1): 
+        
+        message(paste0("list_element_ix: values match multiple list elements: ", paste(allmatch_ix, collapse = ", "), ".")) # 4debugging 
+        
+      }
       
     }
     
@@ -475,9 +492,6 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 # (t_list <- dimnames(Titanic))  # A test list
 # names(t_list)                  # names/tags of t_list
 # 
-# # Trivial case:
-# list_element_ix(t_list)
-# 
 # # (a) only tag(s):
 # list_element_ix(t_list, tag = "Class")
 # list_element_ix(t_list, tag = "Age")
@@ -507,6 +521,11 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 # list_element_ix(t_list, tag = c("Age", "Age")) 
 # list_element_ix(t_list, values = c("2nd", "1st", "2nd"))  # Note: Elements not count twice. 
 #
+# # Trivial cases:
+# list_element_ix(t_list)
+# list_element_ix(t_list, tag = 3)
+# list_element_ix(t_list, values = list(a = 1:3))
+# 
 # 
 # ## (B) Numeric list levels:
 # (nl <- list(A = 1:3, B = 3:5, C = 2:4))
