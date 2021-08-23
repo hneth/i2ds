@@ -1,5 +1,5 @@
 ## trans_lists.R | i2ds
-## hn | uni.kn | 2021 08 21
+## hn | uni.kn | 2021 08 23
 
 # Functions for transforming/manipulating lists: ------ 
 #
@@ -308,8 +308,8 @@ sub_list_names <- function(name_list, dim_list){
 ## list_element_ix: Find list position for tag AND/OR values (levels): ------ 
 
 # Goal: A utility function that finds the relevant list position matching 
-# - a tag label (a list name/tag) AND/OR 
-# - level values (i.e., one or more sub-list items).
+# - a tag label (a list name/tag, as character) AND/OR 
+# - level values (i.e., one or more sub-list items, as vector).
 # 
 # Note: 
 # - Multiple matches are possible when x = tag contains multiple elements! 
@@ -317,6 +317,12 @@ sub_list_names <- function(name_list, dim_list){
 list_element_ix <- function(list, tag = NULL, values = NULL){
   
   # Determine relevant dimension/position of list element (that corresponds to current name/tag AND/OR value):
+  
+  # Inputs:
+  if (is.null(tag) & is.null(values)){
+    message("list_element_ix: Neither tag nor value specified.")
+    return(NA)
+  }
   
   # Initialize 3 indices:
   tag_ix    <- NA  # sub-ix corresponding to tag
@@ -379,8 +385,8 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
       
     }
     
-    # +++ here now +++ 
-    
+    ## older code:
+    # 
     #   # if (!is.numeric(values)){ # (B) Match character values:
     #   
     #   first_matches <- match_list(x = values, list = list, nomatch = 0L)  # using utility function (above)
@@ -465,22 +471,26 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 } # list_element_ix().
 
 # # Check:
+# ## (A) Character/names/tags and levels:
 # (t_list <- dimnames(Titanic))  # A test list
 # names(t_list)                  # names/tags of t_list
+# 
+# # Trivial case:
+# list_element_ix(t_list)
 # 
 # # (a) only tag(s):
 # list_element_ix(t_list, tag = "Class")
 # list_element_ix(t_list, tag = "Age")
 # list_element_ix(t_list, tag = "XXX")
-# # Note: 
+# # Note:
 # list_element_ix(t_list, tag = c("Age", "Class"))         # Note: Multiple matches possible!
 # list_element_ix(t_list, tag = c("Age", "XXX", "Class"))  # Note: Multiple matches possible!
 # 
 # # (b) only values:
 # list_element_ix(t_list, values = "Adult")
 # list_element_ix(t_list, values = "3rd")
-# list_element_ix(t_list, values = "99th")
-# list_element_ix(t_list, values = c("3rd", "Adult"))
+# list_element_ix(t_list, values = "99th")             # non-existent level
+# list_element_ix(t_list, values = c("3rd", "Adult"))  # non-existent combination
 # 
 # # (c) tag and values:
 # list_element_ix(t_list, tag = "Class", values = "3rd")    # correspondence
@@ -489,11 +499,16 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 # list_element_ix(t_list, tag = "XXX", values = "3rd")      # values win conflict
 # # Note:
 # list_element_ix(t_list, tag = c("Age", "Class"), values = c("3rd", "Adult"))  # tags win conflict!
+#
+# # (d) Numeric values only:
+# list_element_ix(t_list, values = 1:4)  # not matched in current list
+#
+# # Note: Repeated entries:
+# list_element_ix(t_list, tag = c("Age", "Age")) 
+# list_element_ix(t_list, values = c("2nd", "1st", "2nd"))  # Note: Elements not count twice. 
+#
 # 
-# # (d) numeric values only:
-# list_element_ix(t_list, values = 1:4)
-
-# ## Numeric list:
+# ## (B) Numeric list levels:
 # (nl <- list(A = 1:3, B = 3:5, C = 2:4))
 # list_element_ix(nl, tag = "B")
 # list_element_ix(nl, tag = "B", values = c(5, 3))
@@ -522,17 +537,18 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 # list_element_ix(na, values = c(NA, 3))
 # list_element_ix(na, values = c(NA, 1))
 # list_element_ix(na, values = NA)
-# list_element_ix(na, values = c(NA, NA))  # Note: NAs do not count twice. 
-# 
-# # mixed list, some tags:
-# (ml <- list(a1 = letters[1:3], n1 = 3:7, a2 = letters[7:3], 7:9))
+# list_element_ix(na, values = c(NA, NA))  # Note: Elements not count twice. 
+#
+#
+# ## (C) Mixed list levels, some tags:
+# (ml <- list(a1 = letters[1:3], n1 = 3:7, a2 = letters[7:3], 7:9, tf = c(TRUE, FALSE, TRUE)))
 # list_element_ix(ml, tag = "a2", values = 4:5)
 # list_element_ix(ml, tag = "XX", values = 4:5)
 # list_element_ix(ml, tag = c("a1", "XX", "a2"))
 # list_element_ix(ml, tag = "XX", values = 7:6)
 # list_element_ix(ml, tag = "XX", values = 5)
 # list_element_ix(ml, tag = "XX", values = 7)
-
+# list_element_ix(ml, values = c(TRUE, FALSE, FALSE))
 
 
 ## sublist_in: Variant of sub_list_names() taking 2 arguments (in_list and out_list): ------ 
