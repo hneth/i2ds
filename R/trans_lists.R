@@ -387,16 +387,17 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
       
       if (length(allmatch_ix) == 0){
         
-        message(paste0("list_element_ix: values match no list element.")) # 4debugging 
+        message(paste0("list_element_ix: No list element contains all given values.")) # 4debugging 
         
       } else if (length(allmatch_ix) == 1){
         
-        # print(paste0("list_element_ix: values match exactly 1 list element = ", allmatch_ix, ".")) # 4debugging 
+        # print(paste0("list_element_ix: Exactly 1 list element contains all values = ", allmatch_ix, ".")) # 4debugging 
         values_ix <- allmatch_ix
         
       } else { # (length(allmatch_ix) > 1): 
         
-        message(paste0("list_element_ix: values match multiple list elements: ", paste(allmatch_ix, collapse = ", "), ".")) # 4debugging 
+        message(paste0("list_element_ix: Multiple list elements contain all values: ", 
+                       paste(allmatch_ix, collapse = ", "), ".")) # 4debugging 
         
       }
       
@@ -558,7 +559,6 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 # list_element_ix(na, values = NA)
 # list_element_ix(na, values = c(NA, NA))  # Note: Elements not count twice. 
 #
-#
 # ## (C) Mixed list levels, some tags:
 # (ml <- list(a1 = letters[1:3], n1 = 3:7, a2 = letters[7:3], 7:9, tf = c(TRUE, FALSE, TRUE)))
 # list_element_ix(ml, tag = "a2", values = 4:5)
@@ -630,7 +630,7 @@ sublist_in <- function(org_list, in_list = org_list){
     
     if ( all(is.na(org_list_ix)) ){ # org_list_ix could not be assigned:
       
-      message(paste0("sublist_in: Element ", i, " of in_list not located in org_list. Using element ", i, " of org_list:"))
+      message(paste0("sublist_in: Element ", i, " of in_list not located in org_list. Using element ", i, " of org_list."))
       org_list_ix <- i  # Heuristic: Assume same position i in org_list
       
     }
@@ -639,6 +639,8 @@ sublist_in <- function(org_list, in_list = org_list){
     org_vec <- org_list[[org_list_ix]]  # vector of original levels/element org_list_ix of org_list
     
     if ( (is.numeric(cur_in_vec)) & (!is.numeric(org_vec)) ) { # provided a numeric index to non-numeric vector of org_vec:
+      
+      message(paste0("sublist_in: Using element ", i, " of in_list as numeric subset of element ", org_list_ix, " of org_list."))
       
       new_levels <- org_vec[cur_in_vec]  # desired subset (by numeric indexing)
       # print(new_levels)  # 4debugging
@@ -676,15 +678,18 @@ sublist_in <- function(org_list, in_list = org_list){
 } # sublist_in(). 
 
 # # Check:
+# # (A) Character elements:
 # (t_list <- dimnames(Titanic))  # A test list (with dimension and level names)
 # names(t_list)  # names of t_list
 # 
 # # Trivial case:
-# sublist_in(t_list)  # returns original t_list
+# sublist_in(t_list)  # returns original list
 # 
 # ## (A) Working for:
 # # # in_list provides dimnames (dropping non-existent levels):
 # sublist_in(t_list, in_list = list(Age = "Adult", Class = c("3rd", "1st", "stuff")))
+# sublist_in(t_list, in_list = list(Age = "Adult", XXX = c("3rd", "1st")))
+# sublist_in(t_list, in_list = list(Age = 2, Class = c(3, 99, 1))) 
 # 
 # # in_list provides a mix of names/tags and no names/tags (dropping non-existent levels):
 # sublist_in(t_list, in_list = list("Adult", Class = c("3rd", "1st", "stuff")))
@@ -712,20 +717,28 @@ sublist_in <- function(org_list, in_list = org_list){
 # # NA if no names/tags provided and a level cannot be identified:
 # sublist_in(t_list, in_list = list("Adult", c("3rd", "1st", "stuff")))  # Class levels not recognized
 # 
-# # NA for providing a non-existing tags/names (also: no approximate/partial matching):
-# sublist_in(t_list, in_list = list(Age = "Adult", Clas = c("3rd", "1st")))
-# 
 # # NA for providing no dimname and a non-existent level combination:
 # sublist_in(t_list, in_list = list("Adult", c("3rd", "1st", "stuff")))
 # 
 # # NA for providing existing dim-name/tag as a level:
 # sublist_in(t_list, in_list = list("Adult", "Class"))
 # 
-# 
 # ## Handling NA inputs:
 # sublist_in(t_list, in_list = NA)
 # sublist_in(t_list, in_list = c(NA, NA))
 # sublist_in(t_list, in_list = list(NA, NA))
+# 
+# ## (B) Mixed list levels, some tags:
+# (ml <- list(a1 = LETTERS[1:9], n1 = 3:7, a2 = letters[7:3], 7:9, tf = c(TRUE, FALSE, TRUE)))
+# 
+# sublist_in(ml, in_list = list(n1 = c(6, 4), a2 = letters[5:6], tf = FALSE))
+# sublist_in(ml, in_list = list(n1 = c(6, 4)))  # numeric values NOT used for numeric subsetting!
+# sublist_in(ml, in_list = list(a1 = 2, tf = 2)) # numeric values used for numeric subsetting!
+# 
+# # Note: Providing numeric index to non-numeric list elements can yield 
+# #       a conflict (if numeric elements found in another element) + heuristic => wrong selection:
+# sublist_in(ml, in_list = list(a2 = 5:6))           # yields ERRONEOUS result, but 
+# sublist_in(ml, in_list = list(a2 = letters[5:6]))  # yields correct result.
 
 
 # ToDo: 
