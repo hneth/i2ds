@@ -647,7 +647,7 @@ sublist_in <- function(org_list, in_list = org_list, out_list = NULL){
       if ( all(is.na(org_list_ix)) ){ # org_list_ix could not be assigned:
         
         message(paste0("sublist_in: Element ", i, " of in_list not located in org_list. Using element ", i, " of org_list."))
-        org_list_ix <- i  # Heuristic: Assume same position i in org_list
+        org_list_ix <- i  # Heuristic: Assume SAME position i in org_list
         
       }
       
