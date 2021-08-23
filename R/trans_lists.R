@@ -621,36 +621,36 @@ sublist_in <- function(org_list, in_list = org_list){
     }
     # print(cur_tag)  # 4debugging
     
-    # (b) cur_lev_vec: values of current level (as character/numeric vector) 
-    cur_lev_vec <- in_list[[i]]  # (b) desired levels (as vector of names or numeric)
+    # (b) cur_in_vec: levels/values of current element of in_list (as a vector) 
+    cur_in_vec <- in_list[[i]]  # (b) desired levels (as vector)
     
-    # Determine relevant dimension of org_list (corresponding to current element of in_list):
+    # Determine relevant ix/position of org_list (corresponding to current elements of in_list):
     org_list_ix <- NA  # initialize
-    org_list_ix <- list_element_ix(org_list, tag = cur_tag, values = cur_lev_vec)  # assign using utility function (above)
+    org_list_ix <- list_element_ix(org_list, tag = cur_tag, values = cur_in_vec)  # use utility function (above)
     
     if ( all(is.na(org_list_ix)) ){ # org_list_ix could not be assigned:
       
-      message(paste0("sublist_in: Element ", i, " of in_list is unnamed/untagged and numeric. Using element ", i, " of org_list:"))
+      message(paste0("sublist_in: Element ", i, " of in_list not located in org_list. Using element ", i, " of org_list:"))
       org_list_ix <- i  # Heuristic: Assume same position i in org_list
       
     }
     
     # Determine original levels (at org_list_ix) and new levels (as subset/intersection):
-    org_levels <- org_list[[org_list_ix]]  # original levels of element org_list_ix
+    org_vec <- org_list[[org_list_ix]]  # vector of original levels/element org_list_ix of org_list
     
-    if (is.numeric(cur_lev_vec)){  # provided a numeric index:
+    if ( (is.numeric(cur_in_vec)) & (!is.numeric(org_vec)) ) { # provided a numeric index to non-numeric vector of org_vec:
       
-      new_levels <- org_levels[cur_lev_vec]  # desired subset (by numeric indexing)
+      new_levels <- org_vec[cur_in_vec]  # desired subset (by numeric indexing)
       # print(new_levels)  # 4debugging
       # NOTE: Non-existing index values yield and keep NA values. 
       new_levels <- new_levels[!is.na(new_levels)]  # remove NA values
       # NOTE: Non-existing levels are dropped!
       
-    } else { # cur_lev_vec is NOT numeric: use provided names: 
+    } else { # cur_in_vec is NOT numeric or BOTH are numeric: use provided names: 
       
-      # new_levels <- cur_lev_vec  # 1: Copy desired subset of levels
-      # new_levels <- intersect(org_levels, cur_lev_vec)  # 2a: Prioritize org_levels and drop any non-existing levels!
-      new_levels <- intersect(cur_lev_vec, org_levels)  # 2b: Prioritize org_levels and drop any non-existing levels!      
+      # new_levels <- cur_in_vec  # 1: Copy desired subset of levels
+      # new_levels <- intersect(org_vec, cur_in_vec)  # 2a: Prioritize org_vec and drop any non-existing levels!
+      new_levels <- intersect(cur_in_vec, org_vec)  # 2b: Prioritize org_vec and drop any non-existing levels!      
       # NOTE: Non-existing levels are dropped!
       
     }
