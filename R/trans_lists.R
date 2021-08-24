@@ -11,6 +11,20 @@
 # Goal: Get all elements of a list that contain some element x.
 #       i.e., functions analog to match/which, but for lists.
 
+## is_empty_list: Check if some x is an empty list (i.e., x is both a list and empty): ------
+
+is_empty_list <- function(x){
+  
+  is.list(x) & (length(x) == 0)
+  
+} # is_empty_list().
+
+# # Check:
+# is_empty_list(list())
+# is_empty_list("")
+# is_empty_list(NA)
+# is_empty_list(NULL)
+
 
 ## is_list_element: Which list elements contain some x (as a logical vector): ------ 
 
@@ -586,27 +600,33 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 
 sublist <- function(org_list, in_list = org_list, out_list = NULL){
   
-  # (0) Checks and early returns:
+  # (0) Input checks and early returns:
   if (!is.list(org_list)){ message("sublist: org_list is not a list."); return(NA) }
   
   if (!is.list(in_list)) { message("sublist: in_list is not a list.");  return(NA) }
   
+  if (is_empty_list(in_list)){ return(vector("list", 0)) }  # return an empty list
+  
   if (is.null(out_list)) {
+    
     if (identical(in_list, org_list)) { return(org_list) }
+    
   } else { # out_list has been specified:
+    
     if (!is.list(out_list)) { message("sublist: out_list is not a list.");  return(NA) }
+    
   }
   
   
   # (1) Use in_list:
   if ( (is.null(in_list)) | (identical(in_list, org_list)) ){
     
-    new_list <- org_list  # Case_A: Transfer org_list to new_list (to use out_list below)
+    sub_list <- org_list  # Case_A: Transfer org_list to sub_list (to use out_list below)
     
   } else { # interpret in_list: 
     
     # Initialize: 
-    new_list <- vector("list", 0)  #  Case_B: Pre-allocate an empty list of length 0 to new_list. 
+    sub_list <- vector("list", 0)  #  Case_B: Pre-allocate an empty list of length 0 to sub_list. 
     
     CT_list <- org_list  # current target list (transfer current main list)
     CT_names <- names(CT_list)  # names of current target list (as a vector)
@@ -663,9 +683,9 @@ sublist <- function(org_list, in_list = org_list, out_list = NULL){
         
       }
       
-      # Populate new_list by new_vec:
-      new_list[[i]] <- new_vec  # ADD list element  
-      names(new_list)[i] <- CT_names[CT_ix]  # Assign corresponding name/tag of CT_list to list element
+      # Populate i-th element of sub_list by new_vec:
+      sub_list[[i]] <- new_vec  # ADD list element  
+      names(sub_list)[i] <- CT_names[CT_ix]  # Assign corresponding name/tag of CT_list to list element
       
     } # loop in_list end. 
     
@@ -673,28 +693,28 @@ sublist <- function(org_list, in_list = org_list, out_list = NULL){
   
   
   # Intermediate feedback:
-  # print(paste0("sublist: new_list (after processing in_list): "))  
-  # print(new_list) # 4debugging 
+  # print(paste0("sublist: sub_list (after processing in_list): "))  
+  # print(sub_list) # 4debugging 
   
   
   # (2) Use out_list:
-  if (is.null(out_list)) {
+  if ( is.null(out_list) | is_empty_list(out_list) ) {
     
-    return(new_list)
+    return(sub_list)
     
-  } else if (identical(out_list, new_list)) {
+  } else if (identical(out_list, sub_list)) {
     
-    # print(paste0("sublist: Nothing remains, as out_list corresponds to new_list."))  # 4debugging 
+    # print(paste0("sublist: Nothing remains, as out_list corresponds to sub_list."))  # 4debugging 
     
     return(vector("list", 0))  # return an empty list
     
   } else { # interpret out_list: 
     
-    # print(paste0("sublist: Interpret a given out_list by removing from new_list:"))  # 4debugging 
+    # print(paste0("sublist: Interpret a given out_list by removing from sub_list:"))  # 4debugging 
     # +++ here now +++ 
     
     # Initialize: 
-    CT_list <- new_list  # current target list (transfer current main list)
+    CT_list <- sub_list  # current target list (transfer current main list)
     CT_names <- names(CT_list)  # names of current target list (as a vector)
     # if (is.null(CT_names)){ print("CT_list contains NO names/tags.") }  # 4debugging 
     
@@ -749,44 +769,79 @@ sublist <- function(org_list, in_list = org_list, out_list = NULL){
         
       }
       
-      # CHANGE new_list by new_vec:
+      # print(new_vec)  # 4debugging
+      
+      # CHANGE CT_ix-th element of CT_list to new_vec:
       if ( !all(is.na(new_vec)) ) { # there is something to change:
         
-        new_list[[CT_ix]] <- new_vec  
-        # print(new_list)[[CT_ix]]  # 4debugging  
+        CT_list[[CT_ix]] <- new_vec
+        # print(sub_list)[[CT_ix]]  # 4debugging  
         
-      } else { # remove list element:
+      } else { # remove i-th list element:
         
-        new_list[[CT_ix]] <- NULL 
+        CT_list[[CT_ix]] <- NULL 
+        # print(paste0("Removed CT_ix = ", CT_ix, ". element of CT_list"))  # 4debugging
+        # Note: This implies that CT_list shrink!
         
       }
       
     } # loop out_list end. 
     
+    # Transfer CT_list back to sub_list: 
+    sub_list <- CT_list
+    
   } # if (is.null(out_list)) etc.  
   
   # Output:
-  return(new_list)
+  return(sub_list)
   
 } # sublist(). 
 
 # ## Check:
-# (l <- list(n = 1:4, l = letters[1:4]))
+# (ls <- list(n = 1:4, l = letters[1:4]))
 # 
 # # Trivial cases:
-# sublist(l, in_list = l)
-# sublist(l, out_list = l)
+# sublist(ls, in_list = ls)
+# sublist(ls, out_list = ls)
 # 
 # # Examples:
-# sublist(l,  in_list = list(l = "c", n = 3))
-# sublist(l, out_list = list(l = "c", n = 3))
+# # (a) in_list only:
+# sublist(ls,  in_list = list(l = letters[c(2, 4)], n = c(2, 4)))
+# sublist(ls,  in_list = list(n = 4))
 # 
-# sublist(l, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(l = "c"))
-# sublist(l, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(n = 4, l = "c")) 
+# # NA/empty cases:
+# sublist(ls,  in_list = NA)      # returns NA
+# sublist(ls,  in_list = list())  # returns an empty list
 # 
-# sublist(l, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(n = 4:1))
+# # Note: 
+# sublist(ls,  in_list = list(l = 4, n = 4))      # matching list elements and levels
+# sublist(ls,  in_list = list(l = 99, n = 99))    # non-existent levels: nothing in
+# sublist(ls,  in_list = list(ll = 99, nn = 99))  # heuristics match list elements
+# 
+# # (b) out_list only:
+# sublist(ls, out_list = list(l = letters[c(2, 4)], n = c(2, 4)))
+# sublist(ls, out_list = list(n = 4))
+# 
+# # NA/empty cases:
+# sublist(ls, out_list = NA)      # returns NA
+# sublist(ls, out_list = list())  # returns original list
+# 
+# # Note: 
+# sublist(ls, out_list = list(l = 4, n = 4))      # matching list elements and levels
+# sublist(ls, out_list = list(l = 99, n = 99))    # non-existent levels: nothing out
+# sublist(ls, out_list = list(ll = 99, nn = 99))  # heuristics match list elements
+# 
+# # (c) in_list AND out_list:
+# sublist(ls, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(l = "c"))
+# sublist(ls, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(n = 4, l = "c"))
+# 
+# sublist(ls, in_list = list(n = 4:3), out_list = list(n = 3:4))
+# sublist(ls, in_list = list(l = c("c", "a")), out_list = list(l = c("a", "c")))
+# 
+# sublist(ls, in_list = list(n = 3:4, l = c("a", "c")), 
+#         out_list = list(n = 4:3, l = c("c", "a")))
 
-
+# +++ here now +++
 
 # ## (A) Character elements:
 # (t_list <- dimnames(Titanic))  # A test list (with dimension and level names)
