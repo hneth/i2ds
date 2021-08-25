@@ -687,7 +687,7 @@ subtable_names <- function(tbl, dim_list){
 
 
 
-## subtable: Extract a subset or sub-table of a table: ----- 
+## subtable: Extract a subtable (or subset) of a table: ----- 
 
 # Source: Based on the subtable() function by 
 #         Norman Matloff (2011), The Art of R Programming (pp. 131--134)
