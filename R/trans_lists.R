@@ -621,7 +621,7 @@ list_element_ix <- function(list, tag = NULL, values = NULL, quiet = FALSE){
 #' 
 #' # (b) out_list only:
 #' sublist(ls, out_list = list(l = letters[c(2, 4)], n = c(2, 4)))
-#' sublist(ls, out_list = list(n = 4))
+#' sublist(ls, out_list = list(n = 3, l = "c"))
 #' 
 #' # NA/empty cases:
 #' sublist(ls, out_list = NA)      # returns NA
@@ -656,7 +656,7 @@ list_element_ix <- function(list, tag = NULL, values = NULL, quiet = FALSE){
 
 sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
   
-  # (0) Inputs: ---- 
+  # 0. Inputs: ---- 
   if (!is.list(x)){ message("sublist: x is not a list."); return(NA) }
   
   if (!is.list(in_list)) { message("sublist: in_list is not a list.");  return(NA) }
@@ -674,7 +674,7 @@ sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
   }
   
   
-  # (1) Use in_list: ---- 
+  # 1. Use in_list: ---- 
   if ( (is.null(in_list)) | (identical(in_list, x)) ){
     
     sub_list <- x  # Case_A: Transfer x to sub_list (to use out_list below)
@@ -751,7 +751,7 @@ sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
   # print(sub_list) # 4debugging 
   
   
-  # (2) Use out_list: ---- 
+  # 2. Use out_list: ---- 
   if ( is.null(out_list) | is_empty_list(out_list) ) {
     
     return(sub_list)
@@ -840,7 +840,12 @@ sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
     
   } # if (is.null(out_list)) etc.  
   
-  # Output:
+  
+  # 3. Output: ---- 
+  
+  # Remove empty list elements: 
+  sub_list <- drop_empty_list_elements(sub_list)  # use utility function (above)
+  
   return(sub_list)
   
 } # sublist(). 
@@ -892,7 +897,6 @@ sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
 #         out_list = list(n = 4:3, l = c("c", "a")))
 # 
 # # Note: Tags can be used repeatedly and empty list elements are dropped:
-# 
 # sublist(ls, out_list = list(l = c("c", "b"), n = 2:3))
 # sublist(ls, out_list = list(l = c("c", "b"), n = 2:3, l = c("a", "d")))
 # sublist(ls, out_list = list(l = c("c", "b"), n = 2:3, l = c("a", "d"), n = 1:4))
