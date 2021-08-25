@@ -11,6 +11,7 @@
 # Goal: Get all elements of a list that contain some element x.
 #       i.e., functions analog to match/which, but for lists.
 
+
 ## is_empty_list: Check if some x is an empty list (i.e., x is both a list and empty): ------
 
 is_empty_list <- function(x){
@@ -24,6 +25,37 @@ is_empty_list <- function(x){
 # is_empty_list("")
 # is_empty_list(NA)
 # is_empty_list(NULL)
+
+
+
+## drop_empty_list_elements: Removes empty list elements (i.e., elements with NULL values/empty vector/empty list): ------ 
+
+drop_empty_list_elements <- function(ls){
+  
+  if (!is.list(ls)){
+    
+    message("drop_empty_list_elements: ls is no list.")
+    return(NA)
+    
+  } else {
+    
+    e_len <- sapply(ls, FUN = length)
+    
+    ls[e_len == 0] <- NULL
+    
+    return(ls)
+    
+  }
+  
+} # drop_empty_list_elements(). 
+
+# # Check:
+# ls <- list(a = 1, b = "", x = NULL, c = NA, y = list(), z = vector())
+# 
+# drop_empty_list_elements(ls)
+# drop_empty_list_elements(vector())
+# drop_empty_list_elements(list())
+
 
 
 ## is_list_element: Which list elements contain some x (as a logical vector): ------ 
@@ -528,7 +560,7 @@ list_element_ix <- function(list, tag = NULL, values = NULL, quiet = FALSE){
 
 
 
-## sublist: A better variant of sublist_names() taking 2 arguments (in_list and out_list): ------ 
+## sublist: Extract a sublist (or subset) of a list, using 2 arguments (in_list and out_list): ------ 
 
 # A more specific and powerful version of sublist_names() (above): 
 
@@ -962,6 +994,5 @@ sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
 # - sublist() for lists: with 2 arguments to include and exclude elements of lists in x
 #                        to use in a subtable() function.
 
-# - write a function that removes empty list elements (i.e., elements with no values/vector)
 
 ## eof. ----------
