@@ -694,9 +694,9 @@ subtable_names <- function(tbl, dim_list){
 
 # using sub_list() function to include/exclude dimensions/levels.
 
-#' Extract a subset (or sub-table) of a table. 
+#' Extract a subtable (or subset) of a table. 
 #' 
-#' \code{subtable} yields a subset of a table \code{tbl}
+#' \code{subtable} yields a subtable of a table \code{tbl}
 #' by filtering or extracting a subset of table's 
 #' dimensions and levels. 
 #' 
@@ -745,6 +745,7 @@ subtable_names <- function(tbl, dim_list){
 #' @family array functions
 #' 
 #' @seealso
+#' \code{\link{sublist}} for extracting subsets of a list;  
 #' \code{\link{table}} and \code{\link{array}} for the underlying data structures. 
 #' 
 #' @export
