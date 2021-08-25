@@ -320,7 +320,7 @@ sublist_names <- function(name_list, dim_list){
 # # - Additional/extra dim_list arguments are truncated. 
 
 
-## list_element_ix: Find list position for tag AND/OR values (levels): ------ 
+## list_element_ix: Find a list position for tag AND/OR values (levels): ------ 
 
 # Goal: A utility function that finds the relevant list position matching 
 # - a tag label (a list name/tag, as character) AND/OR 
@@ -329,12 +329,13 @@ sublist_names <- function(name_list, dim_list){
 # Note: 
 # - Multiple matches are possible when x = tag contains multiple elements! 
 
-list_element_ix <- function(list, tag = NULL, values = NULL){
+list_element_ix <- function(list, tag = NULL, values = NULL, quiet = FALSE){
   
   # Determine relevant dimension/position of list element (that corresponds to current name/tag AND/OR value):
   
-  # Inputs:
+  # Inputs: ---- 
   if (!is.list(list)){ message("list_element_ix: list is not a list."); return(NA) }
+  
   if (is.null(tag) & is.null(values)){
     message("list_element_ix: Neither tag nor value specified.")
     return(NA)
@@ -347,41 +348,37 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
   
   org_names <- names(list)
   
-  # 1. Find tag:
+  # 1. Find tag: ---- 
   # if (!all(is.na(tag))){
   if (!is.null(tag)){
     
     if (all(is.character(tag)) & all((nchar(tag) > 0)) ){ # (A) A tag was provided:
       
       # Get corresponding index in vector of original names (org_names):   
-      # tag_ix <- which(org_names == tag)
       tag_ix <- match(x = tag, table = org_names, nomatch = NA)
       # Note: Multiple matches are possible when x = tag contains multiple elements!
       
-      # print(tag_ix) # 4debugging
-      
       if (any(is.na(tag_ix))){
         
-        message("list_element_ix: Some tag not found in list.")
+        if (!quiet) { message("list_element_ix: Some tag not found in list.") }
         
       }
       
     } else {
       
-      message("list_element_ix: tag must contain non-empty characters.")
+      if (!quiet) { message("list_element_ix: tag must contain non-empty characters.") }
       
     } # if (is.character(tag)).
     
   } # if (!is.null(tag)).
   
   
-  # 2. Find values:
-  # if (!all(is.na(values))){
+  # 2. Find values: ---- 
   if (!is.null(values)){
     
     if (!is.vector(values, mode = "any") | is.list(values)){
       
-      message("list_element_ix: values must be a vector and no list.")
+      if (!quiet) { message("list_element_ix: values must be a vector and no list.") }
       
     } else {
       
@@ -402,7 +399,7 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
       
       if (length(allmatch_ix) == 0){
         
-        message(paste0("list_element_ix: No list element contains all given values.")) # 4debugging 
+        if (!quiet) { message(paste0("list_element_ix: No list element contains all given values.")) }
         
       } else if (length(allmatch_ix) == 1){
         
@@ -411,71 +408,16 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
         
       } else { # (length(allmatch_ix) > 1): 
         
-        message(paste0("list_element_ix: Multiple list elements contain all values: ", 
-                       paste(allmatch_ix, collapse = ", "), ".")) # 4debugging 
+        if (!quiet) { message(paste0("list_element_ix: Multiple list elements contain all values: ", 
+                                     paste(allmatch_ix, collapse = ", "), ".")) }  
         
       }
       
     }
     
-    ## older code:
-    # 
-    #   # if (!is.numeric(values)){ # (B) Match character values:
-    #   
-    #   first_matches <- match_list(x = values, list = list, nomatch = 0L)  # using utility function (above)
-    #   # ERROR: first_matches returns only 1st matches of values in list!
-    #   
-    #   all_matches <- which_list(x = values, list = list)
-    #   print(all_matches)  # 4debugging
-    #   
-    #   if (is.list(all_matches)){ # matches in multiple elements: 
-    #     
-    #     # if exactly 1 list contains the same number of elements as in values: that's it.
-    #     n_val <- length(values)
-    #     l_len <- sapply(all_matches, length)  # length of list elements
-    #     cand_ix <- which(l_len == n_val)  # ERROR: This is NOT the target list!
-    #     
-    #     if (length(unique(cand_ix)) == 1){  # exactly 1 element of all_matches contains all values:
-    #       
-    #       values_ix <- unique(cand_ix)
-    #       
-    #     } else {  # no unique sublist: 
-    #       
-    #       message(paste0("list_element_ix: values = ", paste(values, collapse = ", "), " correspond to no unique element of list."))
-    #       
-    #     }
-    #     
-    #   } else { # check vector of matches: 
-    #     
-    #     # Check if matches are unique: 
-    #     unique_matches  <- unique(all_matches)
-    #     print(unique_matches)  # 4debugging
-    #     
-    #     if ( !all(unique_matches == 0) & (length(unique_matches) == 1) ){  # names in values match a unique element in org_list:
-    #       
-    #       values_ix <- unique_matches
-    #       # print(paste0("list_element_ix: Values correspond to element ", values_ix, " of list: name/tag = ", org_names[values_ix]))  # 4debugging
-    #       
-    #     } else { # no unique matching element identified:
-    #       
-    #       message(paste0("list_element_ix: values = ", paste(values, collapse = ", "), " correspond to no unique element of list."))
-    #       # return(NA)
-    #       
-    #     }
-    #     
-    #   }
-    #   
-    #   # } else { # (C) Numeric levels provided: 
-    #   
-    #   #  print(paste0("list_element_ix: Not matching numeric values = ", paste(values, collapse = ", "), " to list levels (character)."))
-    #   # return(NA)
-    #   
-    #   # } # if (!is.numeric(values)).
-    
   } # if (!is.null(values)).
   
-  
-  # 3. Compare and use indices: 
+  # 3. Compare and use indices: ----  
   if (!all(is.na(tag_ix)) & is.na(values_ix)){ # only tag_ix:
     
     list_ix <- tag_ix      # use tag_ix
@@ -492,7 +434,7 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
       
     } else { # note conflict: 
       
-      message(paste0("list_element_ix: Conflict between tag_ix = ", tag_ix, " and values_ix = ", values_ix))
+      if (!quiet) { message(paste0("list_element_ix: Conflict between tag_ix = ", tag_ix, " and values_ix = ", values_ix)) }
       
     }
     
@@ -598,7 +540,7 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 # Note: sublist() originally assumed that list x and in_list denote element names/tags and level/dim names 
 #       (e.g., as returned by dimnames(tbl)), but now also allows for other data modes/types. 
 
-sublist <- function(x, in_list = x, out_list = NULL){
+sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
   
   # (0) Inputs: ---- 
   if (!is.list(x)){ message("sublist: x is not a list."); return(NA) }
@@ -650,12 +592,12 @@ sublist <- function(x, in_list = x, out_list = NULL){
       
       # Determine relevant ix/position of CT_list (corresponding to current elements of in_list):
       CT_ix <- NA  # initialize
-      CT_ix <- list_element_ix(CT_list, tag = cur_in_tag, values = cur_in_vec)  # use utility function (above)
+      CT_ix <- list_element_ix(CT_list, tag = cur_in_tag, values = cur_in_vec, quiet = quiet)  # use utility function (above)
       
       if ( all(is.na(CT_ix)) ){ # CT_ix could not be assigned:
         
         message(paste0("sublist: Element ", i, " of in_list not located in current list. Using element ", i, " of current list."))
-        CT_ix <- i  # Heuristic: Assume SAME position i in CT_list
+        CT_ix <- i  # Heuristic: Assume SAME position i in CT_list (never quiet)!
         
       }
       
@@ -664,8 +606,9 @@ sublist <- function(x, in_list = x, out_list = NULL){
       
       if ( (!is.numeric(CT_vec)) & (is.numeric(cur_in_vec)) ) { # provided a numeric index to non-numeric vector of CT_vec:
         
-        message(paste0("sublist: Using element ", i, " of in_list as numeric subset of element ", 
-                       CT_ix, " of CT_list."))
+        if (!quiet) { 
+          message(paste0("sublist: Using element ", i, " of in_list as numeric subset of element ", CT_ix, " of current list."))
+        }
         
         new_vec <- CT_vec[cur_in_vec]  # desired subset (by numeric indexing)
         # NOTE: Non-existing index values yield and keep NA values.
@@ -689,7 +632,7 @@ sublist <- function(x, in_list = x, out_list = NULL){
   } # if (is.null(in_list)) etc.
   
   
-  # Intermediate feedback:    # +++ here now +++ 
+  # Intermediate feedback:
   # print(paste0("sublist: sub_list (after processing in_list): "))  
   # print(sub_list) # 4debugging 
   
@@ -731,12 +674,12 @@ sublist <- function(x, in_list = x, out_list = NULL){
       
       # Determine relevant ix/position of CT_list (corresponding to current elements of out_list):
       CT_ix <- NA  # initialize
-      CT_ix <- list_element_ix(CT_list, tag = cur_out_tag, values = cur_out_vec)  # use utility function (above)
+      CT_ix <- list_element_ix(CT_list, tag = cur_out_tag, values = cur_out_vec, quiet = quiet)  # use utility function (above)
       
       if ( all(is.na(CT_ix)) ){ # CT_ix could not be assigned:
         
         message(paste0("sublist: Element ", i, " of out_list not located in current list. Using element ", i, " of current list."))
-        CT_ix <- i  # Heuristic: Assume SAME position i in CT_list
+        CT_ix <- i  # Heuristic: Assume SAME position i in CT_list (never quiet)!
         
       }
       
@@ -745,8 +688,9 @@ sublist <- function(x, in_list = x, out_list = NULL){
       
       if ( (!is.numeric(CT_vec)) & (is.numeric(cur_out_vec)) ) { # provided a numeric index to non-numeric vector of CT_vec:
         
-        message(paste0("sublist: Using element ", i, " of out_list as numeric subset of element ", 
-                       CT_ix, " of CT_list."))
+        if (!quiet) { 
+          message(paste0("sublist: Using element ", i, " of out_list as numeric subset of element ", CT_ix, " of current list."))
+        }
         
         new_vec <- CT_vec[-cur_out_vec]  # reduced subset (by numeric indexing)
         # NOTE: Non-existing index values yield and keep NA values.
@@ -826,10 +770,11 @@ sublist <- function(x, in_list = x, out_list = NULL){
 # sublist(ls, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(l = "c"))
 # sublist(ls, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(n = 4, l = "c"))
 # 
+# # removing everything:
 # sublist(ls, in_list = list(n = 4:3), out_list = list(n = 3:4))
 # sublist(ls, in_list = list(l = c("c", "a")), out_list = list(l = c("a", "c")))
 # 
-# sublist(ls, in_list = list(n = 3:4, l = c("a", "c")), 
+# sublist(ls, in_list = list(n = 3:4, l = c("a", "c")),
 #         out_list = list(n = 4:3, l = c("c", "a")))
 # 
 # # Note: Tags can be used repeatedly and empty list elements are dropped:
@@ -852,17 +797,20 @@ sublist <- function(x, in_list = x, out_list = NULL){
 # # # in_list provides dimnames (dropping non-existent levels):
 # sublist(t_nm, in_list = list(Age = "Adult", Class = c("3rd", "1st", "stuff")))
 # sublist(t_nm, in_list = list(Age = "Adult", XXX = c("3rd", "1st")))
-# sublist(t_nm, in_list = list(Age = 2, Class = c(3, 99, 1)))
+# sublist(t_nm, in_list = list(Age = 2, Class = c(3, 99, 1)), quiet = FALSE)   
+# sublist(t_nm, in_list = list(Age = 2, Class = c(3, 99, 1)), quiet = TRUE)  # suppress some messages
 # 
 # # in_list provides a mix of names/tags and no names/tags (dropping non-existent levels):
 # sublist(t_nm, in_list = list("Adult", Class = c("3rd", "1st", "stuff")))
 # sublist(t_nm, in_list = list("Adult", Class = c(3, 1, 99)))
+# sublist(t_nm, in_list = list("Adult", Class = c(3, 1, 99)), quiet = TRUE)  # suppress some messages
 # 
 # # in_list provides NO names: Note: If levels are identified, names of x are used:
 # sublist(t_nm, in_list = list("Adult", c("3rd", "1st")))
 # 
 # # in_list provides names/tags and numeric levels:
 # sublist(t_nm, in_list = list(Age = 2, Class = c(3, 1)))
+# sublist(t_nm, in_list = list(Age = 2, Class = c(3, 1)), quiet = TRUE)  # suppress some messages
 # 
 # # in_list provides a mix of numeric levels and named levels:
 # sublist(t_nm, in_list = list("Adult", Class = c(3, 1)))
@@ -874,6 +822,7 @@ sublist <- function(x, in_list = x, out_list = NULL){
 # sublist(t_nm, in_list = list(c(1, 3), 2))
 # sublist(t_nm, in_list = list(c(3, 1), NA, 2))  # Note missing level
 # sublist(t_nm, in_list = list(c(3, 1), 99, 2))  # Note missing level
+# sublist(t_nm, in_list = list(c(3, 1), 99, 2), quiet = TRUE)  # some messages NOT suppressed 
 # 
 # ## (b) Using in_list and out_list:
 # sublist(t_nm, out_list = list(Survived = "No", Age = "Child", Class = c("Crew", "3rd")))
@@ -891,12 +840,13 @@ sublist <- function(x, in_list = x, out_list = NULL){
 # 
 # # NA for providing existing dim-name/tag as a level:
 # sublist(t_nm, in_list = list("Adult", "Class"))
+# sublist(t_nm, in_list = list("Adult", "Class"), quiet = TRUE)  # some messages NOT suppressed 
 # 
 # ## (d) Handling NA inputs:
 # sublist(NA)
 # sublist(t_nm, in_list = NA)
 # sublist(t_nm, in_list = c(NA, NA))
-# sublist(t_nm, in_list = list(NA, NA))
+# sublist(t_nm, in_list = list(NA, NA), quiet = TRUE)  # some messages NOT suppressed 
 # 
 # 
 # ## (C) Mixed list levels, some tags:
