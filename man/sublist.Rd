@@ -56,7 +56,7 @@ sublist(ls,  in_list = list(ll = 99, nn = 99))  # heuristics match list elements
 
 # (b) out_list only:
 sublist(ls, out_list = list(l = letters[c(2, 4)], n = c(2, 4)))
-sublist(ls, out_list = list(n = 4))
+sublist(ls, out_list = list(n = 3, l = "c"))
 
 # NA/empty cases:
 sublist(ls, out_list = NA)      # returns NA
