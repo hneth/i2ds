@@ -3,6 +3,7 @@
 export(add_dimnames)
 export(expand_freq_table)
 export(flatten_array)
+export(sublist)
 export(subtable)
 import(utils)
 importFrom(tidyr,expand_grid)
