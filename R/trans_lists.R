@@ -239,6 +239,7 @@ match_list_tag <- function(tag, list, nomatch = 0L){
 # match_list_tag("XX", ml)
 
 
+
 ## sublist_names: Utility function to get the names of a name_list specified in dim_list: -----
 
 # A simpler variant of sub_table_names that does not require a table tbl, 
@@ -504,42 +505,42 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 
 # # Check:
 # ## (A) Character/names/tags and levels:
-# (t_list <- dimnames(Titanic))  # A test list
-# names(t_list)                  # names/tags of t_list
+# (t_nm <- dimnames(Titanic))  # A test list
+# names(t_nm)                  # names/tags of t_nm
 # 
 # # (a) only tag(s):
-# list_element_ix(t_list, tag = "Class")
-# list_element_ix(t_list, tag = "Age")
-# list_element_ix(t_list, tag = "XXX")
+# list_element_ix(t_nm, tag = "Class")
+# list_element_ix(t_nm, tag = "Age")
+# list_element_ix(t_nm, tag = "XXX")
 # # Note:
-# list_element_ix(t_list, tag = c("Age", "Class"))         # Note: Multiple matches possible!
-# list_element_ix(t_list, tag = c("Age", "XXX", "Class"))  # Note: Multiple matches possible!
+# list_element_ix(t_nm, tag = c("Age", "Class"))         # Note: Multiple matches possible!
+# list_element_ix(t_nm, tag = c("Age", "XXX", "Class"))  # Note: Multiple matches possible!
 # 
 # # (b) only values:
-# list_element_ix(t_list, values = "Adult")
-# list_element_ix(t_list, values = "3rd")
-# list_element_ix(t_list, values = "99th")             # non-existent level
-# list_element_ix(t_list, values = c("3rd", "Adult"))  # non-existent combination
+# list_element_ix(t_nm, values = "Adult")
+# list_element_ix(t_nm, values = "3rd")
+# list_element_ix(t_nm, values = "99th")             # non-existent level
+# list_element_ix(t_nm, values = c("3rd", "Adult"))  # non-existent combination
 # 
 # # (c) tag and values:
-# list_element_ix(t_list, tag = "Class", values = "3rd")    # correspondence
-# list_element_ix(t_list, tag = "Class", values = "Adult")  # lack of correspondence
-# list_element_ix(t_list, tag = "Age", values = "99th")     # tag wins conflict
-# list_element_ix(t_list, tag = "XXX", values = "3rd")      # values win conflict
+# list_element_ix(t_nm, tag = "Class", values = "3rd")    # correspondence
+# list_element_ix(t_nm, tag = "Class", values = "Adult")  # lack of correspondence
+# list_element_ix(t_nm, tag = "Age", values = "99th")     # tag wins conflict
+# list_element_ix(t_nm, tag = "XXX", values = "3rd")      # values win conflict
 # # Note:
-# list_element_ix(t_list, tag = c("Age", "Class"), values = c("3rd", "Adult"))  # tags win conflict!
+# list_element_ix(t_nm, tag = c("Age", "Class"), values = c("3rd", "Adult"))  # tags win conflict!
 #
 # # (d) Numeric values only:
-# list_element_ix(t_list, values = 1:4)  # not matched in current list
+# list_element_ix(t_nm, values = 1:4)  # not matched in current list
 #
 # # Note: Repeated entries:
-# list_element_ix(t_list, tag = c("Age", "Age")) 
-# list_element_ix(t_list, values = c("2nd", "1st", "2nd"))  # Note: Elements not count twice. 
+# list_element_ix(t_nm, tag = c("Age", "Age")) 
+# list_element_ix(t_nm, values = c("2nd", "1st", "2nd"))  # Note: Elements not count twice. 
 #
 # # Trivial cases:
-# list_element_ix(t_list)
-# list_element_ix(t_list, tag = 3)
-# list_element_ix(t_list, values = list(a = 1:3))
+# list_element_ix(t_nm)
+# list_element_ix(t_nm, tag = 3)
+# list_element_ix(t_nm, values = list(a = 1:3))
 # 
 # 
 # ## (B) Numeric list levels:
@@ -584,18 +585,18 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 # list_element_ix(ml, values = c(TRUE, FALSE, FALSE))
 
 
+
 ## sublist: A better variant of sublist_names() taking 2 arguments (in_list and out_list): ------ 
+
+# A more specific and powerful version of sublist_names() (above): 
 
 # Extract a subset of elements (dimensions OR levels) from a list x:
 # - include only elements (dimensions OR levels) specified in in_list
-# - exclude any elements (dimension OR levels) specified in out_list
-
-# A more specific and powerful version of sub_list() (above), 
-# - using 2 lists of targets (in_list vs. out_list) and 
+# - exclude any elements (dimension OR levels) specified in out_list 
 # - allowing for multiple mentions of dimensions in each (considering each element in target list in turn). 
 
-# Note: Function assumes that org_list and in_list denote element names/tags and level/dim names 
-#       (e.g., as returned by dimnames(tbl), but also allowing for other data modes/types). 
+# Note: sublist() originally assumed that list x and in_list denote element names/tags and level/dim names 
+#       (e.g., as returned by dimnames(tbl)), but now also allows for other data modes/types. 
 
 sublist <- function(x, in_list = x, out_list = NULL){
   
@@ -653,7 +654,7 @@ sublist <- function(x, in_list = x, out_list = NULL){
       
       if ( all(is.na(CT_ix)) ){ # CT_ix could not be assigned:
         
-        message(paste0("sublist: Element ", i, " of in_list not located in CT_list. Using element ", i, " of CT_list."))
+        message(paste0("sublist: Element ", i, " of in_list not located in current list. Using element ", i, " of current list."))
         CT_ix <- i  # Heuristic: Assume SAME position i in CT_list
         
       }
@@ -691,7 +692,7 @@ sublist <- function(x, in_list = x, out_list = NULL){
   # Intermediate feedback:    # +++ here now +++ 
   # print(paste0("sublist: sub_list (after processing in_list): "))  
   # print(sub_list) # 4debugging 
-
+  
   
   # (2) Use out_list: ---- 
   if ( is.null(out_list) | is_empty_list(out_list) ) {
@@ -734,7 +735,7 @@ sublist <- function(x, in_list = x, out_list = NULL){
       
       if ( all(is.na(CT_ix)) ){ # CT_ix could not be assigned:
         
-        message(paste0("sublist: Element ", i, " of out_list not located in CT_list. Using element ", i, " of CT_list."))
+        message(paste0("sublist: Element ", i, " of out_list not located in current list. Using element ", i, " of current list."))
         CT_ix <- i  # Heuristic: Assume SAME position i in CT_list
         
       }
@@ -772,7 +773,7 @@ sublist <- function(x, in_list = x, out_list = NULL){
         
         CT_list[[CT_ix]] <- NULL  # Note: This implies that CT_list can shrink!
         # print(paste0("Removed CT_ix = ", CT_ix, ". element of CT_list"))  # 4debugging
-
+        
       }
       
     } # loop out_list end. 
@@ -787,6 +788,7 @@ sublist <- function(x, in_list = x, out_list = NULL){
 } # sublist(). 
 
 # ## Check:
+# ## (A) Examples: 
 # (ls <- list(n = 1:4, l = letters[1:4]))
 # 
 # # Trivial cases:
@@ -829,71 +831,91 @@ sublist <- function(x, in_list = x, out_list = NULL){
 # 
 # sublist(ls, in_list = list(n = 3:4, l = c("a", "c")), 
 #         out_list = list(n = 4:3, l = c("c", "a")))
-
-# +++ here now +++
-
-# ## (A) Character elements:
-# (t_list <- dimnames(Titanic))  # A test list (with dimension and level names)
-# # names(t_list)  # names of t_list
+# 
+# # Note: Tags can be used repeatedly and empty list elements are dropped:
+# 
+# sublist(ls, out_list = list(l = c("c", "b"), n = 2:3))
+# sublist(ls, out_list = list(l = c("c", "b"), n = 2:3, l = c("a", "d")))
+# sublist(ls, out_list = list(l = c("c", "b"), n = 2:3, l = c("a", "d"), n = 1:4))
+# 
+# 
+# ## (B) Character elements (e.g., from dimnames(tbl)):
+# (t_nm <- dimnames(Titanic))  # A test list (with dimension and level names)
+# # names(t_nm)  # names of t_nm
 # #
 # # # Trivial case:
-# sublist(t_list)  # returns original list
-# sublist(t_list, out_list = t_list)
+# sublist(t_nm)  # returns original list
+# sublist(t_nm,  in_list = list())  # empty list
+# sublist(t_nm, out_list = t_nm)    # empty list
 # 
 # ## (a) Working for:
 # # # in_list provides dimnames (dropping non-existent levels):
-# sublist(t_list, in_list = list(Age = "Adult", Class = c("3rd", "1st", "stuff")))
-# sublist(t_list, in_list = list(Age = "Adult", XXX = c("3rd", "1st")))
-# sublist(t_list, in_list = list(Age = 2, Class = c(3, 99, 1)))
+# sublist(t_nm, in_list = list(Age = "Adult", Class = c("3rd", "1st", "stuff")))
+# sublist(t_nm, in_list = list(Age = "Adult", XXX = c("3rd", "1st")))
+# sublist(t_nm, in_list = list(Age = 2, Class = c(3, 99, 1)))
 # 
 # # in_list provides a mix of names/tags and no names/tags (dropping non-existent levels):
-# sublist(t_list, in_list = list("Adult", Class = c("3rd", "1st", "stuff")))
-# sublist(t_list, in_list = list("Adult", Class = c(3, 1, 99)))
+# sublist(t_nm, in_list = list("Adult", Class = c("3rd", "1st", "stuff")))
+# sublist(t_nm, in_list = list("Adult", Class = c(3, 1, 99)))
 # 
 # # in_list provides NO names: Note: If levels are identified, names of x are used:
-# sublist(t_list, in_list = list("Adult", c("3rd", "1st")))
+# sublist(t_nm, in_list = list("Adult", c("3rd", "1st")))
 # 
 # # in_list provides names/tags and numeric levels:
-# sublist(t_list, in_list = list(Age = 2, Class = c(3, 1)))
+# sublist(t_nm, in_list = list(Age = 2, Class = c(3, 1)))
 # 
 # # in_list provides a mix of numeric levels and named levels:
-# sublist(t_list, in_list = list("Adult", Class = c(3, 1)))
-# sublist(t_list, in_list = list(c(3, 1), "Adult"))
-# sublist(t_list, in_list = list(c(3, 1), "Female", 2, "Yes"))
+# sublist(t_nm, in_list = list("Adult", Class = c(3, 1)))
+# sublist(t_nm, in_list = list(c(3, 1), "Adult"))
+# sublist(t_nm, in_list = list(c(3, 1), "Female", 2, "Yes"))
 # 
 # # in_list provides no names/tags and only numeric levels:
-# sublist(t_list, in_list = list(c(1, 3), 2, 2, 2))
-# sublist(t_list, in_list = list(c(1, 3), 2))
-# sublist(t_list, in_list = list(c(3, 1), NA, 2))  # Note missing level
-# sublist(t_list, in_list = list(c(3, 1), 99, 2))  # Note missing level
+# sublist(t_nm, in_list = list(c(1, 3), 2, 2, 2))
+# sublist(t_nm, in_list = list(c(1, 3), 2))
+# sublist(t_nm, in_list = list(c(3, 1), NA, 2))  # Note missing level
+# sublist(t_nm, in_list = list(c(3, 1), 99, 2))  # Note missing level
 # 
-# ## (b) Returning partial results/NA for:
+# ## (b) Using in_list and out_list:
+# sublist(t_nm, out_list = list(Survived = "No", Age = "Child", Class = c("Crew", "3rd")))
+# sublist(t_nm, out_list = list(Survived = "No", Age = "Child", Class = 3:4))  # using numeric index on Class
 # 
+# sublist(t_nm, in_list = list("Adult", Class = c(3, 1)), out_list = list(Class = "1st"))
+# sublist(t_nm, in_list = list("Adult", Class = c(3, 1)), out_list = list(Class = 1)) # Note: 1-st element of in_list Class dropped!
+# 
+# ## (c) Returning partial results/NA for:
 # # NA if no names/tags provided and a level cannot be identified:
-# sublist(t_list, in_list = list("Adult", c("3rd", "1st", "stuff")))  # Class levels not recognized
+# sublist(t_nm, in_list = list("Adult", c("3rd", "1st", "stuff")))  # Class levels not recognized
 # 
 # # NA for providing no dimname and a non-existent level combination:
-# sublist(t_list, in_list = list("Adult", c("3rd", "1st", "stuff")))
+# sublist(t_nm, in_list = list("Adult", c("3rd", "1st", "stuff")))
 # 
 # # NA for providing existing dim-name/tag as a level:
-# sublist(t_list, in_list = list("Adult", "Class"))
+# sublist(t_nm, in_list = list("Adult", "Class"))
 # 
-# ## Handling NA inputs:
-# sublist(t_list, in_list = NA)
-# sublist(t_list, in_list = c(NA, NA))
-# sublist(t_list, in_list = list(NA, NA))
+# ## (d) Handling NA inputs:
+# sublist(NA)
+# sublist(t_nm, in_list = NA)
+# sublist(t_nm, in_list = c(NA, NA))
+# sublist(t_nm, in_list = list(NA, NA))
 # 
-# ## (B) Mixed list levels, some tags:
+# 
+# ## (C) Mixed list levels, some tags:
 # (ml <- list(a1 = LETTERS[1:9], n1 = 3:7, a2 = letters[7:3], 7:9, tf = c(TRUE, FALSE, TRUE)))
 # 
 # sublist(ml, in_list = list(n1 = c(6, 4), a2 = letters[5:6], tf = FALSE))
 # sublist(ml, in_list = list(n1 = c(6, 4)))  # numeric values NOT used for numeric subsetting!
 # sublist(ml, in_list = list(a1 = 2, tf = 2)) # numeric values used for numeric subsetting!
 # 
+# # Note: Tags can be used repeatedly and empty list elements are dropped:
+# sublist(ml, out_list = list(tf = TRUE, n1 = 7:5))
+# sublist(ml, out_list = list(tf = TRUE, n1 = 7:5, tf = FALSE, n1 = 3:4))
+# 
 # # Note: Providing numeric index to non-numeric list elements can yield
 # #       a conflict (if numeric elements found in another element) + heuristic => wrong selection:
 # sublist(ml, in_list = list(a2 = 5:6))           # yields ERRONEOUS result, but
 # sublist(ml, in_list = list(a2 = letters[5:6]))  # yields correct result.
+
+
 
 
 # ToDo: 
