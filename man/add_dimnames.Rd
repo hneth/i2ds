@@ -87,6 +87,6 @@ add_dimnames(l)  # return NA
 Other array functions: 
 \code{\link{expand_freq_table}()},
 \code{\link{flatten_array}()},
-\code{\link{sub_table}()}
+\code{\link{subtable}()}
 }
 \concept{array functions}

@@ -97,6 +97,6 @@ flatten_array(T3d, margin = 3)  # compare to ftable(T3d)
 Other array functions: 
 \code{\link{add_dimnames}()},
 \code{\link{expand_freq_table}()},
-\code{\link{sub_table}()}
+\code{\link{subtable}()}
 }
 \concept{array functions}
