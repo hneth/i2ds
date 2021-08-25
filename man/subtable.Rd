@@ -2,7 +2,7 @@
 % Please edit documentation in R/trans_arrays.R
 \name{subtable}
 \alias{subtable}
-\title{Extract a subset (or sub-table) of a table.}
+\title{Extract a subtable (or subset) of a table.}
 \source{
 Based on the \code{subtable} function by Norman Matloff, 
 The Art of R Programming (2011, pp. 131-134).
@@ -22,7 +22,7 @@ of the desired levels.}
 A table.
 }
 \description{
-\code{subtable} yields a subset of a table \code{tbl}
+\code{subtable} yields a subtable of a table \code{tbl}
 by filtering or extracting a subset of table's 
 dimensions and levels.
 }
@@ -59,6 +59,7 @@ subtable(t, sub_dims = list(1:3, "Female", 2, 2, 99))  # truncate sub_dims
  
 }
 \seealso{
+\code{\link{sublist}} for extracting subsets of a list;  
 \code{\link{table}} and \code{\link{array}} for the underlying data structures.
 
 Other array functions: 
