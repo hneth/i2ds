@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 08 19
+## hn | uni.kn | 2021 08 25
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 #
@@ -601,9 +601,9 @@ expand_freq_table <- function(x, freq_var = "Freq", row_name_repair = TRUE){
 
 
 
-## sub_table_names: Utility function to get the names of a table: -----
+## subtable_names: Utility function to get the names of a table: -----
 
-# sub_table_names returns the names of a table tbl that are specified in a list dim_list.
+# subtable_names returns the names of a table tbl that are specified in a list dim_list.
 # 
 # Crucially, for each element of dim_list, the list can specify levels as names OR numeric indices. 
 #
@@ -618,7 +618,7 @@ expand_freq_table <- function(x, freq_var = "Freq", row_name_repair = TRUE){
 #
 # Currently NOT USED or exported. 
 
-sub_table_names <- function(tbl, dim_list){
+subtable_names <- function(tbl, dim_list){
   
   # Initialize:
   org_name_list <- dimnames(tbl)  # original list of dimnames
@@ -627,11 +627,11 @@ sub_table_names <- function(tbl, dim_list){
   
   # Verify correspondence of list lengths:
   if (n_dim < length(org_name_list)){  # Notify user: 
-    message("sub_table_names: dim_list is shorter than dimnames(tbl). Using dimnames(tbl) in turn:")
+    message("subtable_names: dim_list is shorter than dimnames(tbl). Using dimnames(tbl) in turn:")
   }
   
   if (n_dim > length(org_name_list)){  # Notify user: 
-    message("sub_table_names: dim_list is longer than dimnames(tbl). Truncating to same length:")
+    message("subtable_names: dim_list is longer than dimnames(tbl). Truncating to same length:")
     n_dim <- length(org_name_list)
   }
   
@@ -668,18 +668,18 @@ sub_table_names <- function(tbl, dim_list){
   # Output:
   return(new_name_list) 
   
-} # sub_table_names(). 
+} # subtable_names(). 
 
 ## Check: 
 # # A purely numeric index as dim_list:
-# sub_table_names(Titanic, dim_list = list(c(1, 3), 2, 2, 2))
+# subtable_names(Titanic, dim_list = list(c(1, 3), 2, 2, 2))
 # 
 # # A mix of names and numeric index:
-# sub_table_names(Titanic, dim_list = list(c(1, 3), "Female", 2, "Yes"))
+# subtable_names(Titanic, dim_list = list(c(1, 3), "Female", 2, "Yes"))
 # 
 # # A Warning: If dim_list has fewer/more elements than dimensions:
-# sub_table_names(Titanic, dim_list = list(c(1, 3), "Female", 1))
-# sub_table_names(Titanic, dim_list = list(c(1, 3), "Female", 1, 2, 99))
+# subtable_names(Titanic, dim_list = list(c(1, 3), "Female", 1))
+# subtable_names(Titanic, dim_list = list(c(1, 3), "Female", 1, 2, 99))
 # # Note:
 # # - Dimensions are considered in the order provided.
 # # - The names of additional dimensions (without names or numbers in dim_list) are fully included.
@@ -687,7 +687,7 @@ sub_table_names <- function(tbl, dim_list){
 
 
 
-## sub_table: Extract a subset or sub-table of a table: ----- 
+## subtable: Extract a subset or sub-table of a table: ----- 
 
 # Source: Based on the subtable() function by 
 #         Norman Matloff (2011), The Art of R Programming (pp. 131--134)
@@ -696,15 +696,15 @@ sub_table_names <- function(tbl, dim_list){
 
 #' Extract a subset (or sub-table) of a table. 
 #' 
-#' \code{sub_table} yields a subset of a table \code{tbl}
+#' \code{subtable} yields a subset of a table \code{tbl}
 #' by filtering or extracting a subset of table's 
 #' dimensions and levels. 
 #' 
-#' \code{sub_table} provides a filter/slice function for tables, 
+#' \code{subtable} provides a filter/slice function for tables, 
 #' by specifying a positive subset (i.e., levels to be included) 
 #' as a list \code{sub_dims}. 
 #' 
-#' \code{sub_table} assumes that \code{dimnames(tbl)} exist, 
+#' \code{subtable} assumes that \code{dimnames(tbl)} exist, 
 #' but is flexible in allowing \code{sub_dims} to use   
 #' both names and numeric indices of the desired table levels.
 #' 
@@ -719,25 +719,25 @@ sub_table_names <- function(tbl, dim_list){
 #' 
 #' @examples 
 #' t <- datasets::Titanic
-#' sub_table(t, sub_dims = dimnames(t))  # same as t
+#' subtable(t, sub_dims = dimnames(t))  # same as t
 #' 
 #' # (a) Use level names:
-#' sub_table(t, sub_dims = list(Class = c("1st", "2nd", "3rd"),
+#' subtable(t, sub_dims = list(Class = c("1st", "2nd", "3rd"),
 #'                              Sex = "Female", Age = "Adult",
 #'                              Survived = c("Yes")))
 #' 
 #' # (b) Use dim names and level numbers:
-#' sub_table(t, sub_dims = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
+#' subtable(t, sub_dims = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
 #' 
 #' # (c) Use level numbers only:
-#' sub_table(t, sub_dims = list(1:3, 2, 2, 2))
+#' subtable(t, sub_dims = list(1:3, 2, 2, 2))
 #' 
 #' # (d) Use a mix of level names and numbers:
-#' sub_table(t, sub_dims = list(1:3, "Female", 2, "Yes"))
+#' subtable(t, sub_dims = list(1:3, "Female", 2, "Yes"))
 #' 
 #' # (e) Note: Different length of sub_dims than dimnamesI(tbl):
-#' sub_table(t, sub_dims = list(1:3, "Female", 2))   # use missing dim in full
-#' sub_table(t, sub_dims = list(1:3, "Female", 2, 2, 99))  # truncate sub_dims
+#' subtable(t, sub_dims = list(1:3, "Female", 2))   # use missing dim in full
+#' subtable(t, sub_dims = list(1:3, "Female", 2, 2, 99))  # truncate sub_dims
 #'  
 #' @source Based on the \code{subtable} function by Norman Matloff, 
 #' The Art of R Programming (2011, pp. 131-134). 
@@ -749,11 +749,11 @@ sub_table_names <- function(tbl, dim_list){
 #' 
 #' @export
 
-sub_table <- function(tbl, sub_dims) {
+subtable <- function(tbl, sub_dims) {
   
   # (0) Preparation:
   tbl_names <- dimnames(tbl)
-  sub_dims  <- sub_list_names(tbl_names, sub_dims)  # list of dims/levels to include
+  sub_dims  <- sublist_names(tbl_names, sub_dims)  # list of dims/levels to include
   
   # (1) Deconstruction: 
   # Get the array of cell counts in tbl:
@@ -790,58 +790,58 @@ sub_table <- function(tbl, sub_dims) {
   # (5) Output: 
   return(sub_tbl)
   
-} # sub_table(). 
+} # subtable(). 
 
-## Check:
+# # Check:
 # # (A) Use with a dummy table (from array):
 # dims <- 4:2
 # v <- sample(1:100, size = prod(dims), replace = FALSE)
 # a <- array(v, dims)
-# a <- i2ds::add_dimnames(a)
+# a <- add_dimnames(a)
 # (t <- as.table(a))
 # 
 # # standard case:
-# sub_table(t, sub_dims = list(row = c("r1", "r2"),
-#                              col = c("c1", "c2"),
-#                              tab = c("t2")))
+# subtable(t, sub_dims = list(row = c("r1", "r2"),
+#                             col = c("c1", "c2"),
+#                             tab = c("t2")))
 # 
-# # works with numeric indexing:
-# sub_table(t, sub_dims = list(row = 1:2,
-#                              col = 1:2,
-#                              tab = 2))
+# # works with numeric indexing of level names:
+# subtable(t, sub_dims = list(row = 1:2,
+#                             col = 1:2,
+#                             tab = 2))
 # 
 # # works without dimension names:
-# sub_table(t, sub_dims = list(1:2, 1:2, 2))
+# subtable(t, sub_dims = list(1:2, 1:2, 2))
 # 
 # # using a mix of names and numeric indices:
-# sub_table(t, sub_dims = list(1:2, c("c1", "c2"), 2))
-
-
+# subtable(t, sub_dims = list(1:2, c("c1", "c2"), 2))
+# 
+# 
 # # (B) Use an existing table: Titanic
 # 
 # # (a) Use level names:
-# sub_table(Titanic, sub_dims = list(Class = c("1st", "2nd", "3rd"),
-#                                    Sex = "Female", Age = "Adult",
-#                                    Survived = c("Yes")))
+# subtable(Titanic, sub_dims = list(Class = c("1st", "2nd", "3rd"),
+#                                   Sex = "Female", Age = "Adult",
+#                                   Survived = c("Yes")))
 # 
 # # (b) Use dim names and level numbers:
-# sub_table(Titanic, sub_dims = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
+# subtable(Titanic, sub_dims = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
 # 
 # # (c) Use level numbers only:
-# sub_table(Titanic, sub_dims = list(1:3, 2, 2, 2))
+# subtable(Titanic, sub_dims = list(1:3, 2, 2, 2))
 # 
 # # (d) Use a mix of level names and numbers:
-# sub_table(Titanic, sub_dims = list(1:3, "Female", 2, "Yes"))
+# subtable(Titanic, sub_dims = list(1:3, "Female", 2, "Yes"))
 # 
 # # (e) Note: Using fewer elements in sub_dims than dimnamesI(tbl):
-# sub_table(Titanic, sub_dims = list(1:3, "Female", 2))
-# sub_table(Titanic, sub_dims = list(1:3, "Female", 2, 2, 99))
+# subtable(Titanic, sub_dims = list(1:3, "Female", 2))
+# subtable(Titanic, sub_dims = list(1:3, "Female", 2, 2, 99))
 
 
 # ToDo: +++ here now +++ [2021-08-18]
 #
 # - The filter() function from dplyr only includes cases that are specified.
-#   Consider changing sub_table() to only include specified dimensions 
+#   Consider changing subtable() to only include specified dimensions 
 #   (when length(sub_dims) < length(dimnames(tbl))).
 #
 # - Create a negative version that filters out/excludes specified dimensions and levels, 
