@@ -540,6 +540,88 @@ list_element_ix <- function(list, tag = NULL, values = NULL, quiet = FALSE){
 # Note: sublist() originally assumed that list x and in_list denote element names/tags and level/dim names 
 #       (e.g., as returned by dimnames(tbl)), but now also allows for other data modes/types. 
 
+
+#' Extract a sublist (or subset) of a list. 
+#' 
+#' \code{sublist} yields a sublist of a list \code{x}
+#' by filtering or extracting a subset of the list's 
+#' dimensions and levels. 
+#' 
+#' \code{sublist} provides a filter/slice function for lists, by specifying 
+#' a positive subset \code{in_list} 
+#' and a negative subset \code{out_list} 
+#' (both as lists, in tag and value format). 
+#' 
+#' @return A list. 
+#' 
+#' @param x The original list (as \code{\link{list}}). 
+#' 
+#' @param in_list A list specifying the tag and value(s) of \code{x} 
+#' to be retained. 
+#' Default: \code{in_list = x} (i.e., everything). 
+#' 
+#' @param out_list A list specifying the tag and value(s) of \code{x} 
+#' to be dropped. 
+#' Default: \code{out_list = NULL} (i.e., nothing). 
+#' 
+#' @param quiet Boolean: Hide feedback messages?
+#' Default: \code{quiet = FALSE} (i.e., show messages). 
+#' 
+#' @examples 
+#' (ls <- list(n = 1:4, l = letters[1:4]))
+#' 
+#' # Trivial cases:
+#' sublist(ls, in_list = ls)
+#' sublist(ls, out_list = ls)
+#' 
+#' # (a) in_list only:
+#' sublist(ls,  in_list = list(l = letters[c(2, 4)], n = c(2, 4)))
+#' sublist(ls,  in_list = list(n = 4))
+#' 
+#' # NA/empty cases:
+#' sublist(ls,  in_list = NA)      # returns NA
+#' sublist(ls,  in_list = list())  # returns an empty list
+#' 
+#' # Note:
+#' sublist(ls,  in_list = list(l = 4, n = 4))      # matching list elements and levels
+#' sublist(ls,  in_list = list(l = 99, n = 99))    # non-existent levels: nothing in
+#' sublist(ls,  in_list = list(ll = 99, nn = 99))  # heuristics match list elements
+#' 
+#' # (b) out_list only:
+#' sublist(ls, out_list = list(l = letters[c(2, 4)], n = c(2, 4)))
+#' sublist(ls, out_list = list(n = 4))
+#' 
+#' # NA/empty cases:
+#' sublist(ls, out_list = NA)      # returns NA
+#' sublist(ls, out_list = list())  # returns original list
+#' 
+#' # Note:
+#' sublist(ls, out_list = list(l = 4, n = 4))      # matching list elements and levels
+#' sublist(ls, out_list = list(l = 99, n = 99))    # non-existent levels: nothing out
+#' sublist(ls, out_list = list(ll = 99, nn = 99))  # heuristics match list elements
+#' 
+#' # (c) in_list AND out_list:
+#' sublist(ls, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(l = "c"))
+#' sublist(ls, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(n = 4, l = "c"))
+#' 
+#' # removing everything:
+#' sublist(ls, in_list = list(n = 4:3), out_list = list(n = 3:4))
+#' sublist(ls, in_list = list(l = c("c", "a")), out_list = list(l = c("a", "c")))
+#' sublist(ls, in_list = list(n = 3:4, l = c("a", "c")),
+#'         out_list = list(n = 4:3, l = c("c", "a")))
+#' 
+#' # Note: Tags can be used repeatedly and empty list elements are dropped:
+#' sublist(ls, out_list = list(l = c("c", "b"), n = 2:3))
+#' sublist(ls, out_list = list(l = c("c", "b"), n = 2:3, l = c("a", "d")))
+#' sublist(ls, out_list = list(l = c("c", "b"), n = 2:3, l = c("a", "d"), n = 1:4))
+#' 
+#' @family list functions
+#' 
+#' @seealso
+#' \code{\link{subtable}} for extracting subsets of a table. 
+#' 
+#' @export
+
 sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
   
   # (0) Inputs: ---- 
@@ -748,7 +830,7 @@ sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
 # sublist(ls,  in_list = NA)      # returns NA
 # sublist(ls,  in_list = list())  # returns an empty list
 # 
-# # Note: 
+# # Note:
 # sublist(ls,  in_list = list(l = 4, n = 4))      # matching list elements and levels
 # sublist(ls,  in_list = list(l = 99, n = 99))    # non-existent levels: nothing in
 # sublist(ls,  in_list = list(ll = 99, nn = 99))  # heuristics match list elements
@@ -761,7 +843,7 @@ sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
 # sublist(ls, out_list = NA)      # returns NA
 # sublist(ls, out_list = list())  # returns original list
 # 
-# # Note: 
+# # Note:
 # sublist(ls, out_list = list(l = 4, n = 4))      # matching list elements and levels
 # sublist(ls, out_list = list(l = 99, n = 99))    # non-existent levels: nothing out
 # sublist(ls, out_list = list(ll = 99, nn = 99))  # heuristics match list elements
