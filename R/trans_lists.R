@@ -1,5 +1,5 @@
 ## trans_lists.R | i2ds
-## hn | uni.kn | 2021 08 24
+## hn | uni.kn | 2021 08 25
 
 # Functions for transforming/manipulating lists: ------ 
 #
@@ -28,7 +28,7 @@ is_empty_list <- function(x){
 
 ## is_list_element: Which list elements contain some x (as a logical vector): ------ 
 
-# Goal: Verify if a list has some x as an element in EACH of its sub-lists.
+# Goal: Check/verify if a list has some x as an element for EACH of its sub-lists.
 
 # Returns a logical vector of length(list). 
 
@@ -193,7 +193,7 @@ which_list <- function(x, list){
 
 
 
-## is_list_tag: Get the position of first list name matching a tag t: ------ 
+## match_list_tag: Get the position of first list name matching a tag t: ------ 
 
 # Goal: Get the list element position that matches a name/tag t. 
 
@@ -201,15 +201,15 @@ which_list <- function(x, list){
 # - Using match() to return position of first match!
 # - Approximate name/tag matching not supported.
 
-is_list_tag <- function(t, list, nomatch = 0L){
+match_list_tag <- function(tag, list, nomatch = 0L){
   
-  tags <- names(list)
+  l_tags <- names(list)
   
-  if (is.null(tags)){ message("The list contains no names/tags.") }
+  if (is.null(l_tags)){ message("The list contains no names/tags.") }
   
-  match(x = t, table = tags, nomatch = nomatch)
+  match(x = tag, table = l_tags, nomatch = nomatch)
   
-} # is_list_tag(). 
+} # match_list_tag(). 
 
 # # Check:
 # (l <- list(one = "A", two = c("A", "B"), three = "C", c("L", "M"), "Y", six = "Z"))
@@ -217,29 +217,29 @@ is_list_tag <- function(t, list, nomatch = 0L){
 # (n <- list("A", c("A", "B"), "C", c("L", "M"), "y", "Z"))
 # names(n)
 # 
-# is_list_tag("two", l)
-# is_list_tag("", l)  # works for (1st) un-named element
-# is_list_tag("else", l, nomatch = -1)
-# is_list_tag("any", n)  # Note: Returns nomatch value + message.
-# is_list_tag("any", n, nomatch = -99)
+# match_list_tag("two", l)
+# match_list_tag("", l)  # works for (1st) un-named element
+# match_list_tag("else", l, nomatch = -1)
+# match_list_tag("any", n)  # Note: Returns nomatch value + message.
+# match_list_tag("any", n, nomatch = -99)
 # 
 # # multiple targets in t:
-# is_list_tag(c("two", "", "three"), l)  # works by yielding 1st matches (as vector)
-# is_list_tag(c("t", "th", "three"), l)  # NO approximate matching!
+# match_list_tag(c("two", "", "three"), l)  # works by yielding 1st matches (as vector)
+# match_list_tag(c("t", "th", "three"), l)  # NO approximate matching!
 # 
 # # numeric list:
 # (nl <- list(a = 1:3, b = 3:7, c = 7:9))
-# is_list_tag("c", nl)
-# is_list_tag("X", nl)
+# match_list_tag("c", nl)
+# match_list_tag("X", nl)
 # 
 # # mixed list, some tags:
 # (ml <- list(a1 = letters[1:3], n1 = 3:7, letters[7:3], 7:9))
-# is_list_tag("n1", ml)
-# is_list_tag(c("n1", "n9"), ml)
-# is_list_tag("XX", ml)
+# match_list_tag("n1", ml)
+# match_list_tag(c("n1", "n9"), ml)
+# match_list_tag("XX", ml)
 
 
-## sub_list_names: Utility function to get the names of a name_list specified in dim_list: -----
+## sublist_names: Utility function to get the names of a name_list specified in dim_list: -----
 
 # A simpler variant of sub_table_names that does not require a table tbl, 
 # but only uses 2 lists as arguments:  
@@ -248,7 +248,7 @@ is_list_tag <- function(t, list, nomatch = 0L){
 #
 # Currently used, but not exported. 
 
-sub_list_names <- function(name_list, dim_list){
+sublist_names <- function(name_list, dim_list){
   
   # Initialize:
   # name_list <- dimnames(tbl)  # original list of dimnames
@@ -257,11 +257,11 @@ sub_list_names <- function(name_list, dim_list){
   
   # Verify correspondence of list lengths:
   if (n_dim < length(name_list)){  # Notify user: 
-    message("sub_list_names: dim_list is shorter than name_list. Using elements of name_list in turn:")
+    message("sublist_names: dim_list is shorter than name_list. Using elements of name_list in turn:")
   }
   
   if (n_dim > length(name_list)){  # Notify user: 
-    message("sub_list_names: dim_list is longer than name_list. Truncating to same length:")
+    message("sublist_names: dim_list is longer than name_list. Truncating to same length:")
     n_dim <- length(name_list)
   }
   
@@ -298,20 +298,20 @@ sub_list_names <- function(name_list, dim_list){
   # Output:
   return(new_name_list) 
   
-} # sub_list_names(). 
+} # sublist_names(). 
 
 # # Check:
-# org_list <- dimnames(Titanic)
+# ls <- dimnames(Titanic)
 # 
 # # A purely numeric index as dim_list:
-# sub_list_names(org_list, dim_list = list(c(1, 3), 2, 2, 2))
+# sublist_names(ls, dim_list = list(c(1, 3), 2, 2, 2))
 # 
 # # A mix of names and numeric index:
-# sub_list_names(org_list, dim_list = list(c(1, 3), "Female", 2, "Yes"))
+# sublist_names(ls, dim_list = list(c(1, 3), "Female", 2, "Yes"))
 # 
 # # A Warning: If dim_list has fewer OR more elements than dimensions:
-# sub_list_names(org_list, dim_list = list(c(1, 3), "Female", 1))
-# sub_list_names(org_list, dim_list = list(c(1, 3), "Female", 1, 2, 99))
+# sublist_names(ls, dim_list = list(c(1, 3), "Female", 1))
+# sublist_names(ls, dim_list = list(c(1, 3), "Female", 1, 2, 99))
 # 
 # # Note some features:
 # # - Dimensions are considered in the order provided in dim_list.
@@ -584,9 +584,9 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 # list_element_ix(ml, values = c(TRUE, FALSE, FALSE))
 
 
-## sublist: A better variant of sub_list_names() taking 2 arguments (in_list and out_list): ------ 
+## sublist: A better variant of sublist_names() taking 2 arguments (in_list and out_list): ------ 
 
-# Extract a subset of elements (dimensions OR levels) from an org_list:
+# Extract a subset of elements (dimensions OR levels) from a list x:
 # - include only elements (dimensions OR levels) specified in in_list
 # - exclude any elements (dimension OR levels) specified in out_list
 
@@ -594,14 +594,13 @@ list_element_ix <- function(list, tag = NULL, values = NULL){
 # - using 2 lists of targets (in_list vs. out_list) and 
 # - allowing for multiple mentions of dimensions in each (considering each element in target list in turn). 
 
-# Note: Function assumes that org_list and in_list denote  
-#       element names/tags and level/dim names of type "character" 
-#       (as returned by dimnames(tbl)). 
+# Note: Function assumes that org_list and in_list denote element names/tags and level/dim names 
+#       (e.g., as returned by dimnames(tbl), but also allowing for other data modes/types). 
 
-sublist <- function(org_list, in_list = org_list, out_list = NULL){
+sublist <- function(x, in_list = x, out_list = NULL){
   
-  # (0) Input checks and early returns:
-  if (!is.list(org_list)){ message("sublist: org_list is not a list."); return(NA) }
+  # (0) Inputs: ---- 
+  if (!is.list(x)){ message("sublist: x is not a list."); return(NA) }
   
   if (!is.list(in_list)) { message("sublist: in_list is not a list.");  return(NA) }
   
@@ -609,7 +608,7 @@ sublist <- function(org_list, in_list = org_list, out_list = NULL){
   
   if (is.null(out_list)) {
     
-    if (identical(in_list, org_list)) { return(org_list) }
+    if (identical(in_list, x)) { return(x) }
     
   } else { # out_list has been specified:
     
@@ -618,17 +617,17 @@ sublist <- function(org_list, in_list = org_list, out_list = NULL){
   }
   
   
-  # (1) Use in_list:
-  if ( (is.null(in_list)) | (identical(in_list, org_list)) ){
+  # (1) Use in_list: ---- 
+  if ( (is.null(in_list)) | (identical(in_list, x)) ){
     
-    sub_list <- org_list  # Case_A: Transfer org_list to sub_list (to use out_list below)
+    sub_list <- x  # Case_A: Transfer x to sub_list (to use out_list below)
     
-  } else { # interpret in_list: 
+  } else { # interpret in_list (to fill elements/levels of an initially empty sub_list):
     
     # Initialize: 
     sub_list <- vector("list", 0)  #  Case_B: Pre-allocate an empty list of length 0 to sub_list. 
     
-    CT_list <- org_list  # current target list (transfer current main list)
+    CT_list <- x  # current target list (transfer current main list)
     CT_names <- names(CT_list)  # names of current target list (as a vector)
     # if (is.null(CT_names)){ print("CT_list contains NO names/tags.") }  # 4debugging 
     
@@ -668,17 +667,14 @@ sublist <- function(org_list, in_list = org_list, out_list = NULL){
                        CT_ix, " of CT_list."))
         
         new_vec <- CT_vec[cur_in_vec]  # desired subset (by numeric indexing)
-        # print(new_vec)  # 4debugging
         # NOTE: Non-existing index values yield and keep NA values.
         
         new_vec <- new_vec[!is.na(new_vec)]  # remove NA values
         # NOTE: Non-existing levels are dropped!
         
-      } else { # cur_in_vec is NOT numeric or BOTH are numeric: use provided names: 
+      } else { # cur_in_vec is NOT numeric or BOTH are numeric: use levels/names provided: 
         
-        # new_vec <- cur_in_vec  # 1: Copy desired subset of levels
-        # new_vec <- intersect(CT_vec, cur_in_vec)  # 2a: Prioritize CT_vec and drop any non-existing levels!
-        new_vec <- intersect(cur_in_vec, CT_vec)    # 2b: Prioritize cur_in_vec and drop any non-existing levels!      
+        new_vec <- intersect(cur_in_vec, CT_vec)  # prioritize cur_in_vec and drop any non-existing levels!      
         # NOTE: Non-existing levels are dropped!
         
       }
@@ -692,12 +688,12 @@ sublist <- function(org_list, in_list = org_list, out_list = NULL){
   } # if (is.null(in_list)) etc.
   
   
-  # Intermediate feedback:
+  # Intermediate feedback:    # +++ here now +++ 
   # print(paste0("sublist: sub_list (after processing in_list): "))  
   # print(sub_list) # 4debugging 
+
   
-  
-  # (2) Use out_list:
+  # (2) Use out_list: ---- 
   if ( is.null(out_list) | is_empty_list(out_list) ) {
     
     return(sub_list)
@@ -705,13 +701,11 @@ sublist <- function(org_list, in_list = org_list, out_list = NULL){
   } else if (identical(out_list, sub_list)) {
     
     # print(paste0("sublist: Nothing remains, as out_list corresponds to sub_list."))  # 4debugging 
-    
     return(vector("list", 0))  # return an empty list
     
-  } else { # interpret out_list: 
+  } else { # interpret out_list (to remove elements or levels from CT_list): 
     
     # print(paste0("sublist: Interpret a given out_list by removing from sub_list:"))  # 4debugging 
-    # +++ here now +++ 
     
     # Initialize: 
     CT_list <- sub_list  # current target list (transfer current main list)
@@ -754,17 +748,14 @@ sublist <- function(org_list, in_list = org_list, out_list = NULL){
                        CT_ix, " of CT_list."))
         
         new_vec <- CT_vec[-cur_out_vec]  # reduced subset (by numeric indexing)
-        # print(new_vec)  # 4debugging
         # NOTE: Non-existing index values yield and keep NA values.
         
         new_vec <- new_vec[!is.na(new_vec)]  # remove NA values
         # NOTE: Non-existing levels are dropped!
         
-      } else { # cur_out_vec is NOT numeric or BOTH are numeric: use provided names: 
+      } else { # cur_out_vec is NOT numeric or BOTH are numeric: use levels/names provided: 
         
-        # new_vec <- cur_out_vec  # 1: Copy desired subset of levels
-        new_vec <- setdiff(CT_vec, cur_out_vec)    # 2a: Prioritize CT_vec and drop any non-existing levels!
-        # new_vec <- setdiff(cur_out_vec, CT_vec)  # 2b: Prioritize cur_out_vec and drop any non-existing levels!      
+        new_vec <- setdiff(CT_vec, cur_out_vec)  # prioritize CT_vec and drop any non-existing levels!
         # NOTE: Non-existing levels are dropped!
         
       }
@@ -779,16 +770,14 @@ sublist <- function(org_list, in_list = org_list, out_list = NULL){
         
       } else { # remove i-th list element:
         
-        CT_list[[CT_ix]] <- NULL 
+        CT_list[[CT_ix]] <- NULL  # Note: This implies that CT_list can shrink!
         # print(paste0("Removed CT_ix = ", CT_ix, ". element of CT_list"))  # 4debugging
-        # Note: This implies that CT_list shrink!
-        
+
       }
       
     } # loop out_list end. 
     
-    # Transfer CT_list back to sub_list: 
-    sub_list <- CT_list
+    sub_list <- CT_list # transfer CT_list back to sub_list: 
     
   } # if (is.null(out_list)) etc.  
   
@@ -861,7 +850,7 @@ sublist <- function(org_list, in_list = org_list, out_list = NULL){
 # sublist(t_list, in_list = list("Adult", Class = c("3rd", "1st", "stuff")))
 # sublist(t_list, in_list = list("Adult", Class = c(3, 1, 99)))
 # 
-# # in_list provides NO names: Note: If levels are identified, names of org_list are used:
+# # in_list provides NO names: Note: If levels are identified, names of x are used:
 # sublist(t_list, in_list = list("Adult", c("3rd", "1st")))
 # 
 # # in_list provides names/tags and numeric levels:
@@ -916,7 +905,7 @@ sublist <- function(org_list, in_list = org_list, out_list = NULL){
 
 # - match for lists: in which sublist is an element (e.g., name).
 
-# - sublist() for lists: with 2 arguments to include and exclude elements of lists in org_list
+# - sublist() for lists: with 2 arguments to include and exclude elements of lists in x
 #                        to use in a subtable() function.
 
 # - write a function that removes empty list elements (i.e., elements with no values/vector)
