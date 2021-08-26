@@ -1,15 +1,9 @@
 ## trans_lists.R | i2ds
-## hn | uni.kn | 2021 08 25
+## hn | uni.kn | 2021 08 26
 
 # Functions for transforming/manipulating lists: ------ 
 #
 # Note that objects of type "table" are specific cases of arrays (contingency tables with freq. counts).
-
-
-# (A) Analogs of is.element/match/which for list elements: 
-
-# Goal: Get all elements of a list that contain some element x.
-#       i.e., functions analog to match/which, but for lists.
 
 
 ## is_empty_list: Check if some x is an empty list (i.e., x is both a list and empty): ------
@@ -27,8 +21,12 @@ is_empty_list <- function(x){
 # is_empty_list(NULL)
 
 
+# (A) Analogs of is.element/match/which for list elements: 
 
-## drop_empty_list_elements: Removes empty list elements (i.e., elements with NULL values/empty vector/empty list): ------ 
+# Goal: Get all elements of a list that contain some element x.
+#       i.e., functions analog to match/which, but for lists.
+
+## drop_empty_list_elements: Removes empty list elements of ls (i.e., elements with NULL values/empty vector/empty list): ------ 
 
 drop_empty_list_elements <- function(ls){
   
@@ -58,19 +56,19 @@ drop_empty_list_elements <- function(ls){
 
 
 
-## is_list_element: Which list elements contain some x (as a logical vector): ------ 
+## is_list_element: Which list elements of ls contain some x (as a logical vector): ------ 
 
-# Goal: Check/verify if a list has some x as an element for EACH of its sub-lists.
+# Goal: Check/verify if a list ls has some x as an element for EACH of its sub-lists.
 
-# Returns a logical vector of length(list). 
+# Returns a logical vector of length(ls). 
 
 # Note: If x has multiple elements (as a vector), 
 #       is_list_element() returns a matrix, 
 #       with each row being a logical vector of element matches for each item of x.
 
-is_list_element <- function(x, list){
+is_list_element <- function(x, ls){
   
-  sapply(list, function(elem) is.element(x, elem))
+  sapply(ls, function(elem) is.element(x, elem))
   
 } # is_list_element(). 
 
@@ -101,7 +99,7 @@ is_list_element <- function(x, list){
 
 ## match_list: Get the positions of first matches of x in (elements of) list: ------ 
 
-# match returns a vector of the positions of (first) matches of (elements of) x in (elements of) list
+# match returns a vector of the positions of (first) matches of (elements of) x in (elements of) a list ls. 
 
 # Assuming that 
 # - x is a vector of targets 
@@ -109,10 +107,10 @@ is_list_element <- function(x, list){
 
 # Note: If x has multiple elements: Return a vector of first matches for each element of x.
 
-match_list <- function(x, list, nomatch = 0L){
+match_list <- function(x, ls, nomatch = 0L){
   
   # All element matches (as matrix, if x has multiple elements):
-  match_mx <- is_list_element(x, list)
+  match_mx <- is_list_element(x, ls)
   
   if (is.matrix(match_mx)){ # x had multiple elements:
     
@@ -164,7 +162,7 @@ match_list <- function(x, list, nomatch = 0L){
 # unique(match_list(c("N", "L"), l2))  # 2 targets appear in SAME list element
 
 
-## which_list: Get position of ALL matches of (elements of) x in (elements of) list: ------ 
+## which_list: Get position of ALL matches of (elements of) x in (elements of) list ls: ------ 
 
 # Assuming that 
 # - x is a vector of targets 
@@ -174,9 +172,9 @@ match_list <- function(x, list, nomatch = 0L){
 #       of all element positions in list that contain each element of x.
 # However, which_list() currently does NOT allow providing an expression to verify (as which() does). 
 
-which_list <- function(x, list){
+which_list <- function(x, ls){
   
-  which(is_list_element(x, list))
+  which(is_list_element(x, ls))
   
   # Get all element matches (as matrix, each row corresponding to an element of x):
   match_mx <- is_list_element(x, list)
@@ -193,7 +191,7 @@ which_list <- function(x, list){
     
   }
   
-}
+} # which_list(). 
 
 # # Check:
 # # (a) vector:
@@ -225,19 +223,19 @@ which_list <- function(x, list){
 
 
 
-## match_list_tag: Get the position of first list name matching a tag t: ------ 
+## match_list_tag: Get the position of first list name in a list ls matching a tag: ------ 
 
-# Goal: Get the list element position that matches a name/tag t. 
+# Goal: Get the list element position of list that matches a name/tag tag. 
 
 # Notes: 
 # - Using match() to return position of first match!
 # - Approximate name/tag matching not supported.
 
-match_list_tag <- function(tag, list, nomatch = 0L){
+match_list_tag <- function(tag, ls, nomatch = 0L){
   
-  l_tags <- names(list)
+  l_tags <- names(ls)
   
-  if (is.null(l_tags)){ message("The list contains no names/tags.") }
+  if (is.null(l_tags)){ message("The list ls contains no names/tags.") }
   
   match(x = tag, table = l_tags, nomatch = nomatch)
   
@@ -354,19 +352,19 @@ sublist_names <- function(name_list, dim_list){
 
 ## list_element_ix: Find a list position for tag AND/OR values (levels): ------ 
 
-# Goal: A utility function that finds the relevant list position matching 
+# Goal: A utility function that finds the relevant position in a list ls matching 
 # - a tag label (a list name/tag, as character) AND/OR 
 # - level values (i.e., one or more sub-list items, as vector).
 # 
 # Note: 
 # - Multiple matches are possible when x = tag contains multiple elements! 
 
-list_element_ix <- function(list, tag = NULL, values = NULL, quiet = FALSE){
+list_element_ix <- function(ls, tag = NULL, values = NULL, quiet = FALSE){
   
-  # Determine relevant dimension/position of list element (that corresponds to current name/tag AND/OR value):
+  # Determine relevant dimension/position of a list's ls element (that corresponds to current name/tag AND/OR value):
   
   # Inputs: ---- 
-  if (!is.list(list)){ message("list_element_ix: list is not a list."); return(NA) }
+  if (!is.list(list)){ message("list_element_ix: list ls is not a list."); return(NA) }
   
   if (is.null(tag) & is.null(values)){
     message("list_element_ix: Neither tag nor value specified.")
@@ -378,7 +376,7 @@ list_element_ix <- function(list, tag = NULL, values = NULL, quiet = FALSE){
   values_ix <- NA  # sub-ix corresponding to values 
   list_ix   <- NA  # to output
   
-  org_names <- names(list)
+  org_names <- names(ls)
   
   # 1. Find tag: ---- 
   # if (!all(is.na(tag))){
@@ -414,14 +412,14 @@ list_element_ix <- function(list, tag = NULL, values = NULL, quiet = FALSE){
       
     } else {
       
-      # Count matches of values in each element of list: 
-      n_elements <- length(list)
+      # Count matches of values in each element of list ls: 
+      n_elements <- length(ls)
       n_values   <- length(values)
       n_matches  <- rep(NA, n_elements)  # count matches per element
       
-      for (i in 1:n_elements){  # for each list element:
+      for (i in 1:n_elements){  # for each element of list ls:
         
-        n_matches[i] <- sum(values %in% list[[i]])  # total number of matches
+        n_matches[i] <- sum(values %in% ls[[i]])  # total number of matches
         
       }
       
@@ -431,16 +429,16 @@ list_element_ix <- function(list, tag = NULL, values = NULL, quiet = FALSE){
       
       if (length(allmatch_ix) == 0){
         
-        if (!quiet) { message(paste0("list_element_ix: No list element contains all given values.")) }
+        if (!quiet) { message(paste0("list_element_ix: No element of ls contains all given values.")) }
         
       } else if (length(allmatch_ix) == 1){
         
-        # print(paste0("list_element_ix: Exactly 1 list element contains all values = ", allmatch_ix, ".")) # 4debugging 
+        # print(paste0("list_element_ix: Exactly 1 element of ls contains all values = ", allmatch_ix, ".")) # 4debugging 
         values_ix <- allmatch_ix
         
       } else { # (length(allmatch_ix) > 1): 
         
-        if (!quiet) { message(paste0("list_element_ix: Multiple list elements contain all values: ", 
+        if (!quiet) { message(paste0("list_element_ix: Multiple elements of ls contain all values: ", 
                                      paste(allmatch_ix, collapse = ", "), ".")) }  
         
       }
@@ -560,40 +558,37 @@ list_element_ix <- function(list, tag = NULL, values = NULL, quiet = FALSE){
 
 
 
-## sublist: Extract a sublist (or subset) of a list, using 2 arguments (in_list and out_list): ------ 
+## sublist: Extract a sublist (or subset) of a list ls, using 2 arguments (in_list and out_list): ------ 
 
 # A more specific and powerful version of sublist_names() (above): 
 
-# Extract a subset of elements (dimensions OR levels) from a list x:
+# Extract a subset of elements (dimensions OR levels) from a list ls:
 # - include only elements (dimensions OR levels) specified in in_list
 # - exclude any elements (dimension OR levels) specified in out_list 
 # - allowing for multiple mentions of dimensions in each (considering each element in target list in turn). 
 
-# Note: sublist() originally assumed that list x and in_list denote element names/tags and level/dim names 
+# Note: sublist() originally assumed that list ls and in_list denote element names/tags and level/dim names 
 #       (e.g., as returned by dimnames(tbl)), but now also allows for other data modes/types. 
 
 
 #' Extract a sublist (or subset) of a list. 
 #' 
-#' \code{sublist} yields a sublist of a list \code{x}
+#' \code{sublist} yields a sublist of a list \code{ls}
 #' by filtering or extracting a subset of the list's 
 #' dimensions and levels. 
 #' 
 #' \code{sublist} provides a filter/slice function for lists, by specifying 
-#' a positive subset \code{in_list} 
-#' and a negative subset \code{out_list} 
+#' a positive subset \code{in_list} and a negative subset \code{out_list} 
 #' (both as lists, in tag and value format). 
 #' 
 #' @return A list. 
 #' 
-#' @param x The original list (as \code{\link{list}}). 
+#' @param ls The original list (as \code{\link{list}}). 
 #' 
-#' @param in_list A list specifying the tag and value(s) of \code{x} 
-#' to be retained. 
-#' Default: \code{in_list = x} (i.e., everything). 
+#' @param in_list A list specifying the tag and value(s) of \code{ls} to keep/include. 
+#' Default: \code{in_list = ls} (i.e., everything). 
 #' 
-#' @param out_list A list specifying the tag and value(s) of \code{x} 
-#' to be dropped. 
+#' @param out_list A list specifying the tag and value(s) of \code{ls} to drop/exclude. 
 #' Default: \code{out_list = NULL} (i.e., nothing). 
 #' 
 #' @param quiet Boolean: Hide feedback messages?
@@ -654,10 +649,10 @@ list_element_ix <- function(list, tag = NULL, values = NULL, quiet = FALSE){
 #' 
 #' @export
 
-sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
+sublist <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
   
   # 0. Inputs: ---- 
-  if (!is.list(x)){ message("sublist: x is not a list."); return(NA) }
+  if (!is.list(ls)){ message("sublist: ls is not a list."); return(NA) }
   
   if (!is.list(in_list)) { message("sublist: in_list is not a list.");  return(NA) }
   
@@ -665,7 +660,7 @@ sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
   
   if (is.null(out_list)) {
     
-    if (identical(in_list, x)) { return(x) }
+    if (identical(in_list, ls)) { return(ls) }
     
   } else { # out_list has been specified:
     
@@ -675,16 +670,16 @@ sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
   
   
   # 1. Use in_list: ---- 
-  if ( (is.null(in_list)) | (identical(in_list, x)) ){
+  if ( (is.null(in_list)) | (identical(in_list, ls)) ){
     
-    sub_list <- x  # Case_A: Transfer x to sub_list (to use out_list below)
+    sub_list <- ls  # Case_A: Transfer ls to sub_list (to use out_list below)
     
   } else { # interpret in_list (to fill elements/levels of an initially empty sub_list):
     
     # Initialize: 
     sub_list <- vector("list", 0)  #  Case_B: Pre-allocate an empty list of length 0 to sub_list. 
     
-    CT_list <- x  # current target list (transfer current main list)
+    CT_list <- ls  # current target list (transfer current main list)
     CT_names <- names(CT_list)  # names of current target list (as a vector)
     # if (is.null(CT_names)){ print("CT_list contains NO names/tags.") }  # 4debugging 
     
@@ -923,7 +918,7 @@ sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
 # sublist(t_nm, in_list = list("Adult", Class = c(3, 1, 99)))
 # sublist(t_nm, in_list = list("Adult", Class = c(3, 1, 99)), quiet = TRUE)  # suppress some messages
 # 
-# # in_list provides NO names: Note: If levels are identified, names of x are used:
+# # in_list provides NO names: Note: If levels are identified, names of ls are used:
 # sublist(t_nm, in_list = list("Adult", c("3rd", "1st")))
 # 
 # # in_list provides names/tags and numeric levels:
@@ -995,7 +990,7 @@ sublist <- function(x, in_list = x, out_list = NULL, quiet = FALSE){
 
 # - match for lists: in which sublist is an element (e.g., name).
 
-# - sublist() for lists: with 2 arguments to include and exclude elements of lists in x
+# - sublist() for lists: with 2 arguments to include and exclude elements of lists in ls
 #                        to use in a subtable() function.
 
 
