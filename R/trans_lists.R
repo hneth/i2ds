@@ -273,7 +273,7 @@ match_list_tag <- function(tag, ls, nomatch = 0L){
 ## sublist_names: Utility function to get the names of a name_list specified in dim_list: -----
 
 # A simpler variant of sub_table_names that does not require a table tbl, 
-# but only uses 2 lists as arguments:  
+# and uses 2 lists as arguments:  
 # - name_list is the list of original names (that is to be reduced) 
 # - dim_list is a list that specifies a subset of name_list (by name or numeric indices)
 #
@@ -297,7 +297,7 @@ sublist_names <- function(name_list, dim_list){
   }
   
   # Main: 
-  for (i in 1:n_dim){  # Consider 1:n_dim elements of name_list(!) in turn:
+  for (i in 1:n_dim){  # Consider each elements of dim_list(!) in turn:
     
     # org_dim_name <- names(name_list[i])
     # cur_dim_name <- names(dim_list[i])
@@ -335,6 +335,7 @@ sublist_names <- function(name_list, dim_list){
 # ls <- dimnames(Titanic)
 # 
 # # A purely numeric index as dim_list:
+# sublist_names(ls, dim_list = list(2, 2, 2, Class = 1))  # Note: tags are ignored!
 # sublist_names(ls, dim_list = list(c(1, 3), 2, 2, 2))
 # 
 # # A mix of names and numeric index:
@@ -345,7 +346,8 @@ sublist_names <- function(name_list, dim_list){
 # sublist_names(ls, dim_list = list(c(1, 3), "Female", 1, 2, 99))
 # 
 # # Note some features:
-# # - Dimensions are considered in the order provided in dim_list.
+# # - Any names/tags are ignored.
+# #   Dimensions of name_list are considered in the order provided in dim_list.
 # # - The names of additional dimensions (without names or numbers in dim_list) are fully included.
 # # - Additional/extra dim_list arguments are truncated. 
 
