@@ -364,7 +364,7 @@ list_element_ix <- function(ls, tag = NULL, values = NULL, quiet = FALSE){
   # Determine relevant dimension/position of a list's ls element (that corresponds to current name/tag AND/OR value):
   
   # Inputs: ---- 
-  if (!is.list(list)){ message("list_element_ix: list ls is not a list."); return(NA) }
+  if (!is.list(ls)){ message("list_element_ix: list ls is not a list."); return(NA) }
   
   if (is.null(tag) & is.null(values)){
     message("list_element_ix: Neither tag nor value specified.")
@@ -374,7 +374,7 @@ list_element_ix <- function(ls, tag = NULL, values = NULL, quiet = FALSE){
   # Initialize 3 indices:
   tag_ix    <- NA  # sub-ix corresponding to tag
   values_ix <- NA  # sub-ix corresponding to values 
-  list_ix   <- NA  # to output
+  ls_ix <- NA      # (output)
   
   org_names <- names(ls)
   
@@ -450,17 +450,17 @@ list_element_ix <- function(ls, tag = NULL, values = NULL, quiet = FALSE){
   # 3. Compare and use indices: ----  
   if (!all(is.na(tag_ix)) & is.na(values_ix)){ # only tag_ix:
     
-    list_ix <- tag_ix      # use tag_ix
+    ls_ix <- tag_ix      # use tag_ix
     
   } else if (all(is.na(tag_ix)) & !is.na(values_ix)){ # only values_ix: 
     
-    list_ix <- values_ix   # use values_ix
+    ls_ix <- values_ix   # use values_ix
     
   } else if (!all(is.na(tag_ix)) & !is.na(values_ix)){ # both exist:
     
     if (tag_ix == values_ix){ # verify correspondence:
       
-      list_ix <- tag_ix    # use either one
+      ls_ix <- tag_ix    # use either one
       
     } else { # note conflict: 
       
@@ -471,7 +471,7 @@ list_element_ix <- function(ls, tag = NULL, values = NULL, quiet = FALSE){
   }
   
   # 4. Output:
-  return(list_ix)
+  return(ls_ix)
   
 } # list_element_ix().
 
