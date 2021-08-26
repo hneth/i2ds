@@ -877,13 +877,24 @@ subtable <- function(tbl,
 # # (d) Use a mix of level names and numbers (note messages):
 # subtable(Titanic,  in_list = list(1:3, "Female", 2, "Yes"))
 # subtable(Titanic, out_list = list(4, "Male", 1, "No"))
+# 
+# subtable(Titanic, out_list = list(4, "Male", Survived = "No"))
 
 # +++ here now +++ [2021-08-26]
 
-# ERRORs when specified subset is shorter/longer than dims of tbl:
+# Key constraint: 
+# sublist(ls = tbl_names, in_list = in_list, out_list = out_list,
+# must contain ALL dimensions of tbl_names in the SAME order! 
+# 
+# # Appears to work: 
+# subtable(Titanic, in_list = list(Class = 1:3, Sex = "Female", Age = 2, Survived = "Yes"))  # works
+# # but: 
+# subtable(Titanic, in_list = list(Class = 1:3, Age = 2, Sex = "Female", Survived = "Yes"))  # fails 1: different order of dimnames
+# subtable(Titanic, in_list = list(Class = 1:3, Age = 2, Survived = "Yes"))  # fails 2: not all dimensions in sublist
 
-# (e) Note: Using fewer elements in in_list than dimnamesI(tbl):
-# subtable(Titanic, in_list = list(Class = 1:3, Sex = "Female", Age = 2))
+# # ERRORs when specified subset is shorter/longer than dims of tbl: 
+# # (e) Note: Using fewer elements in in_list than dimnamesI(tbl):
+# subtable(Titanic, in_list = list(Age = 2, Survived = "Yes"))
 
 # subtable(Titanic,
 #          in_list = list(Class = 1:3, Sex = "Female", Age = 2),
