@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 08 25
+## hn | uni.kn | 2021 08 26
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 #
@@ -689,7 +689,7 @@ subtable_names <- function(tbl, dim_list){
 
 ## subtable: Extract a subtable (or subset) of a table: ----- 
 
-# Source: Based on the subtable() function by 
+# Source: Core is based on the subtable() function by 
 #         Norman Matloff (2011), The Art of R Programming (pp. 131--134)
 
 # using sub_list() function to include/exclude dimensions/levels.
@@ -700,44 +700,57 @@ subtable_names <- function(tbl, dim_list){
 #' by filtering or extracting a subset of table's 
 #' dimensions and levels. 
 #' 
-#' \code{subtable} provides a filter/slice function for tables, 
-#' by specifying a positive subset (i.e., levels to be included) 
-#' as a list \code{sub_dims}. 
+#' \code{subtable} provides a filter/slice function for tables, by specifying 
+#' a positive subset (i.e., dimensions and levels to include) as \code{in_list} or  
+#' a positive subset (i.e., dimensions and levels to include) as \code{in_list} 
+#' (both as lists that specify dimension and level names, in tag and value format). 
 #' 
 #' \code{subtable} assumes that \code{dimnames(tbl)} exist, 
-#' but is flexible in allowing \code{sub_dims} to use   
-#' both names and numeric indices of the desired table levels.
+#' but is flexible in allowing \code{in_list} and \code{out_list} 
+#' to use both names or numeric indices for subsetting table levels.
 #' 
 #' @return A table. 
 #' 
-#' @param tbl The original table (as \code{\link{table}}). 
+#' @param tbl An original table to be reduced (as \code{\link{table}}). 
 #' 
-#' @param sub_dims A list specifying the desired subtable extraction. 
-#' Each element is named after a dimension of \code{tbl}, 
+#' @param in_list A list specifying the subset of \code{tbl} to keep/include. 
+#' Each list element is named after a dimension of \code{tbl}, 
 #' and the value of that component is a vector of the names or a numeric index 
 #' of the desired levels. 
+#' Default: \code{in_list = dimnames(tbl)} (i.e., everything).
+#' 
+#' @param out_list A list specifying the subset of \code{tbl} to drop/exclude. 
+#' Each list element is named after a dimension of \code{tbl}, 
+#' and the value of that component is a vector of the names or a numeric index 
+#' of the desired levels. 
+#' Default: \code{out_list = NULL} (i.e., nothing). 
+#' 
+#' @param quiet Boolean: Hide feedback messages?
+#' Default: \code{quiet = TRUE} (i.e., hide messages). 
 #' 
 #' @examples 
 #' t <- datasets::Titanic
-#' subtable(t, sub_dims = dimnames(t))  # same as t
+#' 
+#' # Trivial case:
+#' subtable(t, in_list = dimnames(t))  # same as t
 #' 
 #' # (a) Use level names:
-#' subtable(t, sub_dims = list(Class = c("1st", "2nd", "3rd"),
-#'                              Sex = "Female", Age = "Adult",
-#'                              Survived = c("Yes")))
+#' subtable(t, in_list = list(Class = c("1st", "2nd", "3rd"),
+#'                            Sex = "Female", Age = "Adult",
+#'                            Survived = c("Yes")))
 #' 
 #' # (b) Use dim names and level numbers:
-#' subtable(t, sub_dims = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
+#' subtable(t, in_list = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
 #' 
-#' # (c) Use level numbers only:
-#' subtable(t, sub_dims = list(1:3, 2, 2, 2))
+#' # (c) Use level numbers only (note messages):
+#' subtable(t, in_list = list(1:3, 2, 2, 2))
 #' 
-#' # (d) Use a mix of level names and numbers:
-#' subtable(t, sub_dims = list(1:3, "Female", 2, "Yes"))
+#' # (d) Use a mix of level names and numbers (note messages): 
+#' subtable(t, in_list = list(1:3, "Female", 2, "Yes"))
 #' 
-#' # (e) Note: Different length of sub_dims than dimnamesI(tbl):
-#' subtable(t, sub_dims = list(1:3, "Female", 2))   # use missing dim in full
-#' subtable(t, sub_dims = list(1:3, "Female", 2, 2, 99))  # truncate sub_dims
+#' # (e) Note: Different length of sub_dims than dimnamesI(tbl) yield ERRORs:
+#' # subtable(t, in_list = list(1:3, "Female", 2))   # ToDo: use missing dim in full
+#' # subtable(t, in_list = list(1:3, "Female", 2, 2, 99))  # ToDo: truncate sub_dims
 #'  
 #' @source Based on the \code{subtable} function by Norman Matloff, 
 #' The Art of R Programming (2011, pp. 131-134). 
@@ -750,25 +763,43 @@ subtable_names <- function(tbl, dim_list){
 #' 
 #' @export
 
-subtable <- function(tbl, sub_dims) {
+subtable <- function(tbl, 
+                     # sub_dims = dimnames(tbl), # s1: Use sublist_names() function
+                     in_list = dimnames(tbl), out_list = NULL, quiet = TRUE  # s2: Use sublist() function
+) 
+{
   
-  # (0) Preparation:
+  # 0. Preparation:
   tbl_names <- dimnames(tbl)
-  sub_dims  <- sublist_names(tbl_names, sub_dims)  # list of dims/levels to include
   
-  # (1) Deconstruction: 
+  if (is.null(tbl_names)){
+    message("subtable: tbl has no dimnames.")
+  }
+  
+  # sub_dims  <- sublist_names(name_list = tbl_names, dim_list = sub_dims)  # s1: Use sublist_names() function
+  sub_dims  <- sublist(ls = tbl_names, in_list = in_list, out_list = out_list, quiet = quiet) # s2: Use sublist() function
+  
+  print(sub_dims)  # 4debugging
+  
+  # 1. Deconstruction: 
   # Get the array of cell counts in tbl:
   t_array <- unclass(tbl)
   
-  # (2) Preparation:
+  # 2. Preparation:
   # Strategy: We get the sub_array of cell counts corresponding to sub_dims 
   #           by calling do.call() on the "[" function; 
-  #           but build up a list of arguments first: 
+  #           but build up a list of its arguments first: 
   
-  dc_args <- list(t_array)
+  dc_args <- list(t_array)  # 1st element of list is t_array
   # message(dc_args)  # 4debugging: List of count values
   
   n_dims <- length(sub_dims)  # number of desired dimensions
+  
+  if (n_dims < length(tbl_names)) {
+    message("subtable: Fewer dimensions specified than in tbl.")
+  } else if (n_dims > length(tbl_names)) {
+    message("subtable: More dimensions specified than in tbl.")
+  }
   
   for (i in 1:n_dims) {
     dc_args[[i + 1]] <- sub_dims[[i]]
@@ -776,25 +807,25 @@ subtable <- function(tbl, sub_dims) {
   
   # message(dc_args)  # 4debugging: List of count values + desired dimension levels
   
-  # (3) Main:   
+  # 3. Main:   
   sub_array <- do.call(what = "[", args = dc_args)
   
-  # (4) Reconstruction: 
+  # 4. Reconstruction: 
   # Build the new table, consisting of the sub_array, 
   # the number of levels in each dimension, the dimnames() value, 
   # plus the "table" class attribute: 
   
   dims  <- lapply(sub_dims, length)
-  sub_tbl <- array(sub_array, dims, dimnames = sub_dims) 
+  sub_tbl <- array(sub_array, dim = dims, dimnames = sub_dims) 
   class(sub_tbl) <- "table"
   
-  # (5) Output: 
+  # 5. Output: 
   return(sub_tbl)
   
 } # subtable(). 
 
-# # Check:
-# # (A) Use with a dummy table (from array):
+# ## Check:
+# # (A) Use with a dummy table (from an array):
 # dims <- 4:2
 # v <- sample(1:100, size = prod(dims), replace = FALSE)
 # a <- array(v, dims)
@@ -802,48 +833,71 @@ subtable <- function(tbl, sub_dims) {
 # (t <- as.table(a))
 # 
 # # standard case:
-# subtable(t, sub_dims = list(row = c("r1", "r2"),
-#                             col = c("c1", "c2"),
-#                             tab = c("t2")))
+# subtable(t, in_list = list(row = c("r1", "r2"),
+#                            col = c("c1", "c2"),
+#                            tab = c("t2")))
 # 
 # # works with numeric indexing of level names:
-# subtable(t, sub_dims = list(row = 1:2,
-#                             col = 1:2,
-#                             tab = 2))
+# subtable(t, in_list = list(row = 1:2,
+#                            col = 1:2,
+#                            tab = 2))
 # 
-# # works without dimension names:
-# subtable(t, sub_dims = list(1:2, 1:2, 2))
+# # works without dimension names (note messages):
+# subtable(t, in_list = list(1:2, 1:2, 2))
 # 
-# # using a mix of names and numeric indices:
-# subtable(t, sub_dims = list(1:2, c("c1", "c2"), 2))
+# # using a mix of names and numeric indices (note messages):
+# subtable(t, in_list = list(1:2, c("c1", "c2"), 2))
 # 
 # 
-# # (B) Use an existing table: Titanic
+# # (B) Use an existing table (with dimnames): Titanic
 # 
 # # (a) Use level names:
-# subtable(Titanic, sub_dims = list(Class = c("1st", "2nd", "3rd"),
-#                                   Sex = "Female", Age = "Adult",
-#                                   Survived = c("Yes")))
+# subtable(Titanic, in_list = list(Class = c("1st", "2nd", "3rd"),
+#                                  Sex = "Female", Age = "Adult",
+#                                  Survived = c("Yes")))
+# 
+# # alternatives ways of obtaining same result:
+# subtable(Titanic, out_list = list(Class = c("Crew"),
+#                                   Sex = "Male", Age = "Child",
+#                                   Survived = c("No")))
+# 
+# subtable(Titanic, in_list = list(Class = c("1st", "2nd", "3rd"),
+#                                  Sex = "Female", Age = c("Adult", "Child"),
+#                                  Survived = c("Yes", "No")),
+#          out_list = list(Age = "Child", Survived = c("No")))
+# 
 # 
 # # (b) Use dim names and level numbers:
-# subtable(Titanic, sub_dims = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
+# subtable(Titanic, in_list = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
 # 
-# # (c) Use level numbers only:
-# subtable(Titanic, sub_dims = list(1:3, 2, 2, 2))
+# # (c) Use level numbers only (note messages):
+# subtable(Titanic,  in_list = list(1:3, 2, 2, 2))
+# subtable(Titanic, out_list = list(4, 1, 1, 1))
 # 
-# # (d) Use a mix of level names and numbers:
-# subtable(Titanic, sub_dims = list(1:3, "Female", 2, "Yes"))
-# 
-# # (e) Note: Using fewer elements in sub_dims than dimnamesI(tbl):
-# subtable(Titanic, sub_dims = list(1:3, "Female", 2))
-# subtable(Titanic, sub_dims = list(1:3, "Female", 2, 2, 99))
+# # (d) Use a mix of level names and numbers (note messages):
+# subtable(Titanic,  in_list = list(1:3, "Female", 2, "Yes"))
+# subtable(Titanic, out_list = list(4, "Male", 1, "No"))
+
+# +++ here now +++ [2021-08-26]
+
+# ERRORs when specified subset is shorter/longer than dims of tbl:
+
+# (e) Note: Using fewer elements in in_list than dimnamesI(tbl):
+# subtable(Titanic, in_list = list(Class = 1:3, Sex = "Female", Age = 2))
+
+# subtable(Titanic,
+#          in_list = list(Class = 1:3, Sex = "Female", Age = 2),
+#          out_list = list(Survived = 1:2))
+
+## Using excess of dimensions wihout tags yields an error:
+# subtable(Titanic, in_list = list(1:3, "Female", 2, 2, 99))
 
 
-# ToDo: +++ here now +++ [2021-08-18]
+# ToDo: 
 #
 # - The filter() function from dplyr only includes cases that are specified.
 #   Consider changing subtable() to only include specified dimensions 
-#   (when length(sub_dims) < length(dimnames(tbl))).
+#   (when length(in_list) < length(dimnames(tbl))).
 #
 # - Create a negative version that filters out/excludes specified dimensions and levels, 
 #   rather than including all and only specified dimensions and levels.
