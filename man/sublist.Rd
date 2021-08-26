@@ -4,17 +4,15 @@
 \alias{sublist}
 \title{Extract a sublist (or subset) of a list.}
 \usage{
-sublist(x, in_list = x, out_list = NULL, quiet = FALSE)
+sublist(ls, in_list = ls, out_list = NULL, quiet = FALSE)
 }
 \arguments{
-\item{x}{The original list (as \code{\link{list}}).}
+\item{ls}{The original list (as \code{\link{list}}).}
 
-\item{in_list}{A list specifying the tag and value(s) of \code{x} 
-to be retained. 
-Default: \code{in_list = x} (i.e., everything).}
+\item{in_list}{A list specifying the tag and value(s) of \code{ls} to keep/include. 
+Default: \code{in_list = ls} (i.e., everything).}
 
-\item{out_list}{A list specifying the tag and value(s) of \code{x} 
-to be dropped. 
+\item{out_list}{A list specifying the tag and value(s) of \code{ls} to drop/exclude. 
 Default: \code{out_list = NULL} (i.e., nothing).}
 
 \item{quiet}{Boolean: Hide feedback messages?
@@ -24,14 +22,13 @@ Default: \code{quiet = FALSE} (i.e., show messages).}
 A list.
 }
 \description{
-\code{sublist} yields a sublist of a list \code{x}
+\code{sublist} yields a sublist of a list \code{ls}
 by filtering or extracting a subset of the list's 
 dimensions and levels.
 }
 \details{
 \code{sublist} provides a filter/slice function for lists, by specifying 
-a positive subset \code{in_list} 
-and a negative subset \code{out_list} 
+a positive subset \code{in_list} and a negative subset \code{out_list} 
 (both as lists, in tag and value format).
 }
 \examples{

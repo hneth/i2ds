@@ -8,15 +8,25 @@ Based on the \code{subtable} function by Norman Matloff,
 The Art of R Programming (2011, pp. 131-134).
 }
 \usage{
-subtable(tbl, sub_dims)
+subtable(tbl, in_list = dimnames(tbl), out_list = NULL, quiet = TRUE)
 }
 \arguments{
-\item{tbl}{The original table (as \code{\link{table}}).}
+\item{tbl}{An original table to be reduced (as \code{\link{table}}).}
 
-\item{sub_dims}{A list specifying the desired subtable extraction. 
-Each element is named after a dimension of \code{tbl}, 
+\item{in_list}{A list specifying the subset of \code{tbl} to keep/include. 
+Each list element is named after a dimension of \code{tbl}, 
 and the value of that component is a vector of the names or a numeric index 
-of the desired levels.}
+of the desired levels. 
+Default: \code{in_list = dimnames(tbl)} (i.e., everything).}
+
+\item{out_list}{A list specifying the subset of \code{tbl} to drop/exclude. 
+Each list element is named after a dimension of \code{tbl}, 
+and the value of that component is a vector of the names or a numeric index 
+of the desired levels. 
+Default: \code{out_list = NULL} (i.e., nothing).}
+
+\item{quiet}{Boolean: Hide feedback messages?
+Default: \code{quiet = TRUE} (i.e., hide messages).}
 }
 \value{
 A table.
@@ -27,35 +37,38 @@ by filtering or extracting a subset of table's
 dimensions and levels.
 }
 \details{
-\code{subtable} provides a filter/slice function for tables, 
-by specifying a positive subset (i.e., levels to be included) 
-as a list \code{sub_dims}. 
+\code{subtable} provides a filter/slice function for tables, by specifying 
+a positive subset (i.e., dimensions and levels to include) as \code{in_list} or  
+a positive subset (i.e., dimensions and levels to include) as \code{in_list} 
+(both as lists that specify dimension and level names, in tag and value format). 
 
 \code{subtable} assumes that \code{dimnames(tbl)} exist, 
-but is flexible in allowing \code{sub_dims} to use   
-both names and numeric indices of the desired table levels.
+but is flexible in allowing \code{in_list} and \code{out_list} 
+to use both names or numeric indices for subsetting table levels.
 }
 \examples{
 t <- datasets::Titanic
-subtable(t, sub_dims = dimnames(t))  # same as t
+
+# Trivial case:
+subtable(t, in_list = dimnames(t))  # same as t
 
 # (a) Use level names:
-subtable(t, sub_dims = list(Class = c("1st", "2nd", "3rd"),
-                             Sex = "Female", Age = "Adult",
-                             Survived = c("Yes")))
+subtable(t, in_list = list(Class = c("1st", "2nd", "3rd"),
+                           Sex = "Female", Age = "Adult",
+                           Survived = c("Yes")))
 
 # (b) Use dim names and level numbers:
-subtable(t, sub_dims = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
+subtable(t, in_list = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
 
-# (c) Use level numbers only:
-subtable(t, sub_dims = list(1:3, 2, 2, 2))
+# (c) Use level numbers only (note messages):
+subtable(t, in_list = list(1:3, 2, 2, 2))
 
-# (d) Use a mix of level names and numbers:
-subtable(t, sub_dims = list(1:3, "Female", 2, "Yes"))
+# (d) Use a mix of level names and numbers (note messages): 
+subtable(t, in_list = list(1:3, "Female", 2, "Yes"))
 
-# (e) Note: Different length of sub_dims than dimnamesI(tbl):
-subtable(t, sub_dims = list(1:3, "Female", 2))   # use missing dim in full
-subtable(t, sub_dims = list(1:3, "Female", 2, 2, 99))  # truncate sub_dims
+# (e) Note: Different length of sub_dims than dimnamesI(tbl) yield ERRORs:
+# subtable(t, in_list = list(1:3, "Female", 2))   # ToDo: use missing dim in full
+# subtable(t, in_list = list(1:3, "Female", 2, 2, 99))  # ToDo: truncate sub_dims
  
 }
 \seealso{
