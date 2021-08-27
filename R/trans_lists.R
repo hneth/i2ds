@@ -1170,18 +1170,22 @@ sublist_2 <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
       if ( !all(is.na(new_vec)) ) { # there is something to change:
         
         CT_list[[CT_ix]] <- new_vec
-        # print(sub_list)[[CT_ix]]  # 4debugging  
+        # print(CT_list)[[CT_ix]]  # 4debugging  
         
-      } else { # do nothing!
+      } else { # new_vec contains only NA:
         
-        # CT_list[[CT_ix]] <- NULL  # Note: This implies that CT_list can shrink!
-        # print(paste0("Removed CT_ix = ", CT_ix, ". element of CT_list"))  # 4debugging
+        CT_list[[CT_ix]] <- NA  # Note: NULL would imply that CT_list can shrink!
+        # print(paste0("Element CT_ix = ", CT_ix, " of CT_list set to NA."))  # 4debugging
+        
+        # if (!quiet) { 
+        message(paste0("sublist_2: Element ", CT_ix, " of current list is NA."))
+        # }
         
       }
       
     } # loop out_list end. 
     
-    sub_list <- CT_list # transfer CT_list back to sub_list: 
+    sub_list <- CT_list  # transfer CT_list back to sub_list: 
     
   } # if (is.null(out_list)) etc.  
   
@@ -1195,62 +1199,65 @@ sublist_2 <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
   
 } # sublist_2(). 
 
-## Check:
-## (A) Examples:
-(ls <- list(n = 1:4, l = letters[1:4]))
-
-# Trivial cases:
-sublist_2(ls, in_list = ls)
-sublist_2(ls, out_list = ls)
-
-# Examples:
-# (a) in_list only:
-sublist_2(ls,  in_list = list(l = letters[4]))  # Note: non-mentioned element(s) are retained!
-sublist_2(ls,  in_list = list(l = letters[c(4, 2)], n = c(4, 2)))  # level order reversed
-sublist_2(ls,  in_list = list(l = c("d", "a"), n = 3:2))  # element order remains constant.
-sublist_2(ls,  in_list = list(l = c("d", "a"), n = 3:2, l = "d", n = 2))  # using elements repeatedly.
-
-# NA/empty cases:
-sublist_2(ls,  in_list = NA)      # returns NA
-sublist_2(ls,  in_list = list())  # returns an empty list
-
-# Note:
-sublist_2(ls,  in_list = list(l = 4, n = 4))      # matching list elements and levels
-sublist_2(ls,  in_list = list(l = 99, n = 99))    # non-existent levels: nothing in
-sublist_2(ls,  in_list = list(ll = 99, nn = 99))  # heuristics match list elements
+# ## Check:
+# ## (A) Examples:
+# (ls <- list(n = 1:4, l = letters[1:4]))
 # 
-# # (b) out_list only:
-sublist_2(ls, out_list = list(l = letters[c(3, 1)], n = c(1, 3)))
-sublist_2(ls, out_list = list(l = "c", n = 3, n = 1, l = "a"))
-
-# +++ here now +++ [2021-08-27] 
-
+# # Trivial cases:
+# sublist_2(ls, in_list = ls)
+# sublist_2(ls, out_list = ls)
+# 
+# # Examples:
+# # (a) in_list only:
+# sublist_2(ls,  in_list = list(l = letters[4]))  # Note: non-mentioned element(s) are retained!
+# sublist_2(ls,  in_list = list(l = letters[c(4, 2)], n = c(4, 2)))  # level order reversed
+# sublist_2(ls,  in_list = list(l = c("d", "a"), n = 3:2))  # element order remains constant.
+# sublist_2(ls,  in_list = list(l = c("d", "a"), n = 3:2, l = "d", n = 2))  # using elements repeatedly.
+# 
+# # NA/empty cases:
+# sublist_2(ls,  in_list = NA)      # returns NA
+# sublist_2(ls,  in_list = list())  # returns an empty list
+# 
+# # Note:
+# sublist_2(ls,  in_list = list(l = 4, n = 4))      # matching list elements and levels
+# sublist_2(ls,  in_list = list(l = 99, n = 99))    # non-existent levels: nothing in
+# sublist_2(ls,  in_list = list(ll = 99, nn = 99))  # heuristics match list elements
+# # 
+# # # (b) out_list only:
+# sublist_2(ls, out_list = list(l = letters[c(3, 1)], n = c(1, 3)))
+# sublist_2(ls, out_list = list(l = "c", n = 3, n = 1, l = "a"))  # multiple mentions
+# 
 # # NA/empty cases:
 # sublist_2(ls, out_list = NA)      # returns NA
 # sublist_2(ls, out_list = list())  # returns original list
 # 
-# # Note:
-# sublist_2(ls, out_list = list(l = 4, n = 4))      # matching list elements and levels
+# # Note 1: When using numeric indices, order may matter:
+# sublist_2(ls, out_list = list(l = "d", n = 4))  # works, BUT: 
+# sublist_2(ls, out_list = list(l = 4, n = 4))    # 4-th dim of l not removed, due to conflict!
+# sublist_2(ls, out_list = list(n = 4, l = 4))    # 4-th dim of l removed, due to NO more conflict!
+# 
+# # Note 2: Heuristics for matching un-identified levels may yield unexpected results:
 # sublist_2(ls, out_list = list(l = 99, n = 99))    # non-existent levels: nothing out
-# sublist_2(ls, out_list = list(ll = 99, nn = 99))  # heuristics match list elements
+# sublist_2(ls, out_list = list(ll = 99, nn = 99))  # heuristics match list elements (but no removal of non-existent levels)
+# sublist_2(ls, out_list = list(ll = 3, nn = 3))    # heuristics match list elements (and removal of non-existent levels)
 # 
 # # (c) in_list AND out_list:
 # sublist_2(ls, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(l = "c"))
 # sublist_2(ls, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(n = 4, l = "c"))
 # 
-# # removing everything:
-# sublist_2(ls, in_list = list(n = 4:3), out_list = list(n = 3:4))
+# # removing everything yields NA (but does not remove list elements): 
+# sublist_2(ls, in_list = list(n = 3:4), out_list = list(n = 4:3), quiet = FALSE)
 # sublist_2(ls, in_list = list(l = c("c", "a")), out_list = list(l = c("a", "c")))
-# 
 # sublist_2(ls, in_list = list(n = 3:4, l = c("a", "c")),
-#         out_list = list(n = 4:3, l = c("c", "a")))
+#           out_list = list(n = 4:3, l = c("c", "a")))
 # 
-# # Note: Tags can be used repeatedly and empty list elements are dropped:
+# # Note: Tags can be used repeatedly and empty levels yield NA (but do not drop list elements):
 # sublist_2(ls, out_list = list(l = c("c", "b"), n = 2:3))
 # sublist_2(ls, out_list = list(l = c("c", "b"), n = 2:3, l = c("a", "d")))
 # sublist_2(ls, out_list = list(l = c("c", "b"), n = 2:3, l = c("a", "d"), n = 1:4))
 # 
-# 
+# +++ here now +++ [2021-08-27] 
+#
 # ## (B) Character elements (e.g., from dimnames(tbl)):
 # (t_nm <- dimnames(Titanic))  # A test list (with dimension and level names)
 # # names(t_nm)  # names of t_nm
