@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 08 26
+## hn | uni.kn | 2021 08 27
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 #
@@ -776,9 +776,8 @@ subtable <- function(tbl,
     message("subtable: tbl has no dimnames.")
   }
   
-  # sub_dims  <- sublist_names(name_list = tbl_names, dim_list = sub_dims)  # s1: Use sublist_names() function
-  sub_dims  <- sublist(ls = tbl_names, in_list = in_list, out_list = out_list, quiet = quiet) # s2: Use sublist() function
-  
+  # sub_dims  <- sublist_names(name_list = tbl_names, sub_list = sub_dims)  # s1: Use sublist_names() function
+  sub_dims  <- sublist(ls = tbl_names, in_list = in_list, out_list = out_list, quiet = quiet)  # s2: Use sublist() function
   print(sub_dims)  # 4debugging
   
   # 1. Deconstruction: 
@@ -880,7 +879,7 @@ subtable <- function(tbl,
 # 
 # subtable(Titanic, out_list = list(4, "Male", Survived = "No"))
 
-# +++ here now +++ [2021-08-26]
+# +++ here now +++ [2021-08-27]
 
 # Key constraint: 
 # sublist(ls = tbl_names, in_list = in_list, out_list = out_list,
