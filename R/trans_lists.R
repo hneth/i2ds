@@ -1,5 +1,5 @@
 ## trans_lists.R | i2ds
-## hn | uni.kn | 2021 08 26
+## hn | uni.kn | 2021 08 27
 
 # Functions for transforming/manipulating lists: ------ 
 #
@@ -270,41 +270,41 @@ match_list_tag <- function(tag, ls, nomatch = 0L){
 
 
 
-## sublist_names: Utility function to get the names of a name_list specified in dim_list: -----
+## sublist_names: Utility function to get the names of a name_list specified in sub_list: -----
 
 # A simpler variant of sub_table_names that does not require a table tbl, 
 # and uses 2 lists as arguments:  
 # - name_list is the list of original names (that is to be reduced) 
-# - dim_list is a list that specifies a subset of name_list (by name or numeric indices)
+# - sub_list is a list that specifies a subset of name_list (by name or numeric indices)
 #
 # Currently used, but not exported. 
 
-sublist_names <- function(name_list, dim_list){
+sublist_names <- function(name_list, sub_list){
   
   # Initialize:
   # name_list <- dimnames(tbl)  # original list of dimnames
   new_name_list <- name_list    # initialize a new list (to be reduced)
-  n_dim <- length(dim_list)     # N of desired dimensions
+  n_sub <- length(sub_list)     # N of desired dimensions
   
   # Verify correspondence of list lengths:
-  if (n_dim < length(name_list)){  # Notify user: 
-    message("sublist_names: dim_list is shorter than name_list. Using elements of name_list in turn:")
+  if (n_sub < length(name_list)){  # Notify user: 
+    message("sublist_names: sub_list is shorter than name_list. Using elements of name_list in turn:")
   }
   
-  if (n_dim > length(name_list)){  # Notify user: 
-    message("sublist_names: dim_list is longer than name_list. Truncating to same length:")
-    n_dim <- length(name_list)
+  if (n_sub > length(name_list)){  # Notify user: 
+    message("sublist_names: sub_list is longer than name_list. Truncating to same length:")
+    n_sub <- length(name_list)
   }
   
   # Main: 
-  for (i in 1:n_dim){  # Consider each elements of dim_list(!) in turn:
+  for (i in 1:n_sub){  # Consider each elements of sub_list(!) in turn:
     
     # org_dim_name <- names(name_list[i])
-    # cur_dim_name <- names(dim_list[i])
+    # cur_dim_name <- names(sub_list[i])
     
     # if ( (is.null(cur_dim_name)) | (cur_dim_name == org_dim_name) ){
     
-    cur_lev_vec <- dim_list[[i]]  # extract current levels (element on dim_list)
+    cur_lev_vec <- sub_list[[i]]  # extract current levels (element on sub_list)
     
     if (is.numeric(cur_lev_vec)){  # provided a numeric index:
       
@@ -334,22 +334,22 @@ sublist_names <- function(name_list, dim_list){
 # # Check:
 # ls <- dimnames(Titanic)
 # 
-# # A purely numeric index as dim_list:
-# sublist_names(ls, dim_list = list(2, 2, 2, Class = 1))  # Note: tags are ignored!
-# sublist_names(ls, dim_list = list(c(1, 3), 2, 2, 2))
+# # A purely numeric index as sub_list:
+# sublist_names(ls, sub_list = list(2, 2, 2, Class = 1))  # Note: tags are ignored!
+# sublist_names(ls, sub_list = list(c(1, 3), 2, 2, 2))
 # 
 # # A mix of names and numeric index:
-# sublist_names(ls, dim_list = list(c(1, 3), "Female", 2, "Yes"))
+# sublist_names(ls, sub_list = list(c(1, 3), "Female", 2, "Yes"))
 # 
-# # A Warning: If dim_list has fewer OR more elements than dimensions:
-# sublist_names(ls, dim_list = list(c(1, 3), "Female", 1))
-# sublist_names(ls, dim_list = list(c(1, 3), "Female", 1, 2, 99))
+# # A Warning: If sub_list has fewer OR more elements than dimensions:
+# sublist_names(ls, sub_list = list(c(1, 3), "Female", 1))
+# sublist_names(ls, sub_list = list(c(1, 3), "Female", 1, 2, 99))
 # 
 # # Note some features:
-# # - Any names/tags are ignored.
-# #   Dimensions of name_list are considered in the order provided in dim_list.
-# # - The names of additional dimensions (without names or numbers in dim_list) are fully included.
-# # - Additional/extra dim_list arguments are truncated. 
+# # - Any names/tags are ignored (i.e., assuming that sub_list elements are in SAME order as name_list).
+# #   Dimensions of name_list are considered in the order provided in sub_list.
+# # - The names of additional dimensions (without names or numbers in sub_list) are included in full.
+# # - Additional/extra sub_list arguments are truncated. 
 
 
 ## list_element_ix: Find a list position for tag AND/OR values (levels): ------ 
