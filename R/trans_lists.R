@@ -562,7 +562,7 @@ list_element_ix <- function(ls, tag = NULL, values = NULL, quiet = FALSE){
 
 ## sublist: Extract a sublist (or subset) of a list ls, using 2 arguments (in_list and out_list): ------ 
 
-# A more specific and powerful version of sublist_names() (above): 
+# A more general and powerful version of sublist_names() (above): 
 
 # Extract a subset of elements (dimensions OR levels) from a list ls:
 # - include only elements (dimensions OR levels) specified in in_list
@@ -986,6 +986,359 @@ sublist <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 # ToDo: 
 # - Simplify function (e.g., by making more conservative/strict)
 # - Analog version: out_list uses all, but excludes all mentioned dimensions/levels
+
+
+
+## sublist_2: A more contrained sublist function for subtable(), using 2 arguments (in_list and out_list): ------ 
+
+# A more specific and constrained version of sublist() (above)
+# to be used in subtable() function.
+
+# Constraints:
+# - Lists returned keep ALL elements (name/tags) of ls 
+# - in the same order
+# - non-mentioned elements of ls are left intact/kept as is/unchanged! 
+
+sublist_2 <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
+  
+  # 0. Inputs: ---- 
+  if (!is.list(ls)){ message("sublist_2: ls is not a list."); return(NA) }
+  
+  if (!is.list(in_list)) { message("sublist_2: in_list is not a list.");  return(NA) }
+  
+  if (is_empty_list(in_list)){ return(vector("list", 0)) }  # return an empty list
+  
+  if (is.null(out_list)) {
+    
+    if (identical(in_list, ls)) { return(ls) }
+    
+  } else { # out_list has been specified:
+    
+    if (!is.list(out_list)) { message("sublist_2: out_list is not a list.");  return(NA) }
+    
+  }
+  
+  
+  # 1. Use in_list: ---- 
+  if ( (is.null(in_list)) | (identical(in_list, ls)) ){
+    
+    sub_list <- ls  # Case_A: Transfer ls to sub_list (to use out_list below)
+    
+  } else { # interpret in_list elements and change sub_list accordingly:
+    
+    # Initialize: 
+    sub_list <- ls  # initialize sub_list to ls
+    
+    CT_list <- ls  # current target list (transfer current main list)
+    CT_names <- names(CT_list)  # names of current target list (as a vector)
+    # if (is.null(CT_names)){ print("CT_list contains NO names/tags.") }  # 4debugging 
+    
+    n_in <- length(in_list)       # N of desired elements/dimensions    
+    in_names <- names(in_list)    # names of in_list (as a vector)
+    # if (is.null(in_names)){ print("in_list contains NO names/tags.") }  # 4debugging 
+    
+    for (i in 1:n_in){ # loop through in_list:
+      
+      # Determine 2 features of desired/target element: name/tag and vector of levels/values
+      
+      # (a) cur_in_tag: current name/tag (as character): 
+      cur_in_tag <- in_names[i]                     # tag/name of desired list dimension    
+      if (is.null(cur_in_tag)){ cur_in_tag <- NA }  # fix NULL cases
+      # print(cur_in_tag)  # 4debugging
+      
+      # (b) cur_in_vec: levels/values of current element of in_list (as a vector) 
+      cur_in_vec <- in_list[[i]]  # (b) desired levels (as vector)
+      
+      # Determine relevant ix/position of CT_list (corresponding to current elements of in_list):
+      CT_ix <- NA  # initialize
+      CT_ix <- list_element_ix(CT_list, tag = cur_in_tag, values = cur_in_vec, quiet = quiet)  # use utility function (above)
+      
+      if ( all(is.na(CT_ix)) ){ # CT_ix could not be assigned:
+        
+        message(paste0("sublist_2: Element ", i, " of in_list not located in current list. Using element ", i, " of current list."))
+        CT_ix <- i  # Heuristic: Assume SAME position i in CT_list (never quiet)!
+        
+      }
+      
+      # Determine current target levels (at CT_ix) and new levels (as subset/intersection):
+      CT_vec <- CT_list[[CT_ix]]  # vector of original levels/element CT_ix of CT_list
+      
+      if ( (!is.numeric(CT_vec)) & (is.numeric(cur_in_vec)) ) { # provided a numeric index to non-numeric vector of CT_vec:
+        
+        if (!quiet) { 
+          message(paste0("sublist_2: Using element ", i, " of in_list as numeric subset of element ", CT_ix, " of current list."))
+        }
+        
+        new_vec <- CT_vec[cur_in_vec]  # desired subset (by numeric indexing)
+        # NOTE: Non-existing index values yield and keep NA values.
+        
+        new_vec <- new_vec[!is.na(new_vec)]  # remove NA values
+        # NOTE: Non-existing levels are dropped!
+        
+      } else { # cur_in_vec is NOT numeric or BOTH are numeric: use levels/names provided: 
+        
+        new_vec <- intersect(cur_in_vec, CT_vec)  # prioritize cur_in_vec and drop any non-existing levels!      
+        # NOTE: Non-existing levels are dropped!
+        
+      }
+      
+      # Populate CT_ix-th element of sub_list by new_vec:
+      sub_list[[CT_ix]] <- new_vec  # ADD list element  
+      names(sub_list)[CT_ix] <- CT_names[CT_ix]  # Assign corresponding name/tag of CT_list to list element
+      
+    } # loop in_list end. 
+    
+  } # if (is.null(in_list)) etc.
+  
+  
+  # Intermediate feedback:
+  print(paste0("sublist_2: sub_list (after processing in_list): "))  
+  print(sub_list) # 4debugging 
+  
+  
+  # 2. Use out_list: ---- 
+  if ( is.null(out_list) | is_empty_list(out_list) ) {
+    
+    return(sub_list)
+    
+  } else if (identical(out_list, sub_list)) {
+    
+    # print(paste0("sublist: Nothing remains, as out_list corresponds to sub_list."))  # 4debugging 
+    return(vector("list", 0))  # return an empty list
+    
+  } else { # interpret out_list (to remove elements or levels from CT_list): 
+    
+    # print(paste0("sublist: Interpret a given out_list by removing from sub_list:"))  # 4debugging 
+    
+    # Initialize: 
+    CT_list <- sub_list  # current target list (transfer current main list)
+    CT_names <- names(CT_list)  # names of current target list (as a vector)
+    # if (is.null(CT_names)){ print("CT_list contains NO names/tags.") }  # 4debugging 
+    
+    n_out <- length(out_list)     # N of desired elements/dimensions
+    out_names <- names(out_list)  # names of out_list (as a vector)  
+    # if (is.null(out_names)){ print("out_list contains NO names/tags.") }  # 4debugging 
+    
+    for (i in 1:n_out){ # loop through out_list:
+      
+      # Determine 2 features of desired/target element: name/tag and vector of levels/values
+      
+      # (a) cur_out_tag: current name/tag (as character): 
+      cur_out_tag <- out_names[i]                     # tag/name of desired list dimension    
+      if (is.null(cur_out_tag)){ cur_out_tag <- NA }  # fix NULL cases
+      # print(cur_out_tag)  # 4debugging
+      
+      # (b) cur_out_vec: levels/values of current element of out_list (as a vector) 
+      cur_out_vec <- out_list[[i]]  # desired/target levels (as vector)
+      
+      # Determine relevant ix/position of CT_list (corresponding to current elements of out_list):
+      CT_ix <- NA  # initialize
+      CT_ix <- list_element_ix(CT_list, tag = cur_out_tag, values = cur_out_vec, quiet = quiet)  # use utility function (above)
+      
+      if ( all(is.na(CT_ix)) ){ # CT_ix could not be assigned:
+        
+        message(paste0("sublist_2: Element ", i, " of out_list not located in current list. Using element ", i, " of current list."))
+        CT_ix <- i  # Heuristic: Assume SAME position i in CT_list (never quiet)!
+        
+      }
+      
+      # Determine current target levels (at CT_ix) and new levels (as subset/setdiff):
+      CT_vec <- CT_list[[CT_ix]]  # vector of levels/element CT_ix of CT_list
+      
+      if ( (!is.numeric(CT_vec)) & (is.numeric(cur_out_vec)) ) { # provided a numeric index to non-numeric vector of CT_vec:
+        
+        if (!quiet) { 
+          message(paste0("sublist_2: Using element ", i, " of out_list as numeric subset of element ", CT_ix, " of current list."))
+        }
+        
+        new_vec <- CT_vec[-cur_out_vec]  # reduced subset (by numeric indexing)
+        # NOTE: Non-existing index values yield and keep NA values.
+        
+        new_vec <- new_vec[!is.na(new_vec)]  # remove NA values
+        # NOTE: Non-existing levels are dropped!
+        
+      } else { # cur_out_vec is NOT numeric or BOTH are numeric: use levels/names provided: 
+        
+        new_vec <- setdiff(CT_vec, cur_out_vec)  # prioritize CT_vec and drop any non-existing levels!
+        # NOTE: Non-existing levels are dropped!
+        
+      }
+      
+      # print(new_vec)  # 4debugging
+      
+      # CHANGE CT_ix-th element of CT_list to new_vec:
+      if ( !all(is.na(new_vec)) ) { # there is something to change:
+        
+        CT_list[[CT_ix]] <- new_vec
+        # print(sub_list)[[CT_ix]]  # 4debugging  
+        
+      } else { # do nothing!
+        
+        # CT_list[[CT_ix]] <- NULL  # Note: This implies that CT_list can shrink!
+        # print(paste0("Removed CT_ix = ", CT_ix, ". element of CT_list"))  # 4debugging
+        
+      }
+      
+    } # loop out_list end. 
+    
+    sub_list <- CT_list # transfer CT_list back to sub_list: 
+    
+  } # if (is.null(out_list)) etc.  
+  
+  
+  # 3. Output: ---- 
+  
+  # # Remove empty list elements: 
+  # sub_list <- drop_empty_list_elements(sub_list)  # use utility function (above)
+  
+  return(sub_list)
+  
+} # sublist_2(). 
+
+## Check:
+## (A) Examples:
+(ls <- list(n = 1:4, l = letters[1:4]))
+
+# Trivial cases:
+sublist_2(ls, in_list = ls)
+sublist_2(ls, out_list = ls)
+
+# Examples:
+# (a) in_list only:
+sublist_2(ls,  in_list = list(l = letters[4]))  # Note: non-mentioned element(s) are retained!
+sublist_2(ls,  in_list = list(l = letters[c(4, 2)], n = c(4, 2)))  # level order reversed
+sublist_2(ls,  in_list = list(l = c("d", "a"), n = 3:2))  # element order remains constant.
+sublist_2(ls,  in_list = list(l = c("d", "a"), n = 3:2, l = "d", n = 2))  # using elements repeatedly.
+
+# NA/empty cases:
+sublist_2(ls,  in_list = NA)      # returns NA
+sublist_2(ls,  in_list = list())  # returns an empty list
+
+# Note:
+sublist_2(ls,  in_list = list(l = 4, n = 4))      # matching list elements and levels
+sublist_2(ls,  in_list = list(l = 99, n = 99))    # non-existent levels: nothing in
+sublist_2(ls,  in_list = list(ll = 99, nn = 99))  # heuristics match list elements
+# 
+# # (b) out_list only:
+sublist_2(ls, out_list = list(l = letters[c(3, 1)], n = c(1, 3)))
+sublist_2(ls, out_list = list(l = "c", n = 3, n = 1, l = "a"))
+
+# +++ here now +++ [2021-08-27] 
+
+# # NA/empty cases:
+# sublist_2(ls, out_list = NA)      # returns NA
+# sublist_2(ls, out_list = list())  # returns original list
+# 
+# # Note:
+# sublist_2(ls, out_list = list(l = 4, n = 4))      # matching list elements and levels
+# sublist_2(ls, out_list = list(l = 99, n = 99))    # non-existent levels: nothing out
+# sublist_2(ls, out_list = list(ll = 99, nn = 99))  # heuristics match list elements
+# 
+# # (c) in_list AND out_list:
+# sublist_2(ls, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(l = "c"))
+# sublist_2(ls, in_list = list(n = 3:4, l = c("c", "a")), out_list = list(n = 4, l = "c"))
+# 
+# # removing everything:
+# sublist_2(ls, in_list = list(n = 4:3), out_list = list(n = 3:4))
+# sublist_2(ls, in_list = list(l = c("c", "a")), out_list = list(l = c("a", "c")))
+# 
+# sublist_2(ls, in_list = list(n = 3:4, l = c("a", "c")),
+#         out_list = list(n = 4:3, l = c("c", "a")))
+# 
+# # Note: Tags can be used repeatedly and empty list elements are dropped:
+# sublist_2(ls, out_list = list(l = c("c", "b"), n = 2:3))
+# sublist_2(ls, out_list = list(l = c("c", "b"), n = 2:3, l = c("a", "d")))
+# sublist_2(ls, out_list = list(l = c("c", "b"), n = 2:3, l = c("a", "d"), n = 1:4))
+# 
+# 
+# ## (B) Character elements (e.g., from dimnames(tbl)):
+# (t_nm <- dimnames(Titanic))  # A test list (with dimension and level names)
+# # names(t_nm)  # names of t_nm
+# #
+# # # Trivial case:
+# sublist_2(t_nm)  # returns original list
+# sublist_2(t_nm,  in_list = list())  # empty list
+# sublist_2(t_nm, out_list = t_nm)    # empty list
+# 
+# ## (a) Working for:
+# # # in_list provides dimnames (dropping non-existent levels):
+# sublist_2(t_nm, in_list = list(Age = "Adult", Class = c("3rd", "1st", "stuff")))
+# sublist_2(t_nm, in_list = list(Age = "Adult", XXX = c("3rd", "1st")))
+# sublist_2(t_nm, in_list = list(Age = 2, Class = c(3, 99, 1)), quiet = FALSE)   
+# sublist_2(t_nm, in_list = list(Age = 2, Class = c(3, 99, 1)), quiet = TRUE)  # suppress some messages
+# 
+# # in_list provides a mix of names/tags and no names/tags (dropping non-existent levels):
+# sublist_2(t_nm, in_list = list("Adult", Class = c("3rd", "1st", "stuff")))
+# sublist_2(t_nm, in_list = list("Adult", Class = c(3, 1, 99)))
+# sublist_2(t_nm, in_list = list("Adult", Class = c(3, 1, 99)), quiet = TRUE)  # suppress some messages
+# 
+# # in_list provides NO names: Note: If levels are identified, names of ls are used:
+# sublist_2(t_nm, in_list = list("Adult", c("3rd", "1st")))
+# 
+# # in_list provides names/tags and numeric levels:
+# sublist_2(t_nm, in_list = list(Age = 2, Class = c(3, 1)))
+# sublist_2(t_nm, in_list = list(Age = 2, Class = c(3, 1)), quiet = TRUE)  # suppress some messages
+# 
+# # in_list provides a mix of numeric levels and named levels:
+# sublist_2(t_nm, in_list = list("Adult", Class = c(3, 1)))
+# sublist_2(t_nm, in_list = list(c(3, 1), "Adult"))
+# sublist_2(t_nm, in_list = list(c(3, 1), "Female", 2, "Yes"))
+# 
+# # in_list provides no names/tags and only numeric levels:
+# sublist_2(t_nm, in_list = list(c(1, 3), 2, 2, 2))
+# sublist_2(t_nm, in_list = list(c(1, 3), 2))
+# sublist_2(t_nm, in_list = list(c(3, 1), NA, 2))  # Note missing level
+# sublist_2(t_nm, in_list = list(c(3, 1), 99, 2))  # Note missing level
+# sublist_2(t_nm, in_list = list(c(3, 1), 99, 2), quiet = TRUE)  # some messages NOT suppressed 
+# 
+# ## (b) Using in_list and out_list:
+# sublist_2(t_nm, out_list = list(Survived = "No", Age = "Child", Class = c("Crew", "3rd")))
+# sublist_2(t_nm, out_list = list(Survived = "No", Age = "Child", Class = 3:4))  # using numeric index on Class
+# 
+# sublist_2(t_nm, in_list = list("Adult", Class = c(3, 1)), out_list = list(Class = "1st"))
+# sublist_2(t_nm, in_list = list("Adult", Class = c(3, 1)), out_list = list(Class = 1)) # Note: 1-st element of in_list Class dropped!
+# 
+# ## (c) Returning partial results/NA for:
+# # NA if no names/tags provided and a level cannot be identified:
+# sublist_2(t_nm, in_list = list("Adult", c("3rd", "1st", "stuff")))  # Class levels not recognized
+# 
+# # NA for providing no dimname and a non-existent level combination:
+# sublist_2(t_nm, in_list = list("Adult", c("3rd", "1st", "stuff")))
+# 
+# # NA for providing existing dim-name/tag as a level:
+# sublist_2(t_nm, in_list = list("Adult", "Class"))
+# sublist_2(t_nm, in_list = list("Adult", "Class"), quiet = TRUE)  # some messages NOT suppressed 
+# 
+# ## (d) Handling NA inputs:
+# sublist_2(NA)
+# sublist_2(t_nm, in_list = NA)
+# sublist_2(t_nm, in_list = c(NA, NA))
+# sublist_2(t_nm, in_list = list(NA, NA), quiet = TRUE)  # some messages NOT suppressed 
+# 
+# 
+# ## (C) Mixed list levels, some tags:
+# (ml <- list(a1 = LETTERS[1:9], n1 = 3:7, a2 = letters[7:3], 7:9, tf = c(TRUE, FALSE, TRUE)))
+# 
+# sublist_2(ml, in_list = list(n1 = c(6, 4), a2 = letters[5:6], tf = FALSE))
+# sublist_2(ml, in_list = list(n1 = c(6, 4)))  # numeric values NOT used for numeric subsetting!
+# sublist_2(ml, in_list = list(a1 = 2, tf = 2)) # numeric values used for numeric subsetting!
+# 
+# # Note: Tags can be used repeatedly and empty list elements are dropped:
+# sublist_2(ml, out_list = list(tf = TRUE, n1 = 7:5))
+# sublist_2(ml, out_list = list(tf = TRUE, n1 = 7:5, tf = FALSE, n1 = 3:4))
+# 
+# # Note: Providing numeric index to non-numeric list elements can yield
+# #       a conflict (if numeric elements found in another element) + heuristic => wrong selection:
+# sublist_2(ml, in_list = list(a2 = 5:6))           # yields ERRONEOUS result, but
+# sublist_2(ml, in_list = list(a2 = letters[5:6]))  # yields correct result.
+
+
+
+
+# ToDo: 
+# - Simplify function (e.g., by making more conservative/strict)
+# - Analog version: out_list uses all, but excludes all mentioned dimensions/levels
+
 
 
 ## ToDo: ------
