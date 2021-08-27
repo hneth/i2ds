@@ -981,23 +981,23 @@ sublist <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 # sublist(ml, in_list = list(a2 = letters[5:6]))  # yields correct result.
 
 
-
-
 # ToDo: 
 # - Simplify function (e.g., by making more conservative/strict)
 # - Analog version: out_list uses all, but excludes all mentioned dimensions/levels
 
 
-
 ## sublist_2: A more contrained sublist function for subtable(), using 2 arguments (in_list and out_list): ------ 
 
-# A more specific and constrained version of sublist() (above)
-# to be used in subtable() function.
-
+# A more specific, constrained and robust version of sublist() (above)
+# to be used in the subtable() function: 
+# 
 # Constraints:
-# - Lists returned keep ALL elements (name/tags) of ls 
-# - in the same order
-# - non-mentioned elements of ls are left intact/kept as is/unchanged! 
+# - Lists returned keep ALL elements (name/tags) of original ls 
+# - in the same order as the original ls.  
+# - Any non-mentioned elements of ls are left intact/kept as is/unchanged! 
+# - Any elements without levels remaining are set to NA (but not removed by setting them to NULL). 
+# 
+# => The resulting sub_list is more similar to ls (same names/tags and element order).
 
 sublist_2 <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
   
@@ -1091,9 +1091,9 @@ sublist_2 <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
   } # if (is.null(in_list)) etc.
   
   
-  # Intermediate feedback:
-  print(paste0("sublist_2: sub_list (after processing in_list): "))  
-  print(sub_list) # 4debugging 
+  # # Intermediate feedback:
+  # print(paste0("sublist_2: sub_list (after processing in_list): "))  
+  # print(sub_list) # 4debugging 
   
   
   # 2. Use out_list: ---- 
@@ -1256,7 +1256,6 @@ sublist_2 <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 # sublist_2(ls, out_list = list(l = c("c", "b"), n = 2:3, l = c("a", "d")))
 # sublist_2(ls, out_list = list(l = c("c", "b"), n = 2:3, l = c("a", "d"), n = 1:4))
 # 
-# +++ here now +++ [2021-08-27] 
 #
 # ## (B) Character elements (e.g., from dimnames(tbl)):
 # (t_nm <- dimnames(Titanic))  # A test list (with dimension and level names)
@@ -1268,16 +1267,12 @@ sublist_2 <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 # sublist_2(t_nm, out_list = t_nm)    # empty list
 # 
 # ## (a) Working for:
-# # # in_list provides dimnames (dropping non-existent levels):
+# # # in_list provides dimnames (ignoring non-existent tags and levels):
 # sublist_2(t_nm, in_list = list(Age = "Adult", Class = c("3rd", "1st", "stuff")))
 # sublist_2(t_nm, in_list = list(Age = "Adult", XXX = c("3rd", "1st")))
-# sublist_2(t_nm, in_list = list(Age = 2, Class = c(3, 99, 1)), quiet = FALSE)   
-# sublist_2(t_nm, in_list = list(Age = 2, Class = c(3, 99, 1)), quiet = TRUE)  # suppress some messages
 # 
-# # in_list provides a mix of names/tags and no names/tags (dropping non-existent levels):
-# sublist_2(t_nm, in_list = list("Adult", Class = c("3rd", "1st", "stuff")))
-# sublist_2(t_nm, in_list = list("Adult", Class = c(3, 1, 99)))
-# sublist_2(t_nm, in_list = list("Adult", Class = c(3, 1, 99)), quiet = TRUE)  # suppress some messages
+# sublist_2(t_nm, in_list = list(Age = 2, Class = c(3, 99, 1)), quiet = FALSE)
+# sublist_2(t_nm, in_list = list(Age = 2, Class = c(3, 99, 1)), quiet = TRUE)  # suppress some messages
 # 
 # # in_list provides NO names: Note: If levels are identified, names of ls are used:
 # sublist_2(t_nm, in_list = list("Adult", c("3rd", "1st")))
@@ -1289,14 +1284,14 @@ sublist_2 <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 # # in_list provides a mix of numeric levels and named levels:
 # sublist_2(t_nm, in_list = list("Adult", Class = c(3, 1)))
 # sublist_2(t_nm, in_list = list(c(3, 1), "Adult"))
-# sublist_2(t_nm, in_list = list(c(3, 1), "Female", 2, "Yes"))
+# sublist_2(t_nm, in_list = list(c(3, 1), "Female", 2, "Yes"))  # Note: Heuristics and messages!
 # 
 # # in_list provides no names/tags and only numeric levels:
 # sublist_2(t_nm, in_list = list(c(1, 3), 2, 2, 2))
 # sublist_2(t_nm, in_list = list(c(1, 3), 2))
 # sublist_2(t_nm, in_list = list(c(3, 1), NA, 2))  # Note missing level
-# sublist_2(t_nm, in_list = list(c(3, 1), 99, 2))  # Note missing level
-# sublist_2(t_nm, in_list = list(c(3, 1), 99, 2), quiet = TRUE)  # some messages NOT suppressed 
+# sublist_2(t_nm, in_list = list(c(3, 1), 99, 2))  # Note empty level
+# sublist_2(t_nm, in_list = list(c(3, 1), 99, 2), quiet = TRUE)  # some messages NOT suppressed
 # 
 # ## (b) Using in_list and out_list:
 # sublist_2(t_nm, out_list = list(Survived = "No", Age = "Child", Class = c("Crew", "3rd")))
@@ -1313,16 +1308,18 @@ sublist_2 <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 # sublist_2(t_nm, in_list = list("Adult", c("3rd", "1st", "stuff")))
 # 
 # # NA for providing existing dim-name/tag as a level:
-# sublist_2(t_nm, in_list = list("Adult", "Class"))
-# sublist_2(t_nm, in_list = list("Adult", "Class"), quiet = TRUE)  # some messages NOT suppressed 
+# sublist_2(t_nm, in_list = list("Adult", "Class"), quiet = TRUE)  # some messages NOT suppressed
 # 
 # ## (d) Handling NA inputs:
 # sublist_2(NA)
 # sublist_2(t_nm, in_list = NA)
 # sublist_2(t_nm, in_list = c(NA, NA))
-# sublist_2(t_nm, in_list = list(NA, NA), quiet = TRUE)  # some messages NOT suppressed 
-# 
-# 
+# sublist_2(t_nm, in_list = list(NA, NA), quiet = TRUE)  # some messages NOT suppressed
+#
+
+# +++ here now +++ [2021-08-27] 
+
+#
 # ## (C) Mixed list levels, some tags:
 # (ml <- list(a1 = LETTERS[1:9], n1 = 3:7, a2 = letters[7:3], 7:9, tf = c(TRUE, FALSE, TRUE)))
 # 
