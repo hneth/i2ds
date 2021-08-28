@@ -708,6 +708,13 @@ subtable_names <- function(tbl, dim_list){
 #' but is flexible in allowing \code{in_list} and \code{out_list} 
 #' to use both names or numeric indices for subsetting table levels.
 #' 
+#' As a key constraint, the subset of dimensions specified by 
+#' \code{in_list} and \code{out_list} must still contain all dimensions 
+#' (as excluding an entire table dimension would leave no elements) 
+#' and yield a list with elements in the same order as \code{dimnames(tbl)} 
+#' (to allow using \code{do.call} on \code{what = "[", args}  
+#' to index/subset the array of tbl).
+#' 
 #' @return A table. 
 #' 
 #' @param tbl An original table to be reduced (as \code{\link{table}}). 

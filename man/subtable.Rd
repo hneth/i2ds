@@ -57,6 +57,16 @@ subtable(t, in_list = list(Class = c("1st", "2nd", "3rd"),
                            Sex = "Female", Age = "Adult",
                            Survived = c("Yes")))
 
+# Alternatives ways of obtaining same result:
+subtable(Titanic, out_list = list(Class = c("Crew"),
+                                  Sex = "Male", Age = "Child",
+                                  Survived = c("No")))
+
+subtable(Titanic, in_list = list(Class = c("1st", "2nd", "3rd"),
+                                 Sex = "Female", Age = c("Adult", "Child"),
+                                 Survived = c("Yes", "No")),
+         out_list = list(Age = "Child", Survived = c("No")))
+
 # (b) Use dim names and level numbers:
 subtable(t, in_list = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
 
@@ -67,8 +77,10 @@ subtable(t, in_list = list(1:3, 2, 2, 2))
 subtable(t, in_list = list(1:3, "Female", 2, "Yes"))
 
 # (e) Note: Different length of sub_dims than dimnamesI(tbl) yield ERRORs:
-# subtable(t, in_list = list(1:3, "Female", 2))   # ToDo: use missing dim in full
-# subtable(t, in_list = list(1:3, "Female", 2, 2, 99))  # ToDo: truncate sub_dims
+# subtable(t, in_list = list(1:3, "Female", 2, 2, 99))
+
+# Any tbl dimensions (names/levels) not changed by in_list/out_list are included in full:
+subtable(t, in_list = list(1:3, "Female", Survived = 2))  # both Age levels included
  
 }
 \seealso{
