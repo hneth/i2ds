@@ -777,9 +777,18 @@ subtable <- function(tbl,
   }
   
   # sub_dims  <- sublist_names(name_list = tbl_names, sub_list = sub_dims)  # s1: Use sublist_names() function
-  sub_dims  <- sublist(ls = tbl_names, in_list = in_list, out_list = out_list, quiet = quiet)  # s2: Use sublist() function
+  # sub_dims  <- sublist(ls = tbl_names, in_list = in_list, out_list = out_list, quiet = quiet)  # s2: Use sublist() function
+  sub_dims  <- sublist_2(ls = tbl_names, in_list = in_list, out_list = out_list, quiet = quiet)  # s3: Use sublist_2() function  
+  
+  # +++ here now +++ [2021-08-28] 
   print(sub_dims)  # 4debugging
   
+  # Check sub_dims:
+  if (!all.equal(names(sub_dims), names(tbl_names))){
+    message("subtable: Specified dimensions must contain all tbl names in the order of dimnames(tbl).")
+  }
+  
+
   # 1. Deconstruction: 
   # Get the array of cell counts in tbl:
   t_array <- unclass(tbl)
@@ -879,28 +888,29 @@ subtable <- function(tbl,
 # 
 # subtable(Titanic, out_list = list(4, "Male", Survived = "No"))
 
-# +++ here now +++ [2021-08-27]
+# +++ here now +++ [2021-08-28]
 
 # Key constraint: 
 # sublist(ls = tbl_names, in_list = in_list, out_list = out_list,
 # must contain ALL dimensions of tbl_names in the SAME order! 
 # 
-# # Appears to work: 
-# subtable(Titanic, in_list = list(Class = 1:3, Sex = "Female", Age = 2, Survived = "Yes"))  # works
-# # but: 
-# subtable(Titanic, in_list = list(Class = 1:3, Age = 2, Sex = "Female", Survived = "Yes"))  # fails 1: different order of dimnames
-# subtable(Titanic, in_list = list(Class = 1:3, Age = 2, Survived = "Yes"))  # fails 2: not all dimensions in sublist
+# Appears to work:
+subtable(Titanic, in_list = list(Class = 1:3, Sex = "Female", Age = 2, Survived = "Yes"))  # works
+# but:
+subtable(Titanic, in_list = list(Class = 1:3, Age = 2, Sex = "Female", Survived = "Yes"))  # fails 1: different order of dimnames
+subtable(Titanic, in_list = list(Class = 1:3, Age = 2, Survived = "Yes"))  # fails 2: not all dimensions in sublist
 
 # # ERRORs when specified subset is shorter/longer than dims of tbl: 
 # # (e) Note: Using fewer elements in in_list than dimnamesI(tbl):
-# subtable(Titanic, in_list = list(Age = 2, Survived = "Yes"))
+subtable(Titanic, in_list = list(Age = 2, Survived = "Yes"))
 
 # subtable(Titanic,
 #          in_list = list(Class = 1:3, Sex = "Female", Age = 2),
 #          out_list = list(Survived = 1:2))
 
-## Using excess of dimensions wihout tags yields an error:
-# subtable(Titanic, in_list = list(1:3, "Female", 2, 2, 99))
+## Note NA/errors for:
+# subtable(Titanic, out_list = list("Female", "Male")) 
+# subtable(Titanic, in_list = list(1:3, "Female", 2, 2, 99))  # excess of dimensions (with no tag)
 
 
 # ToDo: 
