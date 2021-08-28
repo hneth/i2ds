@@ -1,5 +1,5 @@
 ## trans_lists.R | i2ds
-## hn | uni.kn | 2021 08 27
+## hn | uni.kn | 2021 08 28
 
 # Functions for transforming/manipulating lists: ------ 
 #
@@ -1316,34 +1316,26 @@ sublist_2 <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 # sublist_2(t_nm, in_list = c(NA, NA))
 # sublist_2(t_nm, in_list = list(NA, NA), quiet = TRUE)  # some messages NOT suppressed
 #
-
-# +++ here now +++ [2021-08-27] 
-
-#
+# 
 # ## (C) Mixed list levels, some tags:
 # (ml <- list(a1 = LETTERS[1:9], n1 = 3:7, a2 = letters[7:3], 7:9, tf = c(TRUE, FALSE, TRUE)))
 # 
-# sublist_2(ml, in_list = list(n1 = c(6, 4), a2 = letters[5:6], tf = FALSE))
-# sublist_2(ml, in_list = list(n1 = c(6, 4)))  # numeric values NOT used for numeric subsetting!
-# sublist_2(ml, in_list = list(a1 = 2, tf = 2)) # numeric values used for numeric subsetting!
+# sublist_2(ml, in_list = list(n1 = c(6, 4), a2 = letters[5:6], tf = FALSE))  # non-mentioned elements included in full
+# sublist_2(ml, in_list = list(n1 = c(6, 4)))    # numeric values NOT used for numeric subsetting
+# sublist_2(ml, in_list = list(a1 = 2, tf = 2))  # numeric values used for numeric subsetting
 # 
-# # Note: Tags can be used repeatedly and empty list elements are dropped:
+# # Note: Tags can be used repeatedly and empty list elements are NOT dropped:
 # sublist_2(ml, out_list = list(tf = TRUE, n1 = 7:5))
-# sublist_2(ml, out_list = list(tf = TRUE, n1 = 7:5, tf = FALSE, n1 = 3:4))
+# sublist_2(ml, out_list = list(tf = TRUE, n1 = 7:5, tf = FALSE, n1 = 3:4))  # $n1 becomes NA
 # 
 # # Note: Providing numeric index to non-numeric list elements can yield
 # #       a conflict (if numeric elements found in another element) + heuristic => wrong selection:
-# sublist_2(ml, in_list = list(a2 = 5:6))           # yields ERRONEOUS result, but
+# sublist_2(ml, in_list = list(a2 = 5:6))           # yields ERRONEOUS result (matching $a1 + numeric indexing), but
 # sublist_2(ml, in_list = list(a2 = letters[5:6]))  # yields correct result.
 
 
-
-
 # ToDo: 
-# - Simplify function (e.g., by making more conservative/strict)
-# - Analog version: out_list uses all, but excludes all mentioned dimensions/levels
-
-
+# - Simplify sublist functions (e.g., by making more conservative/strict)
 
 ## ToDo: ------
 
