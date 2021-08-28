@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 08 27
+## hn | uni.kn | 2021 08 28
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 #
@@ -690,9 +690,8 @@ subtable_names <- function(tbl, dim_list){
 ## subtable: Extract a subtable (or subset) of a table: ----- 
 
 # Source: Core is based on the subtable() function by 
-#         Norman Matloff (2011), The Art of R Programming (pp. 131--134)
-
-# using sub_list() function to include/exclude dimensions/levels.
+#         Norman Matloff (2011), The Art of R Programming (pp. 131--134), 
+# but using sublist_tbl() function to include/exclude dimensions/levels.
 
 #' Extract a subtable (or subset) of a table. 
 #' 
@@ -739,6 +738,16 @@ subtable_names <- function(tbl, dim_list){
 #'                            Sex = "Female", Age = "Adult",
 #'                            Survived = c("Yes")))
 #' 
+#' # Alternatives ways of obtaining same result:
+#' subtable(Titanic, out_list = list(Class = c("Crew"),
+#'                                   Sex = "Male", Age = "Child",
+#'                                   Survived = c("No")))
+#' 
+#' subtable(Titanic, in_list = list(Class = c("1st", "2nd", "3rd"),
+#'                                  Sex = "Female", Age = c("Adult", "Child"),
+#'                                  Survived = c("Yes", "No")),
+#'          out_list = list(Age = "Child", Survived = c("No")))
+#' 
 #' # (b) Use dim names and level numbers:
 #' subtable(t, in_list = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
 #' 
@@ -749,8 +758,10 @@ subtable_names <- function(tbl, dim_list){
 #' subtable(t, in_list = list(1:3, "Female", 2, "Yes"))
 #' 
 #' # (e) Note: Different length of sub_dims than dimnamesI(tbl) yield ERRORs:
-#' # subtable(t, in_list = list(1:3, "Female", 2))   # ToDo: use missing dim in full
-#' # subtable(t, in_list = list(1:3, "Female", 2, 2, 99))  # ToDo: truncate sub_dims
+#' # subtable(t, in_list = list(1:3, "Female", 2, 2, 99))
+#' 
+#' # Any tbl dimensions (names/levels) not changed by in_list/out_list are included in full:
+#' subtable(t, in_list = list(1:3, "Female", Survived = 2))  # both Age levels included
 #'  
 #' @source Based on the \code{subtable} function by Norman Matloff, 
 #' The Art of R Programming (2011, pp. 131-134). 
@@ -765,7 +776,7 @@ subtable_names <- function(tbl, dim_list){
 
 subtable <- function(tbl, 
                      # sub_dims = dimnames(tbl), # s1: Use sublist_names() function
-                     in_list = dimnames(tbl), out_list = NULL, quiet = TRUE  # s2: Use sublist() function
+                     in_list = dimnames(tbl), out_list = NULL, quiet = TRUE  # s3: Use sublist_tbl() function
 ) 
 {
   
@@ -776,19 +787,16 @@ subtable <- function(tbl,
     message("subtable: tbl has no dimnames.")
   }
   
-  # sub_dims  <- sublist_names(name_list = tbl_names, sub_list = sub_dims)  # s1: Use sublist_names() function
-  # sub_dims  <- sublist(ls = tbl_names, in_list = in_list, out_list = out_list, quiet = quiet)  # s2: Use sublist() function
-  sub_dims  <- sublist_2(ls = tbl_names, in_list = in_list, out_list = out_list, quiet = quiet)  # s3: Use sublist_2() function  
-  
-  # +++ here now +++ [2021-08-28] 
-  print(sub_dims)  # 4debugging
+  # sub_dims <- sublist_names(name_list = tbl_names, sub_list = sub_dims)  # s1: Use sublist_names() function
+  # sub_dims <- sublist(ls = tbl_names, in_list = in_list, out_list = out_list, quiet = quiet)    # s2: Use sublist() function
+  sub_dims <- sublist_tbl(ls = tbl_names, in_list = in_list, out_list = out_list, quiet = quiet)  # s3: Use sublist_tbl() function  
+  # print(sub_dims)  # 4debugging
   
   # Check sub_dims:
   if (!all.equal(names(sub_dims), names(tbl_names))){
     message("subtable: Specified dimensions must contain all tbl names in the order of dimnames(tbl).")
   }
   
-
   # 1. Deconstruction: 
   # Get the array of cell counts in tbl:
   t_array <- unclass(tbl)
@@ -850,7 +858,7 @@ subtable <- function(tbl,
 #                            col = 1:2,
 #                            tab = 2))
 # 
-# # works without dimension names (note messages):
+# # works without dimension names (but note messages):
 # subtable(t, in_list = list(1:2, 1:2, 2))
 # 
 # # using a mix of names and numeric indices (note messages):
@@ -864,7 +872,7 @@ subtable <- function(tbl,
 #                                  Sex = "Female", Age = "Adult",
 #                                  Survived = c("Yes")))
 # 
-# # alternatives ways of obtaining same result:
+# # Alternatives ways of obtaining same result:
 # subtable(Titanic, out_list = list(Class = c("Crew"),
 #                                   Sex = "Male", Age = "Child",
 #                                   Survived = c("No")))
@@ -873,7 +881,6 @@ subtable <- function(tbl,
 #                                  Sex = "Female", Age = c("Adult", "Child"),
 #                                  Survived = c("Yes", "No")),
 #          out_list = list(Age = "Child", Survived = c("No")))
-# 
 # 
 # # (b) Use dim names and level numbers:
 # subtable(Titanic, in_list = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
@@ -885,30 +892,21 @@ subtable <- function(tbl,
 # # (d) Use a mix of level names and numbers (note messages):
 # subtable(Titanic,  in_list = list(1:3, "Female", 2, "Yes"))
 # subtable(Titanic, out_list = list(4, "Male", 1, "No"))
-# 
 # subtable(Titanic, out_list = list(4, "Male", Survived = "No"))
-
-# +++ here now +++ [2021-08-28]
-
-# Key constraint: 
-# sublist(ls = tbl_names, in_list = in_list, out_list = out_list,
-# must contain ALL dimensions of tbl_names in the SAME order! 
 # 
-# Appears to work:
-subtable(Titanic, in_list = list(Class = 1:3, Sex = "Female", Age = 2, Survived = "Yes"))  # works
-# but:
-subtable(Titanic, in_list = list(Class = 1:3, Age = 2, Sex = "Female", Survived = "Yes"))  # fails 1: different order of dimnames
-subtable(Titanic, in_list = list(Class = 1:3, Age = 2, Survived = "Yes"))  # fails 2: not all dimensions in sublist
-
-# # ERRORs when specified subset is shorter/longer than dims of tbl: 
+# # Key constraint: 
+# # sub_dims must contain ALL dimensions/names/tags of tbl_names in the SAME order: 
+# subtable(Titanic, in_list = list(Class = 1:3, Sex = "Female", Age = 2, Survived = "Yes"))  # works
+# subtable(Titanic, in_list = list(Age = 2, Sex = "Female", Class = 1:3, Survived = "Yes"))  # works: different order of dimnames
+# subtable(Titanic, in_list = list(Class = 1:3, Age = 2, Survived = "Yes"))  # works: not all dimensions in sublist
+# 
 # # (e) Note: Using fewer elements in in_list than dimnamesI(tbl):
-subtable(Titanic, in_list = list(Age = 2, Survived = "Yes"))
-
+# subtable(Titanic, in_list = list(Age = 2, Survived = "Yes"))
 # subtable(Titanic,
 #          in_list = list(Class = 1:3, Sex = "Female", Age = 2),
-#          out_list = list(Survived = 1:2))
-
-## Note NA/errors for:
+#          out_list = list(Survived = 1))
+# 
+# # Note NA/errors for:
 # subtable(Titanic, out_list = list("Female", "Male")) 
 # subtable(Titanic, in_list = list(1:3, "Female", 2, 2, 99))  # excess of dimensions (with no tag)
 
