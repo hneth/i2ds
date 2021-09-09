@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 08 28
+## hn | uni.kn | 2021 09 09
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 #
@@ -928,6 +928,76 @@ subtable <- function(tbl,
 #   rather than including all and only specified dimensions and levels.
 
 
+
+## contingency_table: Define a contingency table (from description): ------ 
+
+# A function to define a multi-dimensional array/contingency table.
+# (e.g., from a description of a case of Simpson's paradox)
+
+# Example: The Book of Why (Pearl & McKenzie, p. 201)
+
+# Vectors of factors/dimensions and levels:
+group <- c("control", "treatment")
+sex <- c("female", "male")
+outcome <- c("heart attack", "no attack") 
+
+# Frequency values:
+# group:   control:       treatment:
+v <- c(1, 12, 19, 28,   3, 8, 37, 12) # Note: by-column order (per subtable)
+
+# As array:
+(a <- array(v, 
+            dim = c(2, 2, 2), 
+            dimnames = list(sex = sex, outcome = outcome, group = group) # Note: Reversed order of dimensions (from inner to outer)!
+))
+(tb <- as.table(a))
+
+# Contingency table as df: 
+data.frame(tb)
+# data.frame(a)  # would NOT work!
+(tb_df <- data.frame(ftable(a)))
+
+# Back to array/table:
+(tb_2 <- table(expand_freq_table(tb_df)))
+all.equal(tb, tb_2)
+
+# Tasks: 
+# 1. Reverse order of name columns in tb_df
+# 2. Write function that takes v, dim, and dimnames 
+#    and returns either tb or tb_df in a robust fashion. 
+
+# +++ here now +++ 
+
+v_list <- list(group = group, sex = sex, outcome = outcome)
+names(v_list)
+rev(v_list)
+
+# As df of all combinations:
+expand.grid(outcome, sex, group, stringsAsFactors = TRUE)  # Note order of vecs
+
+# Function to get vector/list element names:
+deparse(substitute(group))  # individual vector
+
+get_name <- function(x){
+  
+  nm <- NA
+ 
+  nm <- deparse(substitute(x))
+    
+  return(nm)
+  
+} # get_name
+
+# Check:
+get_name(group)
+(ls <- list(group = group, sex = sex))
+(df <- data.frame(group = group, sex = sex))
+get_name(ls)
+get_name(df)
+
+
+
+
 ## Key data structures: Contingency table (as data frame, with a freq_var): ------ 
 
 # Note: Contingency table (data frame) can easily be created from and transformed into an array/table:
@@ -962,6 +1032,9 @@ subtable <- function(tbl,
 
 
 ## ToDo: ------
+
+# Function to define a multi-dimensional array/contingency table.
+# (e.g., from a description of a case of Simpson's paradox)
 
 # Work out relations between 
 # A: Data structures:
