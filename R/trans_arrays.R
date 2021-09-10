@@ -113,7 +113,8 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
     
     dim_nr <- length(dims)  # nr of dimensions
     
-    # Check dnames length: 
+    
+    # Check/fix dnames length: 
     if (length(dnames) == 1){ # atomic dnames:
       
       dnames <- paste(dnames, 1:dim_nr, sep = sep)  # add dim number to dnames
@@ -122,22 +123,26 @@ add_dimnames <- function(x, dnames = c("row", "col", "tab"), prefix = c("r", "c"
       
       dnames <- dnames[1:dim_nr]  # truncate dnames
       
-    } else if (length(dnames) != dim_nr){ # dim_nr exceeds dnames: 
+    } else if (length(dnames) != dim_nr){ # dim_nr exceeds dnames length: 
       
       message("add_dimnames: Length of dnames must match x dimensions. Using LETTERS:")
       dnames <- LETTERS[1:dim_nr]
       
     }
     
-    # Check prefix length: 
-    if (length(prefix) != dim_nr){
+    # Check/fix prefix length: 
+    if (length(prefix) > dim_nr){
+      
+      prefix <- prefix[1:dim_nr]  # truncate prefix
+      
+    } else if (length(prefix) != dim_nr){ # dim_nr exceeds prefix length: 
       
       message("add_dimnames: Length of prefix must match x dimensions. Using letters:")
       prefix <- letters[1:dim_nr]
       
     }
     
-    # Create name_list (as a list): 
+    # Create name_list (as list): 
     name_list <- vector("list", dim_nr)  # an empty list
     
     for (i in 1:dim_nr){ # list elements:
@@ -928,74 +933,181 @@ subtable <- function(tbl,
 #   rather than including all and only specified dimensions and levels.
 
 
+## ctable: Create a contingency table from description (as tb or df, analogous to array): ------ 
 
-## contingency_table: Define a contingency table (from description): ------ 
+# A function to define a multi-dimensional array/contingency table 
+# from a description of frequency counts and dimensions 
+# (e.g., a case of Simpson's paradox). 
 
-# A function to define a multi-dimensional array/contingency table.
-# (e.g., from a description of a case of Simpson's paradox)
-
-# Example: The Book of Why (Pearl & McKenzie, p. 201)
-
-# Vectors of factors/dimensions and levels:
-group <- c("control", "treatment")
-sex <- c("female", "male")
-outcome <- c("heart attack", "no attack") 
-
-# Frequency values:
-# group:   control:       treatment:
-v <- c(1, 12, 19, 28,   3, 8, 37, 12) # Note: by-column order (per subtable)
-
-# As array:
-(a <- array(v, 
-            dim = c(2, 2, 2), 
-            dimnames = list(sex = sex, outcome = outcome, group = group) # Note: Reversed order of dimensions (from inner to outer)!
-))
-(tb <- as.table(a))
-
-# Contingency table as df: 
-data.frame(tb)
-# data.frame(a)  # would NOT work!
-(tb_df <- data.frame(ftable(a)))
-
-# Back to array/table:
-(tb_2 <- table(expand_freq_table(tb_df)))
-all.equal(tb, tb_2)
+# ## Example: 
+# # Data illustrating Simpson's paradox (The book of why, Pearl & McKenzie, p. 201):
+# 
+# # Vectors of factors/dimensions and levels:
+# group <- c("control", "treatment")
+# sex <- c("female", "male")
+# outcome <- c("heart attack", "no attack") 
+# 
+# # Frequency values:
+# # group:   control:       treatment:
+# v <- c(1, 12, 19, 28,   3, 8, 37, 12) # Note: by-column order (per subtable)
+# 
+# # As array:
+# (a <- array(v, 
+#             dim = c(2, 2, 2), 
+#             dimnames = list(sex = sex, outcome = outcome, group = group) # Note: Reversed order of dimensions (from inner to outer)!
+# ))
+# (tb <- as.table(a))
+# 
+# # Contingency table as df: 
+# data.frame(tb)
+# # data.frame(a)  # would NOT work!
+# (tb_df <- data.frame(ftable(a)))
+# 
+# # Back to array/table:
+# (tb_2 <- table(expand_freq_table(tb_df)))
+# all.equal(tb, tb_2)
 
 # Tasks: 
 # 1. Reverse order of name columns in tb_df
 # 2. Write a function that takes v, dim, and dimnames 
 #    and returns either tb or tb_df in a robust fashion. 
 
-# ad 1. Reverse order of name columns in tb_df:
-(n_names <- length(list(sex = sex, outcome = outcome, group = group)))
-(non_names <- tb_df[-(1:n_names)])
-(ix_rest <- -(1:n_names))
-(tb_df_2 <- cbind(tb_df[n_names:1], tb_df[ix_rest]))
+# # ad 1. Reverse order of name columns in tb_df:
+# (n_names <- length(list(sex = sex, outcome = outcome, group = group)))
+# (non_names <- tb_df[-(1:n_names)])
+# (ix_rest <- -(1:n_names))
+# (tb_df_2 <- cbind(tb_df[n_names:1], tb_df[ix_rest]))
 
 # ad 2. Write a function that takes v, dim, and dimnames 
 #       and returns either tb or tb_df in a robust fashion:
 
+## ctable() function:
 
+# Note: 
+# ctable() currently works by passing arguments to array()  
+# and then converting array() into a table via as.table()
+# Thus, the order of data, dim, and dimnames corresponds to array() defaults, 
+# implying that data is entered in by-col order and dimensions from y/left, x/top, to group/table. 
+
+# Desired data frames are created from array/table, 
+# (via data.frame(tb))
+# rather than building the df from scratch via 
+# expand.grid(outcome, sex, group, stringsAsFactors = TRUE)  # Note reversed order of vecs!
+
+ctable <- function(data, dim = length(data), dimnames = NULL, as_df = FALSE){
+  
+  # Inputs:
+  # ToDo: Verify that data contains only frequency counts (integers >= 0).
+  
+  if (length(data) != prod(dim)){ # conflict between data and dim: 
+    
+    message("ctable: Length of data does not correspond to dim. Using array() defaults...")
+    
+  }
+  
+  # Pass to array():
+  ar <- array(data = data, # Note: By-col order of data (as in array()) 
+              dim = dim, 
+              dimnames = dimnames  # Note: By-col order of dimensions (from left/Y, inner/X, outer/table)!
+  )
+  
+  # Names:
+  if (is.null(dimnames)){ # no dimnames provided:
+    
+    message("ctable: No list of dimnames provided. Adding default dimnames:")
+    
+    ar <- add_dimnames(ar, sep = "_")  # use utility function (above)
+    
+  }
+  
+  tb <- as.table(ar)
+  
+  if (as_df){ # convert to df:
+    
+    df <- data.frame(tb)
+    
+    # Reverse the order of named variables/columns:
+    n_names <- length(dimnames(tb))
+    ix_rest <- -(1:n_names)
+    df <- cbind(df[n_names:1], df[ix_rest])  # reverse order of initial n_names columns
+    
+    return(df) 
+    
+  } else { # default: 
+    
+    return(tb)
+    
+  }
+  
+} # ctable(). 
+
+# Check:
+
+# # (1) Abstract case: 
+# ctable(1:8, dim = c(2,4), dimnames = list(rows = c("A", "B"), cols = 1:4))
+# ctable(1:8, dim = c(2,2,2), dimnames = list(Ys = c("a", "b"), Xs = 1:2, group = c("A", "B")))
+# 
+# # As df:
+# ctable(1:8, dim = c(2,4), dimnames = list(rows = c("A", "B"), cols = 1:4), TRUE)
+# ctable(1:8, dim = c(2,2,2), dimnames = list(Ys = c("a", "b"), Xs = 1:2, group = c("A", "B")), TRUE)
+# 
+# # No dimnames:
+# ctable(1:8, dim = c(2,4)) 
+# ctable(1:8, dim = c(2,2,2))
+# 
+# # Conflicting data and dim (see array()):
+# ctable(1:8, dim = c(2,2))  # truncating data 
+# ctable(1:8, dim = c(2,5))  # recycling data
+# ctable(1:8, dim = c(2,3), as_df = TRUE)  # truncated df
+
+
+# # (2) Example use case:  
+# # Data illustrating Simpson's paradox (The book of why, Pearl & McKenzie, p. 201):
+# 
+# # Frequency values:
+# # group:   control:       treatment:
+# v <- c(1, 12, 19, 28,   3, 8, 37, 12) # Note: by-column order (per subtable)
+# 
+# # Vectors of factors/dimensions and levels:
+# group <- c("control", "treatment")
+# sex <- c("female", "male")
+# outcome <- c("heart attack", "no heart attack") 
+# 
+# # as list in order: y/left, x/top, group/tab, as in array():  
+# dnl <- list(sex = sex, outcome = outcome, group = group)  
+# 
+# ctable(v, c(2, 2, 2), dimnames = dnl) 
+# ctable(v, c(2, 2, 2), dimnames = dnl, as_df = TRUE)
+# 
+# # Using default dimnames:
+# ctable(v, c(2, 2, 2)) 
+# ctable(v, c(2, 2, 2), as_df = TRUE) 
+# ctable(v, c(2, 4))
 
 
 # +++ here now +++ 
 
-v_list <- list(group = group, sex = sex, outcome = outcome)
-names(v_list)
-rev(v_list)
 
-# As df of all combinations:
-expand.grid(outcome, sex, group, stringsAsFactors = TRUE)  # Note order of vecs
+# # Unused snippets: 
+# v_list <- list(group = group, sex = sex, outcome = outcome)
+# names(v_list)
+# rev(v_list)
+# 
+# # As df of all combinations:
+# expand.grid(outcome, sex, group, stringsAsFactors = TRUE)  # Note reversed order of vecs!
 
-# Function to get vector/list element names:
-deparse(substitute(group))  # individual vector
+
+## get_name: A function to get an object's name (inside a function): ------ 
+
+# vec <- 1:10
+# deparse(substitute(vec))
 
 get_name <- function(x){
   
   nm <- NA
- 
+  
   nm <- deparse(substitute(x))
-    
+  
   return(nm)
   
 } # get_name
@@ -1006,7 +1118,6 @@ get_name(group)
 (df <- data.frame(group = group, sex = sex))
 get_name(ls)
 get_name(df)
-
 
 
 
