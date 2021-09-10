@@ -1112,12 +1112,12 @@ get_name <- function(x){
   
 } # get_name
 
-# Check:
-get_name(group)
-(ls <- list(group = group, sex = sex))
-(df <- data.frame(group = group, sex = sex))
-get_name(ls)
-get_name(df)
+# # Check:
+# get_name(group)
+# (ls <- list(group = group, sex = sex))
+# (df <- data.frame(group = group, sex = sex))
+# get_name(ls)
+# get_name(df)
 
 
 
