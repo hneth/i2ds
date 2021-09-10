@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 09 09
+## hn | uni.kn | 2021 09 10
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 #
@@ -963,8 +963,20 @@ all.equal(tb, tb_2)
 
 # Tasks: 
 # 1. Reverse order of name columns in tb_df
-# 2. Write function that takes v, dim, and dimnames 
+# 2. Write a function that takes v, dim, and dimnames 
 #    and returns either tb or tb_df in a robust fashion. 
+
+# ad 1. Reverse order of name columns in tb_df:
+(n_names <- length(list(sex = sex, outcome = outcome, group = group)))
+(non_names <- tb_df[-(1:n_names)])
+(ix_rest <- -(1:n_names))
+(tb_df_2 <- cbind(tb_df[n_names:1], tb_df[ix_rest]))
+
+# ad 2. Write a function that takes v, dim, and dimnames 
+#       and returns either tb or tb_df in a robust fashion:
+
+
+
 
 # +++ here now +++ 
 
