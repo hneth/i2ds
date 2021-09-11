@@ -999,6 +999,14 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
   
   # Inputs:
   # ToDo: Verify that data contains only frequency counts (integers >= 0).
+  # a) only numeric values.
+  # b) only integers >= 0.
+  
+  if (!is.numeric(data) | any(data %% 1 != 0) | any(data < 0)) {
+    
+    message("ctable: Contingency data must only contain frequency counts (i.e., non-negative integers).")
+    
+  }
   
   if (length(data) != prod(dim)){ # conflict between data and dim: 
     
@@ -1006,16 +1014,6 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
     
   }
   
-  # if (by_row & (length(dim) > 1)){ # switch dimensions 1 and 2 (to fill matrices in by-row, rather by-col direction):
-  #   
-  #   ix_else <- -(1:2)
-  #   dim <- cbind(dim[2:1], dim[ix_else])
-  #   
-  #   temp <- dimnames[1]
-  #   dimnames[1] <- dimnames[2]
-  #   dimnames[2] <- temp
-  #   
-  # }
   
   # Pass to array():
   ar <- array(data = data, # Note: By-col order of data (as in array()) 
@@ -1023,13 +1021,18 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
               dimnames = dimnames  # Note: By-col order of dimensions (from left/Y, inner/X, outer/table)!
   )
   
-  if (by_row & (length(dim) > 1)){ # swap first two array dimensions:
+  # Swap first 2 dimensions (i.e., X and Y):
+  n_dim <- length(dim)  
+  
+  if (by_row & (n_dim > 1)){
     
-    ar <- aperm(ar, perm = c(2, 1))
+    if (n_dim > 2){ ix_other <- 3:n_dim } else { ix_other <- NULL }
+    
+    ar <- aperm(ar, perm = c(2, 1, ix_other))  # swap dimensions 1 and 2
     
   }
   
-  # Names:
+  # Check/add names:
   if (is.null(dimnames)){ # no dimnames provided:
     
     message("ctable: No list of dimnames provided. Adding default dimnames:")
@@ -1038,7 +1041,7 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
     
   }
   
-  tb <- as.table(ar)
+  tb <- as.table(ar)  # coerce to "table" (to flag impossible values)
   
   if (as_df){ # convert to df:
     
@@ -1078,6 +1081,15 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
 # ctable(1:8, dim = c(2,5))  # recycling data
 # ctable(1:8, dim = c(2,3), as_df = TRUE)  # truncated df
 
+# # Entry in by-row direction:
+# ctable(1:12, dim = c(3,4), dimnames = list(X = paste0("x_", 1:3), 
+#                                            Y = paste0("y_", 1:4)), by_row = TRUE)
+# 
+# # Impossible values:
+# ctable(c(1:8), dim = c(2, 4), by_row = FALSE)   # ok
+# ctable(c(0:7), dim = c(2, 4), by_row = FALSE)   # ok
+# ctable(c(-1:6), dim = c(2, 4), by_row = FALSE)      # negative 
+# ctable(c(1:8 + .1), dim = c(2, 4), by_row = FALSE)  # non-integer
 
 # # (2) Example use case:  
 # # Data illustrating Simpson's paradox (The book of why, Pearl & McKenzie, p. 201):
@@ -1102,30 +1114,42 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
 # ctable(v, c(2, 2, 2), as_df = TRUE) 
 # ctable(v, c(2, 4))
 
-## ctable with X, Y, Z:
-
-dims <- c(4, 3, 2)
-dnl <- list(Y = paste0("y_", 1:4), 
-            X = paste0("x_", 1:3), 
-            Z = paste0("z_", 1:2))
-
-t1 <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl)
-t1
-dim(t1)
-
-ix_else <- 1:length(dim(t1))
-
-aperm(t1, perm = c(2:1, ix_else))
-
-ctable(data = 1:prod(dims), dim = dims, dimnames = dnl, by_row = TRUE)
-
-## Data directions:
-v <- 1:16
-matrix(v, nrow = 4, byrow = FALSE) # by-col (default)
-matrix(v, nrow = 4, byrow = TRUE)  # by-row
-
-array(v, c(4, 4))     # by-col (default)
-array(v, c(4, 2, 2))  # by-col
+# ## Data directions:
+# v <- 1:16
+# matrix(v, nrow = 4, byrow = FALSE) # by-col (default)
+# matrix(v, nrow = 4, byrow = TRUE)  # by-row
+# 
+# array(v, c(4, 4))     # by-col (default)
+# array(v, c(4, 2, 2))  # by-col
+# 
+# 
+# ## ctable with X, Y, Z:
+# 
+# # 2D: 
+# dims <- c(4, 3)
+# dnl <- list(X = paste0("x_", 1:4), 
+#             Y = paste0("y_", 1:3))
+# (t2 <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl))
+# (t2r <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl, by_row = TRUE))
+# 
+# # 3D: 
+# dims <- c(4, 3, 2)
+# dnl <- list(X = paste0("x_", 1:4), 
+#             Y = paste0("y_", 1:3), 
+#             Z = paste0("z_", 1:2))
+# 
+# (t3 <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl))
+# (t3r <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl, by_row = TRUE))
+# 
+# # 4D:
+# dims <- c(5, 4, 3, 2)
+# dnl <- list(X = paste0("x_", 1:5), 
+#             Y = paste0("y_", 1:4), 
+#             M = paste0("m_", 1:3),
+#             O = paste0("o_", 1:2))
+# 
+# (t4 <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl))
+# (t4r <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl, by_row = TRUE))
 
 
 # +++ here now +++ 
