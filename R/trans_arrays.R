@@ -13,16 +13,16 @@ swap_xy <- function(x){
   
   tx <- NA  # initialize
   
-  if (is.array(x)) { # Case 1: x is an array: ---- 
+  if (is.array(x)) { # 1: x is an array: ---- 
     
     # Swap the first 2 dimensions of an array (i.e., X and Y):
     n_dim <- length(dim(x))  
     
     if (n_dim > 1){
       
-      if (n_dim > 2){ ix_other <- 3:n_dim } else { ix_other <- NULL }
+      if (n_dim > 2){ ix_rest <- 3:n_dim } else { ix_rest <- NULL }
       
-      tx <- aperm(x, perm = c(2, 1, ix_other))  # swap dimensions 1 and 2
+      tx <- aperm(x, perm = c(2, 1, ix_rest))  # swap dimensions 1 and 2
       
     } else {
       
@@ -30,16 +30,16 @@ swap_xy <- function(x){
       
     }
     
-  } else if (is.vector(x)) { # Case 2: x is vector or list: ---- 
+  } else if (is.vector(x)) { # 2: x is vector or list: ---- 
     
     # Swap the first 2 elements (i.e., X and Y):
     x_len <- length(x)  
     
     if (x_len > 1){
       
-      if (x_len > 2){ ix_other <- 3:x_len } else { ix_other <- NULL }
+      if (x_len > 2){ ix_rest <- 3:x_len } else { ix_rest <- NULL }
       
-      tx <- x[c(2, 1, ix_other)]  # swap elements 1 and 2
+      tx <- x[c(2, 1, ix_rest)]  # swap elements 1 and 2
       
     } else {
       
@@ -47,16 +47,16 @@ swap_xy <- function(x){
       
     }
     
-  } else if (is.data.frame(x)) { # Case 3: x is a data.frame: ---- 
+  } else if (is.data.frame(x)) { # 3: x is a data.frame: ---- 
     
     # Swap the first 2 columns:
     n_col <- ncol(x)
     
     if (n_col > 1){
       
-      if (n_col > 2){ ix_other <- 3:n_col } else { ix_other <- NULL }
+      if (n_col > 2){ ix_rest <- 3:n_col } else { ix_rest <- NULL }
       
-      tx <- x[ , c(2, 1, ix_other)]  # swap columns 1 and 2
+      tx <- x[ , c(2, 1, ix_rest)]  # swap columns 1 and 2
       
     } else {
       
@@ -998,7 +998,6 @@ subtable <- function(tbl,
 # subtable(Titanic, out_list = list("Female", "Male")) 
 # subtable(Titanic, in_list = list(1:3, "Female", 2, 2, 99))  # excess of dimensions (with no tag)
 
-
 # ToDo: 
 #
 # - The filter() function from dplyr only includes cases that are specified.
@@ -1097,14 +1096,10 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
               dimnames = dimnames  # Note: By-col order of dimensions (from left/Y, inner/X, outer/table)!
   )
   
-  # Swap the first 2 dimensions of an array (i.e., X and Y):
-  n_dim <- length(dim)  
   
-  if (by_row & (n_dim > 1)){
+  if (by_row){  # swap dimensions 1 and 2 of array (i.e., X and Y): 
     
-    if (n_dim > 2){ ix_other <- 3:n_dim } else { ix_other <- NULL }
-    
-    ar <- aperm(ar, perm = c(2, 1, ix_other))  # swap dimensions 1 and 2
+    ar <- swap_xy(ar)  # use utility function (above)
     
   }
   
@@ -1144,7 +1139,7 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
 # ctable(1:8, dim = c(2,4), dimnames = list(rows = c("A", "B"), cols = 1:4))
 # ctable(1:8, dim = c(2,2,2), dimnames = list(Ys = c("a", "b"), Xs = 1:2, group = c("A", "B")))
 # 
-# # As df:
+# # Return as df:
 # ctable(1:8, dim = c(2,4), dimnames = list(rows = c("A", "B"), cols = 1:4), TRUE)
 # ctable(1:8, dim = c(2,2,2), dimnames = list(Ys = c("a", "b"), Xs = 1:2, group = c("A", "B")), TRUE)
 # 
@@ -1152,16 +1147,19 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
 # ctable(1:8, dim = c(2,4)) 
 # ctable(1:8, dim = c(2,2,2))
 # 
+# # Entering data in by-row direction:
+# ctable(1:12, dim = c(3,4), dimnames = list(X = paste0("x_", 1:3),
+#                                            Y = paste0("y_", 1:4)), by_row = TRUE)
+# ctable(1:24, dim = c(3,4,2), dimnames = list(X = paste0("x_", 1:3),
+#                                              Y = paste0("y_", 1:4), 
+#                                              Z = paste0("z_", 1:2)), by_row = TRUE)
+# 
 # # Conflicting data and dim (see array()):
 # ctable(1:8, dim = c(2,2))  # truncating data 
 # ctable(1:8, dim = c(2,5))  # recycling data
 # ctable(1:8, dim = c(2,3), as_df = TRUE)  # truncated df
-
-# # Entry in by-row direction:
-# ctable(1:12, dim = c(3,4), dimnames = list(X = paste0("x_", 1:3), 
-#                                            Y = paste0("y_", 1:4)), by_row = TRUE)
 # 
-# # Impossible values:
+# # Note impossible values:
 # ctable(c(1:8), dim = c(2, 4), by_row = FALSE)   # ok
 # ctable(c(0:7), dim = c(2, 4), by_row = FALSE)   # ok
 # ctable(c(-1:6), dim = c(2, 4), by_row = FALSE)      # negative 
@@ -1199,7 +1197,7 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
 # array(v, c(4, 2, 2))  # by-col
 # 
 # 
-# ## ctable with X, Y, Z:
+# ## Using ctable() with X, Y, Z:
 # 
 # # 2D: 
 # dims <- c(4, 3)
