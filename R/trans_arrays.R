@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 09 10
+## hn | uni.kn | 2021 09 11
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 #
@@ -994,7 +994,8 @@ subtable <- function(tbl,
 # rather than building the df from scratch via 
 # expand.grid(outcome, sex, group, stringsAsFactors = TRUE)  # Note reversed order of vecs!
 
-ctable <- function(data, dim = length(data), dimnames = NULL, as_df = FALSE){
+ctable <- function(data, dim = length(data), dimnames = NULL, 
+                   by_row = FALSE, as_df = FALSE){
   
   # Inputs:
   # ToDo: Verify that data contains only frequency counts (integers >= 0).
@@ -1005,11 +1006,28 @@ ctable <- function(data, dim = length(data), dimnames = NULL, as_df = FALSE){
     
   }
   
+  # if (by_row & (length(dim) > 1)){ # switch dimensions 1 and 2 (to fill matrices in by-row, rather by-col direction):
+  #   
+  #   ix_else <- -(1:2)
+  #   dim <- cbind(dim[2:1], dim[ix_else])
+  #   
+  #   temp <- dimnames[1]
+  #   dimnames[1] <- dimnames[2]
+  #   dimnames[2] <- temp
+  #   
+  # }
+  
   # Pass to array():
   ar <- array(data = data, # Note: By-col order of data (as in array()) 
               dim = dim, 
               dimnames = dimnames  # Note: By-col order of dimensions (from left/Y, inner/X, outer/table)!
   )
+  
+  if (by_row & (length(dim) > 1)){ # swap first two array dimensions:
+    
+    ar <- aperm(ar, perm = c(2, 1))
+    
+  }
   
   # Names:
   if (is.null(dimnames)){ # no dimnames provided:
@@ -1083,6 +1101,31 @@ ctable <- function(data, dim = length(data), dimnames = NULL, as_df = FALSE){
 # ctable(v, c(2, 2, 2)) 
 # ctable(v, c(2, 2, 2), as_df = TRUE) 
 # ctable(v, c(2, 4))
+
+## ctable with X, Y, Z:
+
+dims <- c(4, 3, 2)
+dnl <- list(Y = paste0("y_", 1:4), 
+            X = paste0("x_", 1:3), 
+            Z = paste0("z_", 1:2))
+
+t1 <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl)
+t1
+dim(t1)
+
+ix_else <- 1:length(dim(t1))
+
+aperm(t1, perm = c(2:1, ix_else))
+
+ctable(data = 1:prod(dims), dim = dims, dimnames = dnl, by_row = TRUE)
+
+## Data directions:
+v <- 1:16
+matrix(v, nrow = 4, byrow = FALSE) # by-col (default)
+matrix(v, nrow = 4, byrow = TRUE)  # by-row
+
+array(v, c(4, 4))     # by-col (default)
+array(v, c(4, 2, 2))  # by-col
 
 
 # +++ here now +++ 
