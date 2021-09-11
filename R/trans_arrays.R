@@ -6,6 +6,82 @@
 # Note that objects of type "table" are specific cases of arrays (contingency tables with freq. counts).
 
 
+
+## swap_xy: Swap the first 2 dimensions of an array/elements of a vector/column of a data.frame: ------
+
+swap_xy <- function(x){
+  
+  tx <- NA  # initialize
+  
+  if (is.array(x)) { # Case 1: x is an array: ---- 
+    
+    # Swap the first 2 dimensions of an array (i.e., X and Y):
+    n_dim <- length(dim(x))  
+    
+    if (n_dim > 1){
+      
+      if (n_dim > 2){ ix_other <- 3:n_dim } else { ix_other <- NULL }
+      
+      tx <- aperm(x, perm = c(2, 1, ix_other))  # swap dimensions 1 and 2
+      
+    } else {
+      
+      tx <- x
+      
+    }
+    
+  } else if (is.vector(x)) { # Case 2: x is vector or list: ---- 
+    
+    # Swap the first 2 elements (i.e., X and Y):
+    x_len <- length(x)  
+    
+    if (x_len > 1){
+      
+      if (x_len > 2){ ix_other <- 3:x_len } else { ix_other <- NULL }
+      
+      tx <- x[c(2, 1, ix_other)]  # swap elements 1 and 2
+      
+    } else {
+      
+      tx <- x      
+      
+    }
+    
+  } else if (is.data.frame(x)) { # Case 3: x is a data.frame: ---- 
+    
+    # Swap the first 2 columns:
+    n_col <- ncol(x)
+    
+    if (n_col > 1){
+      
+      if (n_col > 2){ ix_other <- 3:n_col } else { ix_other <- NULL }
+      
+      tx <- x[ , c(2, 1, ix_other)]  # swap columns 1 and 2
+      
+    } else {
+      
+      tx <- x      
+      
+    }
+    
+  }
+  
+  return(tx)
+  
+} # swap_xy().
+
+# # Check: 
+# (v  <- 1:4)
+# (l  <- list(a = 1:3, b = letters[1:4]))
+# (ar <- array(1:8, dim = c(4,2)))
+# (df <- data.frame(v1 = v, v2 = LETTERS[1:4], v3 = 11:14))
+#   
+# swap_xy(v)
+# swap_xy(l)
+# swap_xy(ar)
+# swap_xy(df)
+
+
 ## add_dimnames: Add default names to array dimensions: ------ 
 
 #' Add dimension names (to arrays). 
@@ -1021,7 +1097,7 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
               dimnames = dimnames  # Note: By-col order of dimensions (from left/Y, inner/X, outer/table)!
   )
   
-  # Swap first 2 dimensions (i.e., X and Y):
+  # Swap the first 2 dimensions of an array (i.e., X and Y):
   n_dim <- length(dim)  
   
   if (by_row & (n_dim > 1)){
