@@ -1025,7 +1025,7 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
   
   if (by_row){  # swap dimensions 1 and 2 of array (i.e., X and Y): 
     
-    ar <- swap_xy(ar)  # use utility function (above)
+    ar <- swap_xy(ar)  # use utility function (in util.R)
     
   }
   
@@ -1163,7 +1163,7 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
 # # As df of all combinations:
 # expand.grid(outcome, sex, group, stringsAsFactors = TRUE)  # Note reversed order of vecs!
 
- 
+
 
 ## Key data structures: Contingency table (as data frame, with a freq_var): ------ 
 
