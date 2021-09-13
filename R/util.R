@@ -1,5 +1,5 @@
 ## util.R | i2ds
-## hn | uni.kn | 2021 09 12
+## hn | uni.kn | 2021 09 13
 
 # General utility functions: ------ 
 
@@ -12,6 +12,8 @@ swap_xy <- function(obj){
   t_obj <- NA  # initialize
   
   if (is.array(obj)) { # 1: obj is an array/matrix/table: ---- 
+    
+    print("1: array, matrix, or table")  # 4debugging
     
     # Swap the first 2 dimensions of an array (i.e., X and Y):
     n_dim <- length(dim(obj))  
@@ -28,7 +30,9 @@ swap_xy <- function(obj){
       
     }
     
-  } else if (is.vector(obj)) { # 2: obj is vector or list: ---- 
+  } else if ( is.atomic(obj) | is.list(obj) ) { # 2: obj is atomic vector or list: ---- 
+    
+    print("2: atomic vector or list")  # 4debugging
     
     # Swap the first 2 elements (i.e., X and Y):
     x_len <- length(obj)  
@@ -46,7 +50,9 @@ swap_xy <- function(obj){
     }
     
   } else if (is.data.frame(obj)) { # 3: obj is a data.frame: ---- 
-    
+
+    print("3: data frame")  # 4debugging
+        
     # Swap the first 2 columns:
     n_col <- ncol(obj)
     
