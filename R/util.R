@@ -3,70 +3,67 @@
 
 # General utility functions: ------ 
 
-## swap_xy: Swap the first 2 dimensions of an array/elements of a vector/column of a data.frame: ------
+
+## swap_xy: Swap 2 dimensions of an array/table OR elements of a vector/list/columns of a data.frame: ------
 
 # A generalized version of t() that works for multiple object types.
 
-swap_xy <- function(obj){
+swap_xy <- function(obj, x = 1, y = 2){
+  
+  # Inputs: Ensure that x and y are integer values: 
+  if ( (x %% 1 != 0) || (y %% 1 != 0) ) {
+    
+    message("swap_xy: x and y must be integer values.")
+    x <- as.integer(x)
+    y <- as.integer(y)
+    
+  }
   
   t_obj <- NA  # initialize
   
-  if (is.array(obj)) { # 1: obj is an array/matrix/table: ---- 
+  if (is.array(obj)) { # Case 1: obj is an array/matrix/table: ---- 
     
-    print("1: array, matrix, or table")  # 4debugging
+    print("1: An array, matrix, or table: Transpose dimensions")  # 4debugging
     
-    # Swap the first 2 dimensions of an array (i.e., X and Y):
     n_dim <- length(dim(obj))  
     
-    if (n_dim > 1){
+    if ( (x <= n_dim) && (y <= n_dim) && (x != y) ){
       
-      if (n_dim > 2){ ix_rest <- 3:n_dim } else { ix_rest <- NULL }
+      ix    <- 1:n_dim
+      ix[x] <- y
+      ix[y] <- x
       
-      t_obj <- aperm(obj, perm = c(2, 1, ix_rest))  # swap dimensions 1 and 2
+      t_obj <- aperm(obj, perm = ix)  # permute dimensions x and y
       
-    } else {
+    } else { # no change:
       
       t_obj <- obj
       
     }
     
-  } else if ( is.atomic(obj) | is.list(obj) ) { # 2: obj is atomic vector or list: ---- 
+  } else if ( is.atomic(obj) | is.list(obj) ) { # Case 2: obj is atomic vector/list/df: ---- 
     
-    print("2: atomic vector or list")  # 4debugging
+    print("2: An atomic vector, list, or data frame: Swap elements")  # 4debugging
     
-    # Swap the first 2 elements (i.e., X and Y):
-    x_len <- length(obj)  
+    n <- length(obj)
     
-    if (x_len > 1){
+    if ( (x <= n) && (y <= n) && (x != y) ){
       
-      if (x_len > 2){ ix_rest <- 3:x_len } else { ix_rest <- NULL }
+      ix    <- 1:n
+      ix[x] <- y
+      ix[y] <- x
       
-      t_obj <- obj[c(2, 1, ix_rest)]  # swap elements 1 and 2
+      t_obj <- obj[ix]
       
-    } else {
+    } else { # no change:
       
       t_obj <- obj      
       
     }
     
-  } else if (is.data.frame(obj)) { # 3: obj is a data.frame: ---- 
-
-    print("3: data frame")  # 4debugging
-        
-    # Swap the first 2 columns:
-    n_col <- ncol(obj)
+  } else { # any other obj: 
     
-    if (n_col > 1){
-      
-      if (n_col > 2){ ix_rest <- 3:n_col } else { ix_rest <- NULL }
-      
-      t_obj <- obj[ , c(2, 1, ix_rest)]  # swap columns 1 and 2
-      
-    } else {
-      
-      t_obj <- obj      
-      
-    }
+    message("swap_xy: obj is not an array/table or linear vector/list.")
     
   }
   
@@ -74,18 +71,36 @@ swap_xy <- function(obj){
   
 } # swap_xy().
 
-# # Check: 
+# # Check:
 # (v  <- 1:4)
 # (m <- matrix(1:6, nrow = 3))
-# (l  <- list(a = 1:3, b = letters[1:4]))
-# (ar <- array(1:8, dim = c(4,2)))
-# (df <- data.frame(v1 = v, v2 = LETTERS[1:4], v3 = 11:14))
-#   
+# (l  <- list(a = 1:3, b = letters[1:2], c = 11:14))
+# (df <- data.frame(v1 = v, v2 = letters[1:4], v3 = 11:14))
+# (ar <- array(1:24, dim = c(4, 3, 2)))
+# (tb <- UCBAdmissions)
+# 
 # swap_xy(v)
-# swap_xy(m)  # same as t(m)
+# swap_xy(v, 1, 4)
+# swap_xy(v, 2.2, pi)  # as integers
+# swap_xy(v, 1, 9)     # no change
+# 
 # swap_xy(l)
+# 
+# swap_xy(l, 2, pi)    
+# swap_xy(l, 1, 9)     # no change
+# 
+# swap_xy(df) # df is list
+# 
+# swap_xy(m)  # same as t(m)
+# 
 # swap_xy(ar)
-# swap_xy(df)
+# swap_xy(ar, 2, 3)
+# 
+# swap_xy(tb)
+# swap_xy(tb, 2, 3)
+# swap_xy(tb, 1, pi)
+# 
+# swap_xy(factor(v)) # factor
 
 
 
