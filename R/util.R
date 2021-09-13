@@ -131,4 +131,7 @@ get_name <- function(x){
 
 ## ToDo: ------
 
+# 1. Verify that some object contains only freq counts (i.e., integers >= 0).
+
+
 ## eof. ----------
