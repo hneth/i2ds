@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 09 12
+## hn | uni.kn | 2021 09 13
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 #
@@ -1017,15 +1017,15 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
   
   
   # Pass to array():
-  ar <- array(data = data, # Note: By-col order of data (as in array()) 
+  ar <- array(data = data, # Note: by-col order of data (as in array()) 
               dim = dim, 
-              dimnames = dimnames  # Note: By-col order of dimensions (from left/Y, inner/X, outer/table)!
+              dimnames = dimnames # Note: by-col order of dimensions (from left/Y, inner/X, outer/table)!
   )
   
   
-  if (by_row){  # swap dimensions 1 and 2 of array (i.e., X and Y): 
+  if (by_row){  # swap dimensions 1 and 2 of array: 
     
-    ar <- swap_xy(ar)  # use utility function (in util.R)
+    ar <- swap_xy(ar, x = 1, y = 2)  # use utility function (in util.R)
     
   }
   
