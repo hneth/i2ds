@@ -23,7 +23,7 @@ swap_xy <- function(obj, x = 1, y = 2){
   
   if (is.array(obj)) { # Case 1: obj is an array/matrix/table: ---- 
     
-    print("1: An array, matrix, or table: Transpose dimensions")  # 4debugging
+    # print("1: An array, matrix, or table: Transpose dimensions")  # 4debugging
     
     n_dim <- length(dim(obj))  
     
@@ -37,13 +37,14 @@ swap_xy <- function(obj, x = 1, y = 2){
       
     } else { # no change:
       
+      message("swap_xy: no change.")
       t_obj <- obj
       
     }
     
   } else if ( is.atomic(obj) | is.list(obj) ) { # Case 2: obj is atomic vector/list/df: ---- 
     
-    print("2: An atomic vector, list, or data frame: Swap elements")  # 4debugging
+    # print("2: An atomic vector, list, or data frame: Swap elements")  # 4debugging
     
     n <- length(obj)
     
@@ -53,10 +54,11 @@ swap_xy <- function(obj, x = 1, y = 2){
       ix[x] <- y
       ix[y] <- x
       
-      t_obj <- obj[ix]
+      t_obj <- obj[ix]  # switch elements x and y
       
     } else { # no change:
-      
+
+      message("swap_xy: no change.")      
       t_obj <- obj      
       
     }
@@ -86,7 +88,7 @@ swap_xy <- function(obj, x = 1, y = 2){
 # 
 # swap_xy(l)
 # 
-# swap_xy(l, 2, pi)    
+# swap_xy(l, 2, pi)
 # swap_xy(l, 1, 9)     # no change
 # 
 # swap_xy(df) # df is list
@@ -132,6 +134,7 @@ get_name <- function(x){
 ## ToDo: ------
 
 # 1. Verify that some object contains only freq counts (i.e., integers >= 0).
+#    (see is_freq() in riskyr and i2ds).
 
 
 ## eof. ----------
