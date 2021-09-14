@@ -1,5 +1,5 @@
 ## util.R | i2ds
-## hn | uni.kn | 2021 09 13
+## hn | uni.kn | 2021 09 14
 
 # General utility functions: ------ 
 
