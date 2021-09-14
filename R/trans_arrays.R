@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 09 13
+## hn | uni.kn | 2021 09 14
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 #
@@ -1000,9 +1000,8 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
   
   # Inputs:
   # ToDo: Verify that data contains only frequency counts (integers >= 0).
-  # a) only numeric values.
-  # b) only integers >= 0.
-  
+  # a) only numeric values
+  # b) only integers >= 0
   if (!is.numeric(data) | any(data %% 1 != 0) | any(data < 0)) {
     
     message("ctable: Contingency data must only contain frequency counts (i.e., non-negative integers).")
@@ -1016,7 +1015,7 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
   }
   
   
-  # Pass to array():
+  # Main: Pass to array():
   ar <- array(data = data, # Note: by-col order of data (as in array()) 
               dim = dim, 
               dimnames = dimnames # Note: by-col order of dimensions (from left/Y, inner/X, outer/table)!
@@ -1040,14 +1039,18 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
   
   tb <- as.table(ar)  # coerce to "table" (to flag impossible values)
   
+  
   if (as_df){ # convert to df:
     
     df <- data.frame(tb)
     
-    # Reverse the order of named variables/columns:
+    # if (!by_row){ # Reverse the order of named variables/columns:
+    
     n_names <- length(dimnames(tb))
     ix_rest <- -(1:n_names)
     df <- cbind(df[n_names:1], df[ix_rest])  # reverse order of initial n_names columns
+    
+    # }
     
     return(df) 
     
@@ -1059,15 +1062,21 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
   
 } # ctable(). 
 
-# Check:
-
-# # (1) Abstract case: 
-# ctable(1:8, dim = c(2,4), dimnames = list(rows = c("A", "B"), cols = 1:4))
-# ctable(1:8, dim = c(2,2,2), dimnames = list(Ys = c("a", "b"), Xs = 1:2, group = c("A", "B")))
+# # Check:
+# l_24 <- list(rows = c("A", "B"), cols = letters[1:4])
+# l432 <- list(Ys = letters[1:4], Xs = LETTERS[1:3], group = c("I", "II"))
+# 
+# # (1) Abstract case:
+# ctable(1:8,  dim = c(2,4), dimnames = l_24)
+# ctable(1:24, dim = c(4,3,2), dimnames = l432)
+# 
+# # by row:
+# ctable(1:8,  dim = c(2,4), dimnames = l_24, by_row = TRUE)
+# ctable(1:24, dim = c(4,3,2), dimnames = l432, by_row = TRUE)
 # 
 # # Return as df:
-# ctable(1:8, dim = c(2,4), dimnames = list(rows = c("A", "B"), cols = 1:4), TRUE)
-# ctable(1:8, dim = c(2,2,2), dimnames = list(Ys = c("a", "b"), Xs = 1:2, group = c("A", "B")), TRUE)
+# ctable(1:8, dim = c(2,4), dimnames = l_24, as_df = TRUE)
+# ctable(1:24, dim = c(4,3,2), dimnames = l432, as_df = TRUE)
 # 
 # # No dimnames:
 # ctable(1:8, dim = c(2,4)) 
