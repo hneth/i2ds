@@ -1,5 +1,5 @@
 ## trans_lists.R | i2ds
-## hn | uni.kn | 2021 08 28
+## hn | uni.kn | 2021 09 14
 
 # Functions for transforming/manipulating lists: ------ 
 #
@@ -986,7 +986,7 @@ sublist <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 # - Analog version: out_list uses all, but excludes all mentioned dimensions/levels
 
 
-## sublist_tbl: A more contrained sublist function for subtable(), using 2 arguments (in_list and out_list): ------ 
+## sublist_tbl: A more constrained sublist function for subtable(), using 2 arguments (in_list and out_list): ------ 
 
 # A more specific, constrained and robust version of sublist() (above)
 # to be used in the subtable() function: 
