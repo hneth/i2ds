@@ -1337,12 +1337,14 @@ sublist_tbl <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 # ToDo: 
 # - Simplify sublist functions (e.g., by making more conservative/strict)
 
-## ToDo: ------
+
+
+## Done: ------ 
 
 # - match for lists: in which sublist is an element (e.g., name).
-
 # - sublist() for lists: with 2 arguments to include and exclude elements of lists in ls
 #                        to use in a subtable() function.
 
+## ToDo: ------
 
 ## eof. ----------
