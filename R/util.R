@@ -1,5 +1,5 @@
 ## util.R | i2ds
-## hn | uni.kn | 2021 09 14
+## hn | uni.kn | 2021 09 15
 
 # General utility functions: ------ 
 
@@ -122,13 +122,18 @@ get_name <- function(x){
 } # get_name
 
 # # Check:
-# get_name(group)
-# (ls <- list(group = group, sex = sex))
-# (df <- data.frame(group = group, sex = sex))
-# get_name(ls)
+# (v  <- 1:4)
+# (m <- matrix(1:6, nrow = 3))
+# (l  <- list(a = 1:3, b = letters[1:2], c = 11:14))
+# (df <- data.frame(v1 = v, v2 = letters[1:4], v3 = 11:14))
+# (ar <- array(1:24, dim = c(4, 3, 2)))
+# (tb <- UCBAdmissions)
+# 
+# get_name(v)
+# get_name(m)
 # get_name(df)
-
-
+# get_name(ar)
+# get_name(tb)
 
 
 ## ToDo: ------
