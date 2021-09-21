@@ -6,8 +6,6 @@
 # Note that objects of type "table" are specific cases of arrays (contingency tables with freq. counts).
 
 
-
-
 ## add_dimnames: Add default names to array dimensions: ------ 
 
 #' Add dimension names (to arrays). 
@@ -1205,6 +1203,7 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
 # tb_new
 # 
 # all.equal(tb_new, tb_org)
+
 
 
 ## ToDo: ------

@@ -6,6 +6,7 @@
 # Note that objects of type "table" are specific cases of arrays (contingency tables with freq. counts).
 
 
+
 ## is_empty_list: Check if some x is an empty list (i.e., x is both a list and empty): ------
 
 is_empty_list <- function(x){
@@ -1336,6 +1337,7 @@ sublist_tbl <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 
 # ToDo: 
 # - Simplify sublist functions (e.g., by making more conservative/strict)
+
 
 
 
