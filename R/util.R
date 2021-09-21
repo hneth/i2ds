@@ -1,5 +1,5 @@
 ## util.R | i2ds
-## hn | uni.kn | 2021 09 15
+## hn | uni.kn | 2021 09 21
 
 # General utility functions: ------ 
 
@@ -119,7 +119,7 @@ get_name <- function(x){
   
   return(nm)
   
-} # get_name
+} # get_name(). 
 
 # # Check:
 # (v  <- 1:4)
