@@ -1,12 +1,11 @@
 ## util.R | i2ds
-## hn | uni.kn | 2021 09 21
+## hn | uni.kn | 2021 09 23
 
 # General utility functions: ------ 
 
+## swap_xy: Swap 2 dimensions x and y of an array/table OR elements of a vector/list/columns of a data.frame: ------
 
-## swap_xy: Swap 2 dimensions of an array/table OR elements of a vector/list/columns of a data.frame: ------
-
-# A generalized version of t() that works for multiple object types.
+# Goal: A generalized version of t() that works for multiple object types.
 
 swap_xy <- function(obj, x = 1, y = 2){
   
@@ -20,6 +19,7 @@ swap_xy <- function(obj, x = 1, y = 2){
   }
   
   t_obj <- NA  # initialize
+  
   
   if (is.array(obj)) { # Case 1: obj is an array/matrix/table: ---- 
     
@@ -42,6 +42,7 @@ swap_xy <- function(obj, x = 1, y = 2){
       
     }
     
+    
   } else if ( is.atomic(obj) | is.list(obj) ) { # Case 2: obj is atomic vector/list/df: ---- 
     
     # print("2: An atomic vector, list, or data frame: Swap elements")  # 4debugging
@@ -56,18 +57,21 @@ swap_xy <- function(obj, x = 1, y = 2){
       
       t_obj <- obj[ix]  # switch elements x and y
       
-    } else { # no change:
-
+      
+    } else { # Trivial case 0: no change:
+      
       message("swap_xy: no change.")      
       t_obj <- obj      
       
     }
+    
     
   } else { # any other obj: 
     
     message("swap_xy: obj is not an array/table or linear vector/list.")
     
   }
+  
   
   return(t_obj)
   

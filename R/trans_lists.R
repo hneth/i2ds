@@ -1,10 +1,9 @@
 ## trans_lists.R | i2ds
-## hn | uni.kn | 2021 09 14
+## hn | uni.kn | 2021 09 23
 
 # Functions for transforming/manipulating lists: ------ 
 #
 # Note that objects of type "table" are specific cases of arrays (contingency tables with freq. counts).
-
 
 
 ## is_empty_list: Check if some x is an empty list (i.e., x is both a list and empty): ------
