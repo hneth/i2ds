@@ -1,4 +1,4 @@
-## trans_arrays.R | i2ds
+## array_fun.R | i2ds
 ## hn | uni.kn | 2021 09 24
 
 # Functions for transforming/manipulating arrays and tables: ------ 

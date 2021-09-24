@@ -15,8 +15,8 @@ Suggests:
     rmarkdown,
     spelling
 Collate: 'util.R'
-         'trans_lists.R'
-         'trans_arrays.R'
+         'list_fun.R'
+         'array_fun.R'
          'start.R'
 Encoding: UTF-8
 LazyData: true
