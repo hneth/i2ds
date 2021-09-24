@@ -24,6 +24,14 @@ Default: \code{dim = length(data)}.}
 (as a \code{\link{list}}). 
 Default: \code{dimnames = NULL}, using 
 \code{\link{add_dimnames}} per default.}
+
+\item{by_row}{(Boolean): 
+Are \code{data} to be read in a by-row fashion? 
+Default: \code{by_row = FALSE}.}
+
+\item{as_df}{(Boolean): 
+Return result as a \code{\link{data.frame}}?
+Default: \code{as_df = FALSE}.}
 }
 \value{
 A table.

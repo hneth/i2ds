@@ -1023,11 +1023,11 @@ subtable <- function(tbl,
 #' 
 #' @param by_row (Boolean): 
 #' Are \code{data} to be read in a by-row fashion? 
-#' Default: \code{by_row} = FALSE}. 
+#' Default: \code{by_row = FALSE}. 
 #' 
 #' @param as_df (Boolean): 
-#' Return resut as a \code{\link{data.frame}}?
-#' Default: \code{as_df} = FALSE}. 
+#' Return result as a \code{\link{data.frame}}?
+#' Default: \code{as_df = FALSE}. 
 #' 
 #' @examples
 #' # Prepare dimnames (as lists): 
