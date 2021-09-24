@@ -1,5 +1,5 @@
 ## start.R | i2ds
-## hn | uni.kn | 2020 10 01
+## hn | uni.kn | 2021 09 24
 ## ---------------------------
 
 ## Open pkg guide: ----------
@@ -7,7 +7,6 @@
 #' Opens user guide of the i2ds package. 
 #'
 #' @import utils
-#'
 
 i2ds.guide <- function() {
 
@@ -17,7 +16,8 @@ i2ds.guide <- function() {
 
   print("ToDo")
   
-}
+} # i2ds.guide(). 
+
 
 ## Initialize pkg: ---------- 
 
@@ -35,7 +35,7 @@ i2ds.guide <- function() {
   ## User guidance: ------
   
   ## Roll dice: ------
-  dice <- sample(1:6, 1)
+  dice <- sample(x = 1:6, size = 1)
   
   if (dice == -77) {
     pkg_version <- utils::packageVersion("i2ds", lib.loc = NULL)
@@ -58,6 +58,7 @@ i2ds.guide <- function() {
 }
 
 ## ToDo: ------
-## - ...
+
+## - etc.
 
 ## eof. ----------
