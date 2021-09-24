@@ -1,5 +1,5 @@
 ## trans_arrays.R | i2ds
-## hn | uni.kn | 2021 09 23
+## hn | uni.kn | 2021 09 24
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 #
@@ -781,7 +781,8 @@ subtable_names <- function(tbl, dim_list){
 #' @family array functions
 #' 
 #' @seealso
-#' \code{\link{sublist}} for extracting subsets of a list;  
+#' \code{\link{ctable}} for creating a contingency table; 
+#' \code{\link{sublist}} for extracting subsets of a list; 
 #' \code{\link{table}} and \code{\link{array}} for the underlying data structures. 
 #' 
 #' @export
@@ -988,12 +989,78 @@ subtable <- function(tbl,
 # Thus, the order of data, dim, and dimnames corresponds to array() defaults, 
 # implying that data is entered in by-col order and dimensions from y/left, x/top, to group/table. 
 
-# Desired data frames are created from array/table, 
-# (via data.frame(tb))
+# Desired data frames are created from array/table [via data.frame(tb)], 
 # rather than building the df from scratch via 
-# expand.grid(outcome, sex, group, stringsAsFactors = TRUE)  # Note reversed order of vecs!
+# expand.grid(outcome, sex, group, stringsAsFactors = TRUE)  
+# Note reversed order of vecs!
 
-ctable <- function(data, dim = length(data), dimnames = NULL, 
+#' Create a contingency table from data and description (as a table). 
+#' 
+#' \code{ctable} yields a contingency table (as a \code{table}) 
+#' in analogy to creating an array by \code{\link{array}}. 
+#' 
+#' \code{ctable} internally passes its arguments to \code{\link{array}} 
+#' before coercing the resulting \code{array} into a \code{table} or \code{data.frame}. 
+#' 
+#' The order of elements in its arguments \code{data}, \code{dim}, 
+#' and \code{dimnames} must correspond to the defaults of \code{\link{array}}. 
+#' For instance, \code{data} are entered in a by-column fashion 
+#' and the dimensions in \code{dimnames} from left/y, top/x, to group/table/z, etc. 
+#' 
+#' @return A table. 
+#' 
+#' @param data The data to be used (required; 
+#' frequency counts, as a \code{\link{vector}} of positive integers). 
+#' 
+#' @param dim The dimensions to be used 
+#' (as a numeric \code{\link{vector}}). 
+#' Default: \code{dim = length(data)}. 
+#' 
+#' @param dimnames The dimension names to be used 
+#' (as a \code{\link{list}}). 
+#' Default: \code{dimnames = NULL}, using 
+#' \code{\link{add_dimnames}} per default.  
+#' 
+#' @param by_row (Boolean): 
+#' Are \code{data} to be read in a by-row fashion? 
+#' Default: \code{by_row} = FALSE}. 
+#' 
+#' @param as_df (Boolean): 
+#' Return resut as a \code{\link{data.frame}}?
+#' Default: \code{as_df} = FALSE}. 
+#' 
+#' @examples
+#' # Prepare dimnames (as lists): 
+#' l_24 <- list(rows = c("A", "B"), cols = letters[1:4])
+#' l432 <- list(Ys = letters[1:4], Xs = LETTERS[1:3], group = c("I", "II"))
+#' 
+#' # Standard use:
+#' ctable(1:8,  dim = c(2,4), dimnames = l_24)
+#' ctable(1:24, dim = c(4,3,2), dimnames = l432)
+#' 
+#' # by row:
+#' ctable(1:8,  dim = c(2,4), dimnames = l_24, by_row = TRUE)
+#' ctable(1:24, dim = c(4,3,2), dimnames = l432, by_row = TRUE)
+#' 
+#' # Return as df:
+#' ctable(1:8, dim = c(2,4), dimnames = l_24, as_df = TRUE)
+#' ctable(1:24, dim = c(4,3,2), dimnames = l432, as_df = TRUE)
+#' 
+#' # No dimnames:
+#' ctable(1:8, dim = c(2,4))
+#' ctable(1:8, dim = c(2,2,2))
+#' 
+#' @family array functions
+#' 
+#' @seealso
+#' \code{\link{subtable}} for extracting a subset of a table;  
+#' \code{\link{sublist}} for extracting subsets of a list;  
+#' \code{\link{table}} and \code{\link{array}} for the underlying data structures. 
+#' 
+#' @export
+
+ctable <- function(data, 
+                   dim = length(data), dimnames = NULL, 
                    by_row = FALSE, as_df = FALSE){
   
   # Inputs:
@@ -1077,7 +1144,7 @@ ctable <- function(data, dim = length(data), dimnames = NULL,
 # ctable(1:24, dim = c(4,3,2), dimnames = l432, as_df = TRUE)
 # 
 # # No dimnames:
-# ctable(1:8, dim = c(2,4)) 
+# ctable(1:8, dim = c(2,4))
 # ctable(1:8, dim = c(2,2,2))
 # 
 # # Entering data in by-row direction:
