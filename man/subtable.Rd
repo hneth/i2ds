@@ -91,11 +91,13 @@ subtable(t, in_list = list(1:3, "Female", Survived = 2))  # both Age levels incl
  
 }
 \seealso{
-\code{\link{sublist}} for extracting subsets of a list;  
+\code{\link{ctable}} for creating a contingency table; 
+\code{\link{sublist}} for extracting subsets of a list; 
 \code{\link{table}} and \code{\link{array}} for the underlying data structures.
 
 Other array functions: 
 \code{\link{add_dimnames}()},
+\code{\link{ctable}()},
 \code{\link{expand_freq_table}()},
 \code{\link{flatten_array}()}
 }

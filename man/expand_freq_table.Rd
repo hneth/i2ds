@@ -72,6 +72,7 @@ all.equal(Titanic, tb)
 
 Other array functions: 
 \code{\link{add_dimnames}()},
+\code{\link{ctable}()},
 \code{\link{flatten_array}()},
 \code{\link{subtable}()}
 }
