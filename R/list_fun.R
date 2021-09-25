@@ -1,5 +1,5 @@
 ## list_fun.R  | i2ds
-## hn | uni.kn | 2021 09 24
+## hn | uni.kn | 2021 09 25
 
 # Functions for transforming/manipulating lists: ------ 
 #
@@ -277,7 +277,7 @@ match_list_tag <- function(tag, ls, nomatch = 0L){
 # - name_list is the list of original names (that is to be reduced) 
 # - sub_list is a list that specifies a subset of name_list (by name or numeric indices)
 #
-# Currently used, but not exported. 
+# Originally used in subtable(), but now replaced by sublist_tbl() (see below).  
 
 sublist_names <- function(name_list, sub_list){
   
@@ -988,11 +988,11 @@ sublist <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 
 ## sublist_tbl: A more constrained sublist function for subtable(), using 2 arguments (in_list and out_list): ------ 
 
-# A more specific, constrained and robust version of sublist() (above)
-# to be used in the subtable() function: 
+# Goal: A more specific, constrained, and robust version of sublist() (above)
+#       to be used to replace sublist_names() in the subtable() function. 
 # 
-# Constraints:
-# - Lists returned keep ALL elements (name/tags) of original ls 
+# Current constraints:
+# - Lists returned keep ALL elements (name/tags) of original list ls 
 # - in the same order as the original ls.  
 # - Any non-mentioned elements of ls are left intact/kept as is/unchanged! 
 # - Any elements without levels remaining are set to NA (but not removed by setting them to NULL). 
@@ -1334,12 +1334,6 @@ sublist_tbl <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 # sublist_tbl(ml, in_list = list(a2 = letters[5:6]))  # yields correct result.
 
 
-# ToDo: 
-# - Simplify sublist functions (e.g., by making more conservative/strict)
-
-
-
-
 ## Done: ------ 
 
 # - match for lists: in which sublist is an element (e.g., name).
@@ -1347,5 +1341,7 @@ sublist_tbl <- function(ls, in_list = ls, out_list = NULL, quiet = FALSE){
 #                        to use in a subtable() function.
 
 ## ToDo: ------
+
+# - Simplify sublist() and sublist_tbl() functions (e.g., by making more conservative/strict)
 
 ## eof. ----------

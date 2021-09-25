@@ -1,8 +1,8 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2021 09 24
+## hn | uni.kn | 2021 09 25
 
 # Functions for transforming/manipulating arrays and tables: ------ 
-#
+
 # Note that objects of type "table" are specific cases of arrays (contingency tables with freq. counts).
 
 
@@ -1239,6 +1239,7 @@ ctable <- function(data,
 
 
 
+
 ## Key data structures: Contingency table (as data frame, with a freq_var): ------ 
 
 # Note: Contingency table (data frame) can easily be created from and transformed into an array/table:
@@ -1270,6 +1271,7 @@ ctable <- function(data,
 # tb_new
 # 
 # all.equal(tb_new, tb_org)
+
 
 
 
