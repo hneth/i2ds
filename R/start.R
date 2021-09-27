@@ -1,8 +1,7 @@
 ## start.R | i2ds
-## hn | uni.kn | 2021 09 24
-## ---------------------------
+## hn | uni.kn | 2021 09 27
 
-## Open pkg guide: ----------
+## Open pkg guide: ------ 
 
 #' Opens user guide of the i2ds package. 
 #'
