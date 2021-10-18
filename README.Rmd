@@ -47,13 +47,22 @@ url_ds4psy_cran <- "https://CRAN.R-project.org/package=ds4psy"
 url_ds4psy_ilias <- "https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1077327.html"  # ds4psy
 url_ds4psy_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=5101&periodId=181" 
 
-# i2ds course in Fall 2020: 
+# i2ds course in Fall 2020/21: 
 # Introduction to Data Science (using R, ADILT): 
 # 05.11.2020 - 11.02.2021
 # weekly on Thu	13:30 - 15:00
 # Room C 336 
 url_i2ds_ilias <- "https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1077339.html"
 url_i2ds_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=181" 
+
+# i2ds course in Fall 2021/22: 
+# Introduction to Data Science (using R, ADILT): 
+# (PSY-16620)  25.10.2021 - 11.02.2022
+# weekly on Mon	15:15 - 16:45
+# Room 
+url_i2ds_ilias <- "https://ilias.uni-konstanz.de/"
+url_i2ds_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=558&navigationPosition=hisinoneLehrorganisation,examEventOverviewOwn" 
+
 
 url_i2ds_book <- "https://bookdown.org/hneth/i2ds/" 
 
@@ -85,8 +94,9 @@ The R package **i2ds** supports the course **Introduction to Data Science (using
 
 <!-- From package description: -->
 
-The **i2ds** package provides datasets and functions used in the examples and exercises of the book "Introduction to Data Science" (by Hansjoerg Neth, Konstanz University, 2021), available at <https://bookdown.org/hneth/ds4psy/>. 
-The book and course introduce principles and methods of data science to students of psychology and other biological or social sciences. The 'i2ds' package primarily provides datasets, but also functions for data generation and manipulation that are used in the book and its exercises. All functions included in 'i2ds' are designed to be explicit and instructive, rather than efficient or elegant. 
+The **i2ds** package provides datasets and functions used in the examples and exercises of the book "Introduction to Data Science" (by Hansjoerg Neth, Konstanz University, 2021), available at <`r url_i2ds_book`>. 
+The book and course introduce principles and methods of data science to students of psychology and other biological or social sciences. 
+The R package **i2ds** primarily provides datasets, but also functions for data generation and manipulation that are used in the book and its exercises. All functions included in **i2ds** are designed to be explicit and instructive, rather than efficient or elegant. 
 
 The textbook [Introduction to Data Science](`r url_i2ds_book`) is available at <`r url_i2ds_book`>. 
 
@@ -116,12 +126,12 @@ The course uses the technologies provided by [R](https://www.r-project.org/) [@R
 </a>
 
 
-<!-- Winter 2020/2021: -->
+<!-- Winter 2021/2022: -->
 
-* **Introduction to Data Science (using R, ADILT)** (course ID) 
+* **Introduction to Data Science (using R, ADILT)** (PSY-16620) 
 at the [University of Konstanz](https://www.uni-konstanz.de/en/) 
 by [Hansjörg Neth](https://neth.de/) (<h.neth@uni.kn>, [SPDS](https://www.spds.uni-konstanz.de/), office D507). 
-* Winter 2020: Thursdays, 13:30--15:00, C336. 
+* Winter 2021: Mondays, 15:15--16:45, G305. 
 * Course materials: 
     - Ebook [Introduction to Data Science](`r url_i2ds_book`) (at <`r url_i2ds_book`>) 
     - Ebook [Data Science for Psychologists](`r url_ds4psy_book`) (at <`r url_ds4psy_book`>) 
@@ -137,7 +147,7 @@ by [Hansjörg Neth](https://neth.de/) (<h.neth@uni.kn>, [SPDS](https://www.spds.
 
 ## Contents 
 
-The syllabus for the course **Introduction to Data Science (using R, ADILT)** at the [University of Konstanz](https://www.uni-konstanz.de/en/) in **Winter&nbsp;2020/2021** is currently under development. 
+The syllabus for the course **Introduction to Data Science (using R, ADILT)** at the [University of Konstanz](https://www.uni-konstanz.de/en/) in **Winter\ 2021/2022** is currently under development. 
 
 - An initial syllabus for [Introduction to Data Science](`r url_i2ds_book`) is available at <`r url_i2ds_book`>. 
 
@@ -156,11 +166,11 @@ The syllabus for the course **Introduction to Data Science (using R, ADILT)** at
 The main textbook for this course is yet to be written. 
 A textbook fragment [Introduction to Data Science](`r url_i2ds_book`) is available at <`r url_i2ds_book`>. 
 
-In the meantime, we will be using several chapters from my textbook [-@ds4psyBook]: 
+In the meantime, we will be using several chapters from the textbook [-@ds4psyBook]: 
 
-- Neth, H. (2020). ds4psy: _Data Science for Psychologists_.  
+- Neth, H. (2021). ds4psy: _Data Science for Psychologists_.  
 Social Psychology and Decision Sciences, University of Konstanz, Germany.  
-Textbook and R package (version 0.5.0, Sep 1, 2020). 
+Textbook and R package (version 0.7.0, May 12, 2021). 
 Available at <`r url_ds4psy_book`>.  
 
 The URL of the supporting R package **ds4psy** [-@R-ds4psy] is <`r url_ds4psy_cran`>. 
