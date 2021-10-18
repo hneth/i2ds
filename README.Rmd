@@ -39,7 +39,7 @@ knitr::opts_chunk$set(
 url_ds4psy_book <- "https://bookdown.org/hneth/ds4psy/"
 url_ds4psy_cran <- "https://CRAN.R-project.org/package=ds4psy"
 
-# ds4psy course in Fall 2020:
+# ds4psy course in Fall/Winter 2020/21:
 # Data Science for Psychologists | PSY-15150 
 # 02.11.2020 - 08.02.2021
 # weekly on Mon	15:15 - 16:45
@@ -47,7 +47,7 @@ url_ds4psy_cran <- "https://CRAN.R-project.org/package=ds4psy"
 url_ds4psy_ilias <- "https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1077327.html"  # ds4psy
 url_ds4psy_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=5101&periodId=181" 
 
-# i2ds course in Fall 2020/21: 
+# i2ds course in Fall/Winter 2020/21: 
 # Introduction to Data Science (using R, ADILT): 
 # 05.11.2020 - 11.02.2021
 # weekly on Thu	13:30 - 15:00
@@ -55,12 +55,12 @@ url_ds4psy_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.
 url_i2ds_ilias <- "https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1077339.html"
 url_i2ds_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=181" 
 
-# i2ds course in Fall 2021/22: 
+# i2ds course in Fall/Winter 2021/22: 
 # Introduction to Data Science (using R, ADILT): 
-# (PSY-16620)  25.10.2021 - 11.02.2022
+# (PSY-16620)  25.10.2021 - 1x.02.2022
 # weekly on Mon	15:15 - 16:45
-# Room 
-url_i2ds_ilias <- "https://ilias.uni-konstanz.de/"
+# Room G305
+url_i2ds_ilias <- "https://ilias.uni-konstanz.de/goto_ILIASKONSTANZ_crs_1287561.html"
 url_i2ds_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=558&navigationPosition=hisinoneLehrorganisation,examEventOverviewOwn" 
 
 

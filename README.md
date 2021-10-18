@@ -88,7 +88,8 @@ the [tidyverse](https://www.tidyverse.org/) (Wickham et al.,
 -   Online platforms (at [uni.kn](https://www.uni-konstanz.de/en/)):
     -   [ZEuS](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=558&navigationPosition=hisinoneLehrorganisation,examEventOverviewOwn)
         registration system  
-    -   [Ilias](https://ilias.uni-konstanz.de/) course management system
+    -   [Ilias](https://ilias.uni-konstanz.de/goto_ILIASKONSTANZ_crs_1287561.html)
+        course management system
 
 <!-- Add blank line. -->
 
@@ -105,7 +106,9 @@ currently under development.
 
 -   The organizational details for this course are available at the
     [ZEuS](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=558&navigationPosition=hisinoneLehrorganisation,examEventOverviewOwn)
-    and [Ilias](https://ilias.uni-konstanz.de/) web platforms.
+    and
+    [Ilias](https://ilias.uni-konstanz.de/goto_ILIASKONSTANZ_crs_1287561.html)
+    web platforms.
 
 -   The textbook [Data Science for
     Psychologists](https://bookdown.org/hneth/ds4psy/) is available at
@@ -182,7 +185,7 @@ License</a>.
 
 Please ask any question that may also be of interest to other course
 members in the **Discussion Forum** on
-[Ilias](https://ilias.uni-konstanz.de/).
+[Ilias](https://ilias.uni-konstanz.de/goto_ILIASKONSTANZ_crs_1287561.html).
 
 For all other questions, contact the instructor (Hansjörg Neth, h.neth
 at uni.kn).
