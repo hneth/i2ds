@@ -96,7 +96,8 @@ The R package **i2ds** supports the course **Introduction to Data Science (using
 
 The **i2ds** package provides datasets and functions used in the examples and exercises of the book "Introduction to Data Science" (by Hansjoerg Neth, Konstanz University, 2021), available at <`r url_i2ds_book`>. 
 The book and course introduce principles and methods of data science to students of psychology and other biological or social sciences. 
-The R package **i2ds** primarily provides datasets, but also functions for data generation and manipulation that are used in the book and its exercises. All functions included in **i2ds** are designed to be explicit and instructive, rather than efficient or elegant. 
+The R package **i2ds** primarily provides datasets, but also functions for data generation and manipulation that are used in the book and its exercises. 
+All functions included in **i2ds** are designed to be explicit and instructive, rather than efficient or elegant. 
 
 The textbook [Introduction to Data Science](`r url_i2ds_book`) is available at <`r url_i2ds_book`>. 
 
@@ -151,7 +152,7 @@ The syllabus for the course **Introduction to Data Science (using R, ADILT)** at
 
 - An initial syllabus for [Introduction to Data Science](`r url_i2ds_book`) is available at <`r url_i2ds_book`>. 
 
-- The organizational details for this course are available at the [ZEuS](`r url_i2ds_zeus`) and [Ilias](`r url_i2ds_ilias`) web platforms. 
+- The organizational details for this course are available on the [ZEuS](`r url_i2ds_zeus`) and [Ilias](`r url_i2ds_ilias`) web platforms. 
 
 - The textbook [Data Science for Psychologists](`r url_ds4psy_book`) is available at <`r url_ds4psy_book`>. 
 

@@ -20,17 +20,17 @@ Konstanz](https://www.uni-konstanz.de/en/).
 The **i2ds** package provides datasets and functions used in the
 examples and exercises of the book “Introduction to Data Science” (by
 Hansjoerg Neth, Konstanz University, 2021), available at
-<a href="https://bookdown.org/hneth/i2ds/" class="uri">https://bookdown.org/hneth/i2ds/</a>.
-The book and course introduce principles and methods of data science to
-students of psychology and other biological or social sciences. The R
-package **i2ds** primarily provides datasets, but also functions for
-data generation and manipulation that are used in the book and its
-exercises. All functions included in **i2ds** are designed to be
-explicit and instructive, rather than efficient or elegant.
+<https://bookdown.org/hneth/i2ds/>. The book and course introduce
+principles and methods of data science to students of psychology and
+other biological or social sciences. The R package **i2ds** primarily
+provides datasets, but also functions for data generation and
+manipulation that are used in the book and its exercises. All functions
+included in **i2ds** are designed to be explicit and instructive, rather
+than efficient or elegant.
 
 The textbook [Introduction to Data
 Science](https://bookdown.org/hneth/i2ds/) is available at
-<a href="https://bookdown.org/hneth/i2ds/" class="uri">https://bookdown.org/hneth/i2ds/</a>.
+<https://bookdown.org/hneth/i2ds/>.
 
 ## Description
 
@@ -50,11 +50,11 @@ or statistics.
 <!-- Tools/technology: -->
 
 The course uses the technologies provided by
-[R](https://www.r-project.org/) (R Core Team, [2020](#ref-R-base)),
+[R](https://www.r-project.org/) ([R Core Team, 2020](#ref-R-base)),
 [RStudio](https://rstudio.com/),
 [RMarkdown](https://rmarkdown.rstudio.com/), including key packages of
-the [tidyverse](https://www.tidyverse.org/) (Wickham et al.,
-[2019](#ref-tidyverse)) (e.g., **dplyr**, **ggplot2**, **tibble**, and
+the [tidyverse](https://www.tidyverse.org/) ([Wickham et al.,
+2019](#ref-tidyverse)) (e.g., **dplyr**, **ggplot2**, **tibble**, and
 **tidyr**).
 
 ## Coordinates
@@ -71,20 +71,18 @@ the [tidyverse](https://www.tidyverse.org/) (Wickham et al.,
 
 -   **Introduction to Data Science (using R, ADILT)** (PSY-16620) at the
     [University of Konstanz](https://www.uni-konstanz.de/en/) by
-    [Hansjörg Neth](https://neth.de/)
-    (<a href="mailto:h.neth@uni.kn" class="email">h.neth@uni.kn</a>,
+    [Hansjörg Neth](https://neth.de/) (<h.neth@uni.kn>,
     [SPDS](https://www.spds.uni-konstanz.de/), office D507).
 -   Winter 2021: Mondays, 15:15–16:45, G305.
 -   Course materials:
     -   Ebook [Introduction to Data
         Science](https://bookdown.org/hneth/i2ds/) (at
-        <a href="https://bookdown.org/hneth/i2ds/" class="uri">https://bookdown.org/hneth/i2ds/</a>)
+        <https://bookdown.org/hneth/i2ds/>)
     -   Ebook [Data Science for
         Psychologists](https://bookdown.org/hneth/ds4psy/) (at
-        <a href="https://bookdown.org/hneth/ds4psy/" class="uri">https://bookdown.org/hneth/ds4psy/</a>)
+        <https://bookdown.org/hneth/ds4psy/>)
     -   R package [ds4psy](https://CRAN.R-project.org/package=ds4psy)
-        (at
-        <a href="https://CRAN.R-project.org/package=ds4psy" class="uri">https://CRAN.R-project.org/package=ds4psy</a>)
+        (at <https://CRAN.R-project.org/package=ds4psy>)
 -   Online platforms (at [uni.kn](https://www.uni-konstanz.de/en/)):
     -   [ZEuS](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=558&navigationPosition=hisinoneLehrorganisation,examEventOverviewOwn)
         registration system  
@@ -102,9 +100,9 @@ currently under development.
 
 -   An initial syllabus for [Introduction to Data
     Science](https://bookdown.org/hneth/i2ds/) is available at
-    <a href="https://bookdown.org/hneth/i2ds/" class="uri">https://bookdown.org/hneth/i2ds/</a>.
+    <https://bookdown.org/hneth/i2ds/>.
 
--   The organizational details for this course are available at the
+-   The organizational details for this course are available on the
     [ZEuS](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=558&navigationPosition=hisinoneLehrorganisation,examEventOverviewOwn)
     and
     [Ilias](https://ilias.uni-konstanz.de/goto_ILIASKONSTANZ_crs_1287561.html)
@@ -112,7 +110,7 @@ currently under development.
 
 -   The textbook [Data Science for
     Psychologists](https://bookdown.org/hneth/ds4psy/) is available at
-    <a href="https://bookdown.org/hneth/ds4psy/" class="uri">https://bookdown.org/hneth/ds4psy/</a>.
+    <https://bookdown.org/hneth/ds4psy/>.
 
 -   Information on the [Advanced Data and Information Literacy Track
     (ADILT)](https://www.uni-konstanz.de/lehren/adilt-projekt/)
@@ -125,35 +123,32 @@ currently under development.
 The main textbook for this course is yet to be written. A textbook
 fragment [Introduction to Data
 Science](https://bookdown.org/hneth/i2ds/) is available at
-<a href="https://bookdown.org/hneth/i2ds/" class="uri">https://bookdown.org/hneth/i2ds/</a>.
+<https://bookdown.org/hneth/i2ds/>.
 
 In the meantime, we will be using several chapters from the textbook
-([2020](#ref-ds4psyBook)[a](#ref-ds4psyBook)):
+([2020a](#ref-ds4psyBook)):
 
 -   Neth, H. (2021). ds4psy: *Data Science for Psychologists*.  
     Social Psychology and Decision Sciences, University of Konstanz,
     Germany.  
     Textbook and R package (version 0.7.0, May 12, 2021). Available at
-    <a href="https://bookdown.org/hneth/ds4psy/" class="uri">https://bookdown.org/hneth/ds4psy/</a>.
+    <https://bookdown.org/hneth/ds4psy/>.
 
-The URL of the supporting R package **ds4psy**
-([2020](#ref-R-ds4psy)[b](#ref-R-ds4psy)) is
-<a href="https://CRAN.R-project.org/package=ds4psy" class="uri">https://CRAN.R-project.org/package=ds4psy</a>.
+The URL of the supporting R package **ds4psy** ([2020b](#ref-R-ds4psy))
+is <https://CRAN.R-project.org/package=ds4psy>.
 
-We are also using selected chapters from the following books (Baumer,
-Kaplan, & Horton, [2020](#ref-mdsr); Wickham & Grolemund,
-[2017](#ref-r4ds)):
+We are also using selected chapters from the following books ([Baumer,
+Kaplan, & Horton, 2020](#ref-mdsr); [Wickham & Grolemund,
+2017](#ref-r4ds)):
 
 -   Baumer, B.S., Kaplan, D.T., & Horton, N.J. (2020). *Modern Data
     Science with R* (2nd ed.). CRC Press, Taylor & Francis Group, Boca
     Raton/London/New York.  
-    Available at
-    <a href="https://beanumber.github.io/mdsr2e/" class="uri">https://beanumber.github.io/mdsr2e/</a>.
+    Available at <https://beanumber.github.io/mdsr2e/>.
 
 -   Wickham, H., & Grolemund, G. (2017). *R for data science: Import,
     tidy, transform, visualize, and model data.* Sebastopol, Canada:
-    O’Reilly Media, Inc.  Available at
-    <a href="http://r4ds.had.co.nz" class="uri">http://r4ds.had.co.nz</a>.
+    O’Reilly Media, Inc.  Available at <http://r4ds.had.co.nz>.
 
 ## License
 
@@ -196,7 +191,7 @@ at uni.kn).
 
 <!-- Update note: -->
 
-\[Updated 2021-10-18 by [hn](https://neth.de).\]
+\[Updated 2021-10-21 by [hn](https://neth.de).\]
 
 <!-- Automatic references: -->
 
@@ -204,51 +199,53 @@ at uni.kn).
 
 <!-- eof. -->
 
-<div id="refs" class="references hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent"
+line-spacing="2">
 
-<div id="ref-mdsr">
+<div id="ref-mdsr" class="csl-entry">
 
-Baumer, B. S., Kaplan, D. T., & Horton, N. J. (2020). *Modern Data
-Science with R* (2nd ed.). Retrieved from
-<https://beanumber.github.io/mdsr2e/>
+Baumer, B. S., Kaplan, D. T., & Horton, N. J. (2020). *<span
+class="nocase">Modern Data Science with R</span>* (2nd ed.). Retrieved
+from <https://beanumber.github.io/mdsr2e/>
 
 </div>
 
-<div id="ref-ds4psyBook">
+<div id="ref-ds4psyBook" class="csl-entry">
 
 Neth, H. (2020a). *Data science for psychologists*. Retrieved from
 <https://bookdown.org/hneth/ds4psy/>
 
 </div>
 
-<div id="ref-R-ds4psy">
+<div id="ref-R-ds4psy" class="csl-entry">
 
-Neth, H. (2020b). *ds4psy: Data science for psychologists*. Retrieved
-from <https://CRAN.R-project.org/package=ds4psy>
+Neth, H. (2020b). *<span class="nocase">ds4psy</span>: Data science for
+psychologists*. Retrieved from
+<https://CRAN.R-project.org/package=ds4psy>
 
 </div>
 
-<div id="ref-R-base">
+<div id="ref-R-base" class="csl-entry">
 
 R Core Team. (2020). *R: A language and environment for statistical
 computing*. Retrieved from <https://www.R-project.org>
 
 </div>
 
-<div id="ref-tidyverse">
+<div id="ref-tidyverse" class="csl-entry">
 
 Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L. D.,
-François, R., … Yutani, H. (2019). Welcome to the tidyverse. *Journal of
-Open Source Software*, *4*(43), 1686.
-<https://doi.org/10.21105/joss.01686>
+François, R., … Yutani, H. (2019). Welcome to the <span
+class="nocase">tidyverse</span>. *Journal of Open Source Software*,
+*4*(43), 1686. <https://doi.org/10.21105/joss.01686>
 
 </div>
 
-<div id="ref-r4ds">
+<div id="ref-r4ds" class="csl-entry">
 
-Wickham, H., & Grolemund, G. (2017). *R for data science: Import, tidy,
-transform, visualize, and model data*. Retrieved from
-<http://r4ds.had.co.nz>
+Wickham, H., & Grolemund, G. (2017). *<span class="nocase">R for data
+science: Import, tidy, transform, visualize, and model data</span>*.
+Retrieved from <http://r4ds.had.co.nz>
 
 </div>
 
