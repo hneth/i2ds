@@ -1165,8 +1165,28 @@ ctable <- function(data,
 # ctable(c(-1:6), dim = c(2, 4), by_row = FALSE)      # negative 
 # ctable(c(1:8 + .1), dim = c(2, 4), by_row = FALSE)  # non-integer
 
-# # (2) Example use case:  
-# # Data illustrating Simpson's paradox (The book of why, Pearl & McKenzie, p. 201):
+# # (2) Example use cases:
+# 
+# # A. Mammography problem (2D, 2x2):
+# xdim <- c("cancer", "no cancer")
+# ydim <- c("postive test", "negative test")
+# dims <- list(dec = ydim, cond = xdim)
+# freq <- c(8, 2, 95, 895)
+# 
+# # contingency table:
+# (ct <- ctable(data = freq, dim = c(2, 2), dimnames = dims))
+# 
+# # Check: 
+# is.table(ct)
+# is.matrix(ct)
+# 
+# # Full circle:
+# as_df <- data.frame(ct)
+# cases <- i2ds::expand_freq_table(as_df)
+# as_tb <- table(cases)
+# all.equal(as_tb, ct)
+# 
+# # B. Data illustrating Simpson's paradox (The book of why, Pearl & McKenzie, p. 201):
 # 
 # # Frequency values:
 # # group:   control:       treatment:
@@ -1199,17 +1219,17 @@ ctable <- function(data,
 # 
 # ## Using ctable() with X, Y, Z:
 # 
-# # 2D: 
+# # 2D:
 # dims <- c(4, 3)
-# dnl <- list(X = paste0("x_", 1:4), 
+# dnl <- list(X = paste0("x_", 1:4),
 #             Y = paste0("y_", 1:3))
 # (t2 <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl))
 # (t2r <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl, by_row = TRUE))
 # 
-# # 3D: 
+# # 3D:
 # dims <- c(4, 3, 2)
-# dnl <- list(X = paste0("x_", 1:4), 
-#             Y = paste0("y_", 1:3), 
+# dnl <- list(X = paste0("x_", 1:4),
+#             Y = paste0("y_", 1:3),
 #             Z = paste0("z_", 1:2))
 # 
 # (t3 <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl))
@@ -1217,8 +1237,8 @@ ctable <- function(data,
 # 
 # # 4D:
 # dims <- c(5, 4, 3, 2)
-# dnl <- list(X = paste0("x_", 1:5), 
-#             Y = paste0("y_", 1:4), 
+# dnl <- list(X = paste0("x_", 1:5),
+#             Y = paste0("y_", 1:4),
 #             M = paste0("m_", 1:3),
 #             O = paste0("o_", 1:2))
 # 
@@ -1239,10 +1259,9 @@ ctable <- function(data,
 
 
 
-
 ## Key data structures: Contingency table (as a data frame, with a freq_var): ------ 
 
-# Note: A contingency table (data frame) can easily be created from and transformed into an array/table:
+# Note: A contingency table (as df) can easily be created from and transformed into an array/table:
 
 # a <- array(1:prod(5:3), dim = 5:3)
 # a <- i2ds::add_dimnames(a)
@@ -1272,7 +1291,7 @@ ctable <- function(data,
 # 
 # all.equal(tb_new, tb_org)
 
-# # Full circle:
+# # Full circle (table > contingency (df) > cases (df) > table):
 # tb_org <- UCBAdmissions # Titanic  # from table
 # (ct_df <- as.data.frame(tb_org))   # contingency frame
 # (ct_raw <- i2ds::expand_freq_table(ct_df))  # raw cases
@@ -1282,14 +1301,15 @@ ctable <- function(data,
 
 ## ToDo: ------
 
-# Function to define a multi-dimensional array/contingency table.
-# (e.g., from a description of a case of Simpson's paradox)
+# ctable() function to define a multi-dimensional array/contingency table.
+#          (e.g., from a description of a case of Simpson's paradox)
 
 # Work out relations between 
 # A: Data structures:
 #    n-dimensional array/table <--> contingency table (as df) <--> table of raw cases (as df)
 # and 
 # B: Functions:
+# - ctable() defines an n-dimensional table from description
 # - expand_freq_table()
 # - data.frame(), as.data.frame() 
 # - array(), table(), xtabs() 
