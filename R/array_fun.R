@@ -1,5 +1,5 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2021 09 25
+## hn | uni.kn | 2021 12 24
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 
@@ -1240,9 +1240,9 @@ ctable <- function(data,
 
 
 
-## Key data structures: Contingency table (as data frame, with a freq_var): ------ 
+## Key data structures: Contingency table (as a data frame, with a freq_var): ------ 
 
-# Note: Contingency table (data frame) can easily be created from and transformed into an array/table:
+# Note: A contingency table (data frame) can easily be created from and transformed into an array/table:
 
 # a <- array(1:prod(5:3), dim = 5:3)
 # a <- i2ds::add_dimnames(a)
@@ -1258,7 +1258,7 @@ ctable <- function(data,
 # df_con <- as.data.frame(ftable(tb_org))       # contingency table (as df)
 # df_con
 # 
-# # Note inverse of as.data.frame(table):
+# # Note the inverse of as.data.frame(table):
 # tb_xtb <- xtabs(Freq ~ ., data = df_con)
 # tb_xtb
 # # str(tb_xtb)
@@ -1272,7 +1272,12 @@ ctable <- function(data,
 # 
 # all.equal(tb_new, tb_org)
 
-
+# # Full circle:
+# tb_org <- UCBAdmissions # Titanic  # from table
+# (ct_df <- as.data.frame(tb_org))   # contingency frame
+# (ct_raw <- i2ds::expand_freq_table(ct_df))  # raw cases
+# (tb_new <- table(ct_raw))          # to table
+# all.equal(tb_new, tb_org)
 
 
 ## ToDo: ------
