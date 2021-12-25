@@ -706,7 +706,7 @@ subtable_names <- function(tbl, dim_list){
 #' 
 #' \code{subtable} provides a filter/slice function for tables, by specifying 
 #' a positive subset (i.e., dimensions and levels to include) as \code{in_list} or  
-#' a positive subset (i.e., dimensions and levels to include) as \code{in_list} 
+#' a negative subset (i.e., dimensions and levels to exclude) as \code{out_list} 
 #' (both as lists that specify dimension and level names, in tag and value format). 
 #' 
 #' \code{subtable} assumes that \code{dimnames(tbl)} exist, 
@@ -715,7 +715,7 @@ subtable_names <- function(tbl, dim_list){
 #' 
 #' As a key constraint, the subset of dimensions specified by 
 #' \code{in_list} and \code{out_list} must still contain all dimensions 
-#' (as excluding an entire table dimension would leave no elements) 
+#' (as excluding an entire dimension would leave no elements of a table) 
 #' and yield a list with elements in the same order as \code{dimnames(tbl)} 
 #' (to allow using \code{do.call} on \code{what = "[", args}  
 #' to index/subset the array of tbl).
@@ -728,7 +728,7 @@ subtable_names <- function(tbl, dim_list){
 #' Each list element is named after a dimension of \code{tbl}, 
 #' and the value of that component is a vector of the names or a numeric index 
 #' of the desired levels. 
-#' Default: \code{in_list = dimnames(tbl)} (i.e., everything).
+#' Default: \code{in_list = dimnames(tbl)} (i.e., everything in \code{tbl}).
 #' 
 #' @param out_list A list specifying the subset of \code{tbl} to drop/exclude. 
 #' Each list element is named after a dimension of \code{tbl}, 
@@ -745,7 +745,7 @@ subtable_names <- function(tbl, dim_list){
 #' # Trivial case:
 #' subtable(t, in_list = dimnames(t))  # same as t
 #' 
-#' # (a) Use level names:
+#' # (a) Using level names:
 #' subtable(t, in_list = list(Class = c("1st", "2nd", "3rd"),
 #'                            Sex = "Female", Age = "Adult",
 #'                            Survived = c("Yes")))
@@ -760,13 +760,13 @@ subtable_names <- function(tbl, dim_list){
 #'                                  Survived = c("Yes", "No")),
 #'          out_list = list(Age = "Child", Survived = c("No")))
 #' 
-#' # (b) Use dim names and level numbers:
+#' # (b) Using dim names and level numbers:
 #' subtable(t, in_list = list(Class = 1:3, Sex = 2, Age = 2, Survived = 2))
 #' 
-#' # (c) Use level numbers only (note messages):
+#' # (c) Using only level numbers (note messages):
 #' subtable(t, in_list = list(1:3, 2, 2, 2))
 #' 
-#' # (d) Use a mix of level names and numbers (note messages): 
+#' # (d) Using a mix of level names and numbers (note messages): 
 #' subtable(t, in_list = list(1:3, "Female", 2, "Yes"))
 #' 
 #' # (e) Note: Different length of sub_dims than dimnamesI(tbl) yield ERRORs:
