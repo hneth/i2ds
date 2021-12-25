@@ -1,5 +1,5 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2021 12 24
+## hn | uni.kn | 2021 12 25
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 
@@ -1154,10 +1154,10 @@ ctable <- function(data,
 #                                              Y = paste0("y_", 1:4), 
 #                                              Z = paste0("z_", 1:2)), by_row = TRUE)
 # 
-# # Conflicting data and dim (see array()):
-# ctable(1:8, dim = c(2,2))  # truncating data 
-# ctable(1:8, dim = c(2,5))  # recycling data
-# ctable(1:8, dim = c(2,3), as_df = TRUE)  # truncated df
+# Conflicting data and dim (see array()):
+# ctable(1:8, dim = c(2, 2))  # truncating data
+# ctable(1:8, dim = c(2, 5))  # recycling data
+# ctable(1:8, dim = c(2, 3), as_df = TRUE)  # truncated df
 # 
 # # Note impossible values:
 # ctable(c(1:8), dim = c(2, 4), by_row = FALSE)   # ok
@@ -1165,9 +1165,9 @@ ctable <- function(data,
 # ctable(c(-1:6), dim = c(2, 4), by_row = FALSE)      # negative 
 # ctable(c(1:8 + .1), dim = c(2, 4), by_row = FALSE)  # non-integer
 
-# # (2) Example use cases:
+# # (2) Example use cases: ------  
 # 
-# # A. Mammography problem (2D, 2x2):
+# # A. Mammography problem (2D, 2x2): ---- 
 # xdim <- c("cancer", "no cancer")
 # ydim <- c("postive test", "negative test")
 # dims <- list(dec = ydim, cond = xdim)
@@ -1186,7 +1186,7 @@ ctable <- function(data,
 # as_tb <- table(cases)
 # all.equal(as_tb, ct)
 # 
-# # B. Data illustrating Simpson's paradox (The book of why, Pearl & McKenzie, p. 201):
+# # B. Data illustrating Simpson's paradox (The book of why, Pearl & McKenzie, p. 201): ---- 
 # 
 # # Frequency values:
 # # group:   control:       treatment:
@@ -1207,7 +1207,7 @@ ctable <- function(data,
 # ctable(v, c(2, 2, 2)) 
 # ctable(v, c(2, 2, 2), as_df = TRUE) 
 # ctable(v, c(2, 4))
-
+# 
 # ## Data directions:
 # v <- 1:16
 # matrix(v, nrow = 4, byrow = FALSE) # by-col (default)
@@ -1215,9 +1215,21 @@ ctable <- function(data,
 # 
 # array(v, c(4, 4))     # by-col (default)
 # array(v, c(4, 2, 2))  # by-col
+
+# # C. Shades of skepticism (3x3): ----
+# t <- "TRUE"
+# q <- "?"
+# f <- "FALSE"
+# belief   <- c(t, q, f)
+# truth    <- c(t, q, f)
+# evidence <- c(t, q, f)
+# dnl <- list( belief = belief, evidence = evidence, truth = truth)
+# v <- 1:27
 # 
-# 
-# ## Using ctable() with X, Y, Z:
+# ctable(v, c(3,3,3), dnl, as_df = TRUE)
+
+
+# ## Using ctable() with X, Y, Z: ---- 
 # 
 # # 2D:
 # dims <- c(4, 3)
