@@ -1226,7 +1226,13 @@ ctable <- function(data,
 # dnl <- list( belief = belief, evidence = evidence, truth = truth)
 # v <- 1:27
 # 
-# ctable(v, c(3,3,3), dnl, as_df = TRUE)
+# cube <- ctable(v, c(3,3,3), dnl, as_df = FALSE)
+# head(cube)
+# 
+# data.frame(subtable(cube, in_list = list(belief = "?")))
+# data.frame(subtable(cube, in_list = list(truth = "TRUE", belief = "?")))
+
+# +++ here now +++ 
 
 
 # ## Using ctable() with X, Y, Z: ---- 
@@ -1256,9 +1262,6 @@ ctable <- function(data,
 # 
 # (t4 <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl))
 # (t4r <- ctable(data = 1:prod(dims), dim = dims, dimnames = dnl, by_row = TRUE))
-
-
-# +++ here now +++ 
 
 
 # # Unused snippets: 
