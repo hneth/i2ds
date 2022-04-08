@@ -1,5 +1,5 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2021 12 25
+## hn | uni.kn | 2022 04 08
 
 # Functions for transforming/manipulating arrays and tables: ------ 
 
