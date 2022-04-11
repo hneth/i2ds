@@ -1,9 +1,98 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2022 04 10
+## hn | uni.kn | 2022 04 11
 
-# Functions for transforming/manipulating arrays and tables: ------ 
+# Functions for transforming/manipulating arrays, matrices, and tables: ------ 
 
-# Note that objects of type "table" are specific cases of arrays (contingency tables with freq. counts).
+# Notes on arrays and tables: 
+
+# 1. An R matrix is (the special case of) a 2-dimensional array:
+# (m2 <- matrix(1:9, nrow = 3))
+# is.array(m2)
+
+# 2. A 1-dimensional array is NOT a vector:
+# m1 <- matrix(1:9)
+# is.matrix(m1)
+# as.vector(m1)
+
+# 3. R objects of type "table" are specific cases of arrays (contingency tables with freq. counts).
+
+
+# ## Background: Computing margins and proportions of matrices/tables
+# m <- matrix(1:4, 2)
+# m
+# 
+# margin.table(m)
+# margin.table(m, 1)
+# margin.table(m, 2)
+# 
+# addmargins(m)
+# addmargins(m, margin = c(1, 2), FUN = c(min, max))
+# 
+# prop.table(m)     # cell percentages
+# prop.table(m, 1)  # row percentages
+# prop.table(m, 2)  # col percentages
+
+
+## prop_mx: A version of prop.table with a special case of margin = 3 for 2x2 matrices: ------
+
+prop_mx <- function(x, margin = NULL){
+  
+  if (!is.null(margin) && (length(margin) == 1) && (margin == 3)){ # A: special case: margin = 3: 
+    
+    if ( (length(dim(x) == 2)) && (unique(dim(x)) == 2) ){ # x is 2x2 matrix:
+      
+      # print("compute diagonal proportions")
+      
+      # 4 essential frequency values:
+      acbd <- as.vector(x)  # values in by-COL direction!
+      
+      a <- acbd[1]
+      c <- acbd[2]  # x[2, 1]
+      b <- acbd[3]  # x[1, 2]
+      d <- acbd[4]
+      
+      sum_ad <- (a + d)
+      sum_bc <- (b + c)
+      
+      out <- x  # re-initialize out
+      
+      # (a) Change all 4 cell values:
+      out[1, 1] <- a/sum_ad
+      out[1, 2] <- b/sum_bc
+      out[2, 1] <- c/sum_bc
+      out[2, 2] <- d/sum_ad
+      
+      return(out)
+      
+    } else { # not a 2x2 matrix:
+      
+      return("prop_mx: margin = 3 is currently only defined for 2x2 matrices.")
+      
+      # Note: Could be defined for n-dimensional _binary_ grids.
+      
+    }
+    
+  } else {  # B: default case: pass to prop.table()
+    
+    return(base::prop.table(x = x, margin = margin))
+    
+  }
+  
+} # prop_mx().
+
+# +++ here now +++ 
+
+# # Check:
+# m1 <- matrix(1:4)
+# m2 <- matrix(1:4, nrow = 2)
+# 
+# prop_mx(m1)
+# prop_mx(m1, margin = 3)
+# 
+# prop_mx(m2)
+# prop_mx(m2, margin = 1)
+# prop_mx(m2, margin = 2)
+# prop_mx(m2, margin = 3)
 
 
 ## add_dimnames: Add default names to array dimensions: ------ 
