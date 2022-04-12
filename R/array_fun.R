@@ -1,5 +1,5 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2022 04 11
+## hn | uni.kn | 2022 04 12
 
 # Functions for transforming/manipulating arrays, matrices, and tables: ------ 
 
@@ -34,6 +34,8 @@
 
 
 ## prop_mx: A version of prop.table with a special case of margin = 3 for 2x2 matrices: ------
+
+# (Based on the trans() function of the MLM package.) 
 
 prop_mx <- function(x, margin = NULL){
   
