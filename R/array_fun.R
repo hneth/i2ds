@@ -1256,9 +1256,9 @@ ctable <- function(data,
 # ctable(c(-1:6), dim = c(2, 4), by_row = FALSE)      # negative 
 # ctable(c(1:8 + .1), dim = c(2, 4), by_row = FALSE)  # non-integer
 
-# # (2) Example use cases: ------  
-# 
-# # A. Mammography problem (2D, 2x2): ---- 
+# # (2) Example use cases: --------  
+
+# # A. Mammography problem (2D, 2x2): ------ 
 # xdim <- c("cancer", "no cancer")
 # ydim <- c("postive test", "negative test")
 # dims <- list(dec = ydim, cond = xdim)
@@ -1276,54 +1276,98 @@ ctable <- function(data,
 # cases <- i2ds::expand_freq_table(as_df)
 # as_tb <- table(cases)
 # all.equal(as_tb, ct)
+
+
+# # B. Simpson's paradox (Example 1: The book of why, Pearl & McKenzie, p. 201): ------ 
 # 
-# B. Simpson's paradox (Example 1: The book of why, Pearl & McKenzie, p. 201): ----
-
-# Frequency values:
-# group:    control:         treatment:
-freq_v <- c(1, 12, 19, 28,   3, 8, 37, 12) # Note: by-column order (per subtable)
-
-# Vectors of factors/dimensions and levels:
-group   <- c("control", "treatment")
-sex     <- c("female", "male")
-outcome <- c("heart attack", "no heart attack")
-
-# as list in order: y/left, x/top, group/tab, as in array():
-dnl <- list(sex = sex, outcome = outcome, group = group)
-
-ctable(freq_v, c(2, 2, 2), dimnames = dnl)
-ctable(freq_v, c(2, 2, 2), dimnames = dnl, as_df = TRUE)
-
-# Using default dimnames:
-ctable(freq_v, c(2, 2, 2))
-ctable(freq_v, c(2, 2, 2), as_df = TRUE)
-ctable(freq_v, c(2, 4))
-
-## Data directions:
-freq_v2 <- 1:16
-matrix(freq_v2, nrow = 4, byrow = FALSE) # by-col (default)
-matrix(freq_v2, nrow = 4, byrow = TRUE)  # by-row
-
-array(freq_v2, c(4, 4))     # by-col (default)
-array(freq_v2, c(4, 2, 2))  # by-col
+# # Frequency values:
+# # group:    control:         treatment:
+# freq_v <- c(1, 12, 19, 28,   3, 8, 37, 12) # Note: by-column order (per subtable)
+# 
+# # Vectors of factors/dimensions and levels:
+# group   <- c("control", "treatment")
+# sex     <- c("female", "male")
+# outcome <- c("heart attack", "no heart attack")
+# 
+# # as list in order: y/left, x/top, group/tab, as in array():
+# dnl <- list(sex = sex, outcome = outcome, group = group)
+# 
+# ctable(freq_v, c(2, 2, 2), dimnames = dnl)
+# ctable(freq_v, c(2, 2, 2), dimnames = dnl, as_df = TRUE)
+# 
+# # Using default dimnames:
+# ctable(freq_v, c(2, 2, 2))
+# ctable(freq_v, c(2, 2, 2), as_df = TRUE)
+# ctable(freq_v, c(2, 4))
+# 
+# ## Data directions:
+# freq_v2 <- 1:16
+# matrix(freq_v2, nrow = 4, byrow = FALSE) # by-col (default)
+# matrix(freq_v2, nrow = 4, byrow = TRUE)  # by-row
+# 
+# array(freq_v2, c(4, 4))     # by-col (default)
+# array(freq_v2, c(4, 2, 2))  # by-col
 
 
-# C. Simpson's paradox (Example 2: Causality, Pearl, 2009, p. 174ff.): ----
+# # C. Simpson's paradox (Example 2: Causality, Pearl, 2009, p. 174ff.): ------ 
+# 
+# # Load pkgs:  
+# library(i2ds)      # ctable(), expand_freq_table(), subtable()  
+# library(MLM)       # frame(), trans(), focus()
+# library(magrittr)  # pipe %>%
+# 
+# # (A) Data: ---- 
+# 
+# # Frequency values:
+# # group:  male (-F):          female (F):
+# freq_v3 <- c(18, 12, 7, 3,    2, 8, 9, 21) # Note: by-column order (per subtable)
+# 
+# # Vectors of factors/dimensions and levels:
+# sex    <- c("male (-F)",    "female (F)")
+# cause  <- c("drug (C)",     "no drug (-C)")
+# effect <- c("recovery (E)", "sick (-E)")
+# 
+# # as list in order: y/left, x/top, group/tab, as in array():
+# dnl <- list(effect = effect, cause = cause, sex = sex)
+# 
+# # Create 3 informationally equivalent data structures:
+# (S_tb <- ctable(freq_v3, c(2, 2, 2), dimnames = dnl))  # 3D table 
+# (S_ct <- ctable(freq_v3, c(2, 2, 2), dimnames = dnl, as_df = TRUE))  # contingency table (df)
+# (S_df <- expand_freq_table(S_ct))  # df of raw cases
+# 
+# # (B) Illustrating the paradox: ---- 
+# 
+# # Collapsing over one dimension: Framing a 2x2 matrix: 
+# (mx_A <- frame(S_tb, x = "cause", y = "effect"))  # from 3D-table
+# mx_A <- frame(S_df, x = "cause", y = "effect")    # from df of raw cases
+# # using pipe: 
+# (mx_B <- S_tb %>% frame(x = "cause", y = "sex"))
+# (mx_C <- S_tb %>% frame(x = "effect", y = "sex"))
+# 
+# # Selecting a slice/subset of a 3D table:
+# (tb_A_m <- subtable(S_tb,  in_list = list(sex = "male (-F)")))
+# (tb_A_f <- subtable(S_tb, out_list = list(sex = "male (-F)")))
+# 
+# # as 2x2 matrix:
+# (mx_A_m <- frame(tb_A_m, x = "cause", y = "effect"))
+# (mx_A_f <- frame(tb_A_f, x = "cause", y = "effect"))
+# 
+# # Conditionalizing matrices by row/column/diagonal: Transforming
+# mx_A %>% trans(margin = 2)  # by column 
+# mx_B %>% trans(margin = 2)  # by column
+# mx_C %>% trans(margin = 1)  # by row!
+# 
+# # Conditionalizing mx of subtable:
+# mx_A_m %>% trans(margin = 2)  # by column
+# mx_A_f %>% trans(margin = 2)  # by column
+# 
+# # Derive difference in by-column contingency: Focus
+# focus(mx_A_m, measures = "dPc")
+# focus(mx_A_f, measures = "dPc")
+# # vs. aggregate matrix:
+# focus(mx_A, measures = "dPc")
 
-# Frequency values:
-# group:  male (-F):          female (F):
-freq_v3 <- c(18, 12, 7, 3,    2, 8, 9, 21) # Note: by-column order (per subtable)
-
-# Vectors of factors/dimensions and levels:
-sex    <- c("male (-F)",    "female (F)")
-cause  <- c("drug (C)",     "no drug (-C)")
-effect <- c("recovery (E)", "sick (-E)")
-
-# as list in order: y/left, x/top, group/tab, as in array():
-dnl <- list(effect = effect, cause = cause, sex = sex)
-
-ctable(freq_v3, c(2, 2, 2), dimnames = dnl)
-ctable(freq_v3, c(2, 2, 2), dimnames = dnl, as_df = TRUE)
+# +++ here now +++ 
 
 
 # # D. Shades of skepticism (3x3): ----
