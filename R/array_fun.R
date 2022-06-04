@@ -1277,7 +1277,7 @@ ctable <- function(data,
 # as_tb <- table(cases)
 # all.equal(as_tb, ct)
 # 
-# B. Data illustrating Simpson's paradox (The book of why, Pearl & McKenzie, p. 201): ----
+# B. Simpson's paradox (Example 1: The book of why, Pearl & McKenzie, p. 201): ----
 
 # Frequency values:
 # group:    control:         treatment:
@@ -1307,7 +1307,26 @@ matrix(freq_v2, nrow = 4, byrow = TRUE)  # by-row
 array(freq_v2, c(4, 4))     # by-col (default)
 array(freq_v2, c(4, 2, 2))  # by-col
 
-# # C. Shades of skepticism (3x3): ----
+
+# C. Simpson's paradox (Example 2: Causality, Pearl, 2009, p. 174ff.): ----
+
+# Frequency values:
+# group:  male (-F):          female (F):
+freq_v3 <- c(18, 12, 7, 3,    2, 8, 9, 21) # Note: by-column order (per subtable)
+
+# Vectors of factors/dimensions and levels:
+sex    <- c("male (-F)",    "female (F)")
+cause  <- c("drug (C)",     "no drug (-C)")
+effect <- c("recovery (E)", "sick (-E)")
+
+# as list in order: y/left, x/top, group/tab, as in array():
+dnl <- list(effect = effect, cause = cause, sex = sex)
+
+ctable(freq_v3, c(2, 2, 2), dimnames = dnl)
+ctable(freq_v3, c(2, 2, 2), dimnames = dnl, as_df = TRUE)
+
+
+# # D. Shades of skepticism (3x3): ----
 # t <- "TRUE"
 # q <- "?"
 # f <- "FALSE"
