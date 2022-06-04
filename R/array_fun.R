@@ -1,7 +1,7 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2022 04 12
+## hn | uni.kn | 2022 06 04
 
-# Functions for transforming/manipulating arrays, matrices, and tables: ------ 
+# Functions for creating and manipulating (transforming: reducing and reshaping) arrays, matrices, and tables: ------ 
 
 # Notes on arrays and tables: 
 
@@ -1277,35 +1277,35 @@ ctable <- function(data,
 # as_tb <- table(cases)
 # all.equal(as_tb, ct)
 # 
-# # B. Data illustrating Simpson's paradox (The book of why, Pearl & McKenzie, p. 201): ---- 
-# 
-# # Frequency values:
-# # group:   control:       treatment:
-# v <- c(1, 12, 19, 28,   3, 8, 37, 12) # Note: by-column order (per subtable)
-# 
-# # Vectors of factors/dimensions and levels:
-# group <- c("control", "treatment")
-# sex <- c("female", "male")
-# outcome <- c("heart attack", "no heart attack") 
-# 
-# # as list in order: y/left, x/top, group/tab, as in array():  
-# dnl <- list(sex = sex, outcome = outcome, group = group)  
-# 
-# ctable(v, c(2, 2, 2), dimnames = dnl) 
-# ctable(v, c(2, 2, 2), dimnames = dnl, as_df = TRUE)
-# 
-# # Using default dimnames:
-# ctable(v, c(2, 2, 2)) 
-# ctable(v, c(2, 2, 2), as_df = TRUE) 
-# ctable(v, c(2, 4))
-# 
-# ## Data directions:
-# v <- 1:16
-# matrix(v, nrow = 4, byrow = FALSE) # by-col (default)
-# matrix(v, nrow = 4, byrow = TRUE)  # by-row
-# 
-# array(v, c(4, 4))     # by-col (default)
-# array(v, c(4, 2, 2))  # by-col
+# B. Data illustrating Simpson's paradox (The book of why, Pearl & McKenzie, p. 201): ----
+
+# Frequency values:
+# group:    control:         treatment:
+freq_v <- c(1, 12, 19, 28,   3, 8, 37, 12) # Note: by-column order (per subtable)
+
+# Vectors of factors/dimensions and levels:
+group   <- c("control", "treatment")
+sex     <- c("female", "male")
+outcome <- c("heart attack", "no heart attack")
+
+# as list in order: y/left, x/top, group/tab, as in array():
+dnl <- list(sex = sex, outcome = outcome, group = group)
+
+ctable(freq_v, c(2, 2, 2), dimnames = dnl)
+ctable(freq_v, c(2, 2, 2), dimnames = dnl, as_df = TRUE)
+
+# Using default dimnames:
+ctable(freq_v, c(2, 2, 2))
+ctable(freq_v, c(2, 2, 2), as_df = TRUE)
+ctable(freq_v, c(2, 4))
+
+## Data directions:
+freq_v2 <- 1:16
+matrix(freq_v2, nrow = 4, byrow = FALSE) # by-col (default)
+matrix(freq_v2, nrow = 4, byrow = TRUE)  # by-row
+
+array(freq_v2, c(4, 4))     # by-col (default)
+array(freq_v2, c(4, 2, 2))  # by-col
 
 # # C. Shades of skepticism (3x3): ----
 # t <- "TRUE"
