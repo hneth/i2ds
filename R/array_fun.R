@@ -18,8 +18,8 @@
 
 
 # ## Background: Computing margins and proportions of matrices/tables
-# m <- matrix(1:4, 2)
-# m
+# (m <- matrix(1:4, 2))
+# aperm(m)
 # 
 # margin.table(m)
 # margin.table(m, 1)
@@ -33,7 +33,41 @@
 # prop.table(m, 2)  # col percentages
 
 
-## prop_mx: A version of prop.table with a special case of margin = 3 for 2x2 matrices: ------
+## flip_mx: Arrange order of dimensions and/or reverse order within dimension(s): ------ 
+
+flip_mx <- function(x, perm = NULL, dim_swap = NA){
+  
+  cur_x <- x
+  
+  # (1) Swap the order of dimensions in dim_swap:
+  # +++ here now +++ 
+  for (i in 1:length(dim_swap)){
+    
+    cur_dim <- dim_swap[i]
+    
+    dim_vector <- dimnames(cur_x)[cur_dim]
+    dim_levels <- dimnames(cur_x)[[cur_dim]]
+    
+    factor(dim_vector, levels = rev(dim_levels))
+    
+  }
+  
+  # (2) Permute dimensions:
+  cur_x <- aperm(a = cur_x, perm = perm)  # pass perm to aperm() 
+  
+  # Output: 
+  return(cur_x)
+  
+} # flip_mx(). 
+
+# # Check:
+# all.equal(UCBAdmissions, UCBAdmissions[1:2, 1:2, 1:6])
+# 
+# flip_mx(UCBAdmissions)
+# flip_mx(UCBAdmissions)
+
+
+## prop_mx: A version of prop.table() with a special case of margin = 3 for 2x2 matrices: ------
 
 # (Based on the trans() function of the MLM package.) 
 
