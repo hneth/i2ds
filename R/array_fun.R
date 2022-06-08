@@ -1,5 +1,5 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2022 06 04
+## hn | uni.kn | 2022 06 08
 
 # Functions for creating and manipulating (transforming: reducing and reshaping) arrays, matrices, and tables: ------ 
 
@@ -1193,7 +1193,8 @@ ctable <- function(data,
     
   }
   
-  tb <- as.table(ar)  # coerce to "table" (to flag impossible values)
+  # Coerce to "table" (to flag impossible values):
+  tb <- as.table(ar, stringsAsFactors = TRUE)  # Note: Use factors to preserve level orders  
   
   
   if (as_df){ # convert to df:
@@ -1219,10 +1220,12 @@ ctable <- function(data,
 } # ctable(). 
 
 # # Check:
-# l_24 <- list(rows = c("A", "B"), cols = letters[1:4])
-# l432 <- list(Ys = letters[1:4], Xs = LETTERS[1:3], group = c("I", "II"))
 # 
-# # (1) Abstract case:
+# # (0) Row/column/group names (as lists): 
+# (l_24 <- list(rows = c("A", "B"), cols = letters[1:4]))
+# (l432 <- list(Ys = letters[1:4], Xs = LETTERS[1:3], group = c("I", "II")))
+# 
+# # (1) Abstract cases:
 # ctable(1:8,  dim = c(2,4), dimnames = l_24)
 # ctable(1:24, dim = c(4,3,2), dimnames = l432)
 # 
@@ -1242,10 +1245,10 @@ ctable <- function(data,
 # ctable(1:12, dim = c(3,4), dimnames = list(X = paste0("x_", 1:3),
 #                                            Y = paste0("y_", 1:4)), by_row = TRUE)
 # ctable(1:24, dim = c(3,4,2), dimnames = list(X = paste0("x_", 1:3),
-#                                              Y = paste0("y_", 1:4), 
+#                                              Y = paste0("y_", 1:4),
 #                                              Z = paste0("z_", 1:2)), by_row = TRUE)
 # 
-# Conflicting data and dim (see array()):
+# # Conflicting data and dim (see array()):
 # ctable(1:8, dim = c(2, 2))  # truncating data
 # ctable(1:8, dim = c(2, 5))  # recycling data
 # ctable(1:8, dim = c(2, 3), as_df = TRUE)  # truncated df
@@ -1253,12 +1256,13 @@ ctable <- function(data,
 # # Note impossible values:
 # ctable(c(1:8), dim = c(2, 4), by_row = FALSE)   # ok
 # ctable(c(0:7), dim = c(2, 4), by_row = FALSE)   # ok
-# ctable(c(-1:6), dim = c(2, 4), by_row = FALSE)      # negative 
+# ctable(c(-1:6), dim = c(2, 4), by_row = FALSE)      # negative
 # ctable(c(1:8 + .1), dim = c(2, 4), by_row = FALSE)  # non-integer
-
-# # (2) Example use cases: --------  
-
-# # A. Mammography problem (2D, 2x2): ------ 
+# 
+# 
+# # # (2) Example use cases: --------  
+# 
+# # A. Mammography problem (2D, 2x2): ------
 # xdim <- c("cancer", "no cancer")
 # ydim <- c("postive test", "negative test")
 # dims <- list(dec = ydim, cond = xdim)
@@ -1267,9 +1271,14 @@ ctable <- function(data,
 # # contingency table:
 # (ct <- ctable(data = freq, dim = c(2, 2), dimnames = dims))
 # 
-# # Check: 
+# # Check:
 # is.table(ct)
 # is.matrix(ct)
+# 
+# # Note: 
+# is.factor(as.data.frame(ct)$dec)
+# as.data.frame(ct)$dec  # Dimensions are factors
+# tibble::as_tibble(ct)  # Dimensions are character variables!
 # 
 # # Full circle:
 # as_df <- data.frame(ct)
