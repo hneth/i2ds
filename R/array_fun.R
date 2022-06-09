@@ -1,5 +1,5 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2022 06 08
+## hn | uni.kn | 2022 06 09
 
 # Functions for creating and manipulating (transforming: reducing and reshaping) arrays, matrices, and tables: ------ 
 
@@ -40,7 +40,9 @@ flip_mx <- function(x, perm = NULL, dim_swap = NA){
   cur_x <- x
   
   # (1) Swap the order of dimensions in dim_swap:
-  # +++ here now +++ 
+  
+  # +++ here now +++ : See flip() in MML package!
+  
   for (i in 1:length(dim_swap)){
     
     cur_dim <- dim_swap[i]
