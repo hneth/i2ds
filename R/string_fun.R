@@ -3,6 +3,7 @@
 
 # Functions for transforming/manipulating character strings: ------ 
 
+
 # Turn a vector into a string: ----
 
 vec2str <- function(s) {
@@ -19,6 +20,7 @@ str2vec <- function(s){
   unlist(strsplit(s, split = ""))  # assumes ONLY 1-symbol elements/digits
   
 } # str2vec(). 
+
 
 
 ## ToDo: ------
