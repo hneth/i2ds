@@ -24,14 +24,19 @@ a sequence of numeric symbols (digits) in some other base.
 \code{dec2base} is the complement of \code{\link{base2dec}}.
 }
 \examples{
+# (a) single numeric input:
 dec2base(8)
 dec2base(8, base = 3)
 dec2base(8, base = 7)
 dec2base(8, base = 10)
 
+# (b) single string input:
+dec2base("7", base = 2)
+dec2base("8", base = 3)
+
 # Note: 
-base2dec(dec2base(0120, base = 3), base = 3)
-dec2base(base2dec(0210, base = 3), base = 3)
+base2dec(dec2base(01230, base = 4), base = 4)
+dec2base(base2dec(03210, base = 4), base = 4)
 
 }
 \seealso{

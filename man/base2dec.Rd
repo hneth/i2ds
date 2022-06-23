@@ -24,14 +24,24 @@ from base N notation to decimal (i.e., base 10) notation.
 \code{base2dec} is the complement of \code{\link{dec2base}}.
 }
 \examples{
-# (a) string inputs:
+# (a) single string input:
 base2dec("11")
 base2dec("11", base = 5)
 base2dec("1010")
 base2dec("0101")
+
 # (b) numeric vectors as inputs:
 base2dec(c(1, 0, 1, 0))
 base2dec(c(1, 0, 1, 0), base = 3)
+
+# (c) character vector as inputs:
+base2dec(c("1", "0", "1", "0"))
+base2dec(c("1", "0", "1", "0"), base = 3)
+
+# (d) multi-digit vectors:
+base2dec(c(1, 1), base = 10)
+base2dec(c(1, 1), base = 3)
+base2dec(c(2, 3), base = 3)  # Note message.
 
 # Note: 
 base2dec(dec2base(0120, base = 3), base = 3)
