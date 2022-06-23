@@ -22,14 +22,24 @@
 #' Default: \code{base = 2} (binary).   
 #'        
 #' @examples 
-#' # (a) string inputs:
+#' # (a) single string input:
 #' base2dec("11")
 #' base2dec("11", base = 5)
 #' base2dec("1010")
 #' base2dec("0101")
+#' 
 #' # (b) numeric vectors as inputs:
 #' base2dec(c(1, 0, 1, 0))
 #' base2dec(c(1, 0, 1, 0), base = 3)
+#' 
+#' # (c) character vector as inputs:
+#' base2dec(c("1", "0", "1", "0"))
+#' base2dec(c("1", "0", "1", "0"), base = 3)
+#' 
+#' # (d) multi-digit vectors:
+#' base2dec(c(1, 1), base = 10)
+#' base2dec(c(1, 1), base = 3)
+#' base2dec(c(2, 3), base = 3)  # Note message.
 #' 
 #' # Note: 
 #' base2dec(dec2base(0120, base = 3), base = 3)
@@ -46,7 +56,7 @@
 base2dec <- function(x, base = 2){
   
   # Process inputs:
-  seq  <- as.numeric(x)
+  seq  <- as.character(x)
   base <- as.numeric(base)
   
   # Initialize: 
@@ -55,36 +65,43 @@ base2dec <- function(x, base = 2){
   
   # Catch some special cases:
   if (any(is.na(seq)) | is.na(base)) { return(NA) }
-  if ((len_seq == 1) && (seq == 0)){ return(0) }  
-  if (base < 2 | base > 10 | (base %% 1 != 0)) { 
+  if ((len_seq == 1) && (seq == "0")){ return(0)  }  
+  if ((base < 2) | (base > 10) | (base %% 1 != 0)) { 
     message("base2dec: base must be an integer in 2:10.")
     return(NA)
   }
   
   # Prepare:
-  if ((len_seq == 1) && (is.character(seq))) { 
+  if ((len_seq == 1) && (nchar(seq) > 1)) { # seq is a multi-digit string:
     
     # Convert a string into a numeric vector (of 1-digit numeric elements):
     vec <- str2vec(seq)
     seq <- as.numeric(vec)
-    len_seq <- length(seq)
     
-  } # if. 
+    
+  } else { # convert character sequence into numeric values:
+    
+    seq <- as.numeric(seq)
+    
+  } # if.
   
   # print(seq)  # 4debugging
+  len_seq <- length(seq) 
   
   # Ensure that seq only contains integers <= base:
-  if (any(seq > base)){
-    message("base2dec: x must not contain digits > base!")
+  if (any(seq >= base)){
+    message("base2dec: All digits in x must be < base!")
   }
   
-  # Main:   
+  # Main:
   rev_seq <- rev(seq)
   
   for (i in 1:len_seq){ # loop to compute polynomial: 
     
     cur_i  <- rev_seq[i]
-    dec_nr <- dec_nr + (cur_i * base^(i-1))
+    # print(paste0("cur_i = ", cur_i))  # 4debugging
+    
+    dec_nr <- dec_nr + (cur_i * base^(i - 1))
     
   } # for.
   
@@ -120,14 +137,19 @@ base2dec <- function(x, base = 2){
 #' Default: \code{base = 2} (binary).   
 #'        
 #' @examples 
+#' # (a) single numeric input:
 #' dec2base(8)
 #' dec2base(8, base = 3)
 #' dec2base(8, base = 7)
 #' dec2base(8, base = 10)
 #' 
+#' # (b) single string input:
+#' dec2base("7", base = 2)
+#' dec2base("8", base = 3)
+#' 
 #' # Note: 
-#' base2dec(dec2base(0120, base = 3), base = 3)
-#' dec2base(base2dec(0210, base = 3), base = 3)
+#' base2dec(dec2base(01230, base = 4), base = 4)
+#' dec2base(base2dec(03210, base = 4), base = 4)
 #' 
 #' @family numeric functions
 #' 
@@ -162,9 +184,9 @@ dec2base <- function(x, base = 2){
   # Main: 
   for (i in n_digits:1){
     
-    cur_digit <- dec_left %/% base^(i-1)
+    cur_digit <- dec_left %/% base^(i - 1)
     
-    dec_left <- dec_left - (cur_digit * base^(i-1))
+    dec_left <- dec_left - (cur_digit * base^(i - 1))
     
     out <- paste0(out, cur_digit)
     
