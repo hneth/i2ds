@@ -1,7 +1,7 @@
 ## num_fun.R  | i2ds
 ## hn | uni.kn | 2022 06 23
 
-# Functions for transforming/manipulating numbers: ------ 
+# Functions for manipulating/transforming numbers or numeric symbols: ------ 
 
 
 # base2dec: Convert a base N numeric string into a decimal number: ------ 
@@ -21,9 +21,10 @@
 #'        
 #' @examples 
 #' # (a) string inputs:
-#' base2dec("0")
-#' base2dec("1")
-#' base2dec("1010")  # seq as string
+#' base2dec("11")
+#' base2dec("11", base = 5)
+#' base2dec("1010")
+#' base2dec("0101")
 #' # (b) numeric vectors as inputs:
 #' base2dec(c(1, 0, 1, 0))
 #' base2dec(c(1, 0, 1, 0), base = 3)
@@ -65,7 +66,7 @@ base2dec <- function(seq, base = 2){
   
 } # base2dec(). 
 
-# # # Check:
+# ## Check:
 # # (a) string inputs:
 # base2dec("0")
 # base2dec("1")

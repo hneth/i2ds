@@ -1,10 +1,10 @@
 ## string_fun.R  | i2ds
-## hn | uni.kn | 2022 06 22
+## hn | uni.kn | 2022 06 23
 
-# Functions for transforming/manipulating character strings: ------ 
+# Functions for manipulating/transforming character strings: ------ 
 
 
-# Turn a vector into a string: ----
+# Turn a vector into a string: ------
 
 vec2str <- function(s) {
   
@@ -13,7 +13,7 @@ vec2str <- function(s) {
 } # vec2str(). 
 
 
-# Turn a string into a vector (of 1-symbol elements): ---- 
+# Turn a string into a vector (of 1-symbol elements): ------ 
 
 str2vec <- function(s){
   
