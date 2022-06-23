@@ -46,30 +46,32 @@
 base2dec <- function(x, base = 2){
   
   # Process inputs:
-  seq  <- as.character(x)
+  seq  <- as.numeric(x)
   base <- as.numeric(base)
   
+  # Initialize: 
+  dec_nr  <- 0 
+  len_seq <- length(seq)  
+  
   # Catch some special cases:
-  if (is.na(seq) | is.na(base)) { return(NA) }
-  if (seq == "0"){ return(0) }  
+  if (any(is.na(seq)) | is.na(base)) { return(NA) }
+  if ((len_seq == 1) && (seq == 0)){ return(0) }  
   if (base < 2 | base > 10 | (base %% 1 != 0)) { 
     message("base2dec: base must be an integer in 2:10.")
     return(NA)
   }
   
-  # Initialize: 
-  len_seq <- length(seq)
-  dec_nr  <- 0 
-  
   # Prepare:
   if ((len_seq == 1) && (is.character(seq))) { 
     
-    # convert string into vector (of 1-digit numeric elements):
+    # Convert a string into a numeric vector (of 1-digit numeric elements):
     vec <- str2vec(seq)
     seq <- as.numeric(vec)
     len_seq <- length(seq)
     
   } # if. 
+  
+  # print(seq)  # 4debugging
   
   # Ensure that seq only contains integers <= base:
   if (any(seq > base)){
@@ -136,7 +138,7 @@ base2dec <- function(x, base = 2){
 #' @export 
 
 dec2base <- function(x, base = 2){
-
+  
   # Process inputs: 
   dec  <- as.numeric(x)
   base <- as.numeric(base)
@@ -147,7 +149,7 @@ dec2base <- function(x, base = 2){
   if (base < 2 | base > 10 | (base %% 1 != 0)) { 
     message("dec2base: base must be an integer in 2:10.")
     return(NA)
-    }
+  }
   
   # Initialize: 
   out <- NULL
@@ -156,7 +158,7 @@ dec2base <- function(x, base = 2){
   # Prepare:
   n_digits <- floor(log(dec)/log(base) + 1)
   # print(paste("n_digits =", n_digits))  # 4debugging
-
+  
   # Main: 
   for (i in n_digits:1){
     
@@ -167,7 +169,7 @@ dec2base <- function(x, base = 2){
     out <- paste0(out, cur_digit)
     
   }
-
+  
   out <- as.numeric(out)
   
   return(out)
