@@ -168,7 +168,7 @@ dec2base <- function(x, base = 2){
   # Catch some special cases:
   if (is.na(dec) | is.na(base)) { return(NA) }
   if (dec == 0){ return(0) }  
-  if (base < 2 | base > 10 | (base %% 1 != 0)) { 
+  if ( any(base < 2) | any(base > 10) | any(base %% 1 != 0) ) { 
     message("dec2base: base must be an integer in 2:10.")
     return(NA)
   }
@@ -213,38 +213,6 @@ dec2base <- function(x, base = 2){
 # base2dec(dec2base(0120, base = 3), base = 3)
 # dec2base(base2dec(0210, base = 3), base = 3)
 
-
-# # Exercise: Simulation to show the complementarity of functions:
-# N <- 20
-# num  <- sample(x = 1:9999, size = N, replace = TRUE)
-# base <- sample(x = 2:10, size = N, replace = TRUE)
-# 
-# num_base <- rep(NA, N)
-# num_dec  <- rep(NA, N)
-# success  <- rep(FALSE, N)
-# 
-# for (i in 1:N){
-#   
-#   cur_num  <- num[i]
-#   cur_base <- base[i]
-#   
-#   num_base[i] <- dec2base(cur_num, cur_base)
-#   num_dec[i]  <- base2dec(num_base[i], cur_base)
-#   
-#   if (cur_num == num_dec[i]){ success[i] <- TRUE }
-#   
-# } 
-# 
-# # Results:
-# N == sum(success)
-# 
-# # Show as table:
-# df <- data.frame(dec_num = num, 
-#                  into_base = base, 
-#                  num_base = as.character(num_base), 
-#                  num_base_as_dec = num_dec,
-#                  same = success)
-# knitr::kable(df, caption = "Convert decimal numbers into some base (and back).")
 
 
 ## ToDo: ------
