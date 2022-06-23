@@ -3,6 +3,7 @@
 export(add_dimnames)
 export(base2dec)
 export(ctable)
+export(dec2base)
 export(expand_freq_table)
 export(flatten_array)
 export(sublist)
