@@ -25,10 +25,13 @@ a sequence of numeric symbols (digits) in some other base.
 }
 \examples{
 # (a) single numeric input:
+dec2base(3)
 dec2base(8)
 dec2base(8, base = 3)
 dec2base(8, base = 7)
-dec2base(8, base = 10)
+
+dec2base(110, base = 2)
+dec2base(110, base = 10)
 
 # (b) single string input:
 dec2base("7", base = 2)
