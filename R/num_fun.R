@@ -1,5 +1,5 @@
 ## num_fun.R  | i2ds
-## hn | uni.kn | 2022 06 23
+## hn | uni.kn | 2022 06 24
 
 # Functions for manipulating/transforming numbers or numeric symbols: ------ 
 
@@ -60,7 +60,7 @@ base2dec <- function(x, base = 2){
   base <- as.numeric(base)
   
   # Initialize: 
-  dec_nr  <- 0 
+  out_val <- 0  # output value (in decimal notation) 
   len_seq <- length(seq)  
   
   # Catch some special cases:
@@ -101,11 +101,11 @@ base2dec <- function(x, base = 2){
     cur_i  <- rev_seq[i]
     # print(paste0("cur_i = ", cur_i))  # 4debugging
     
-    dec_nr <- dec_nr + (cur_i * base^(i - 1))
+    out_val <- out_val + (cur_i * base^(i - 1))
     
   } # for.
   
-  return(dec_nr)
+  return(out_val)
   
 } # base2dec(). 
 
@@ -138,10 +138,13 @@ base2dec <- function(x, base = 2){
 #'        
 #' @examples 
 #' # (a) single numeric input:
+#' dec2base(3)
 #' dec2base(8)
 #' dec2base(8, base = 3)
 #' dec2base(8, base = 7)
-#' dec2base(8, base = 10)
+#' 
+#' dec2base(110, base = 2)
+#' dec2base(110, base = 10)
 #' 
 #' # (b) single string input:
 #' dec2base("7", base = 2)
@@ -161,38 +164,120 @@ base2dec <- function(x, base = 2){
 
 dec2base <- function(x, base = 2){
   
-  # Process inputs: 
-  dec  <- as.numeric(x)
-  base <- as.numeric(base)
+  # Version 1: ----
+  # - calculate n_digits 
+  # - use for loop
+  # 
+  # 
+  # # Process inputs: 
+  # dec  <- as.numeric(x)     # numeric value (in decimal notation) 
+  # base <- as.numeric(base)
+  #
+  # # Catch some special cases:
+  # if (is.na(dec) | is.na(base)) { return(NA) }
+  # if (dec == 0){ return(0) }  
+  # if ( any(base < 2) | any(base > 10) | any(base %% 1 != 0) ) { 
+  #   message("dec2base: base must be an integer in 2:10.")
+  #   return(NA)
+  # }
+  # 
+  # # Initialize: 
+  # out <- NULL
+  # dec_left <- dec 
+  # 
+  # # Prepare:
+  # n_digits <- floor(log(dec)/log(base) + 1)
+  # # print(paste("n_digits =", n_digits))  # 4debugging
+  # 
+  # # Main: 
+  # for (i in n_digits:1){
+  #   
+  #   cur_digit <- dec_left %/% base^(i - 1)
+  #   
+  #   dec_left <- dec_left - (cur_digit * base^(i - 1))
+  #   
+  #   out <- paste0(out, cur_digit)
+  #   
+  # } # for.
   
-  # Catch some special cases:
-  if (is.na(dec) | is.na(base)) { return(NA) }
-  if (dec == 0){ return(0) }  
-  if ( any(base < 2) | any(base > 10) | any(base %% 1 != 0) ) { 
-    message("dec2base: base must be an integer in 2:10.")
-    return(NA)
+  # Version 2: ---- 
+  # - without computing n_digits
+  # - while loop
+  
+  if (is.na(x)) { 
+    
+    out <- NA 
+    
+  } else {
+    
+    # Process inputs: 
+    val_left  <- as.numeric(x)  # numeric value left (in decimal notation) 
+    base <- as.numeric(base)
+    
+    # Prepare: 
+    position <- 0     # position/order (0 is rightmost/unit/base^0)
+    next_units <- 88  # number of units in next higher order
+    out <- NULL       # initialize output
+    
+    # Main: 
+    # while (val_left > 0){
+    while (next_units > 0){
+      
+      # print(paste0("position = ", position, ": val_left = ", val_left))  # 4debugging
+      
+      # nr_next_pos  <- val_left %/% base^(position + 1)
+      # sum_next_pos <- nr_next_pos * base^(position + 1)
+      
+      # cur_digit    <- val_left - sum_next_pos
+      # cur_digit <- dec_remain %% base^(position + 1)
+      # cur_digit   <- val_left - sum_next_pos
+      # print(paste("cur_digit =", cur_digit))  # 4debugging
+      
+      next_units <- val_left %/% base^(position + 1)  # dividor on NEXT position (higher order)
+      # print(paste0("- next_units = ", next_units))  # 4debugging
+      
+      next_rem <- val_left %%  base^(position + 1)  # remainder on NEXT position (higher order)
+      # print(paste0("- next_rem = ", next_rem))  # 4debugging
+      
+      if (next_rem > 0){  
+        
+        cur_left <- val_left - (next_units * base^(position + 1))
+        
+        cur_div <- cur_left %/% base^(position)  # current dividor
+        # print(paste0("- cur_div = ", cur_div))  # 4debugging
+        
+        # cur_rem <- val_left %%  base^(position)  # current remainder
+        # print(paste0("- cur_rem = ", cur_rem))  # 4debugging    
+        
+        cur_digit <- cur_div
+        
+      } else { 
+        
+        cur_digit <- 0
+        
+      }
+      
+      # print(paste0("- cur_digit = ", cur_digit))  # 4debugging    
+      
+      # # choose:
+      # if ((next_units > 0)) {
+      #   cur_digit <- cur_rem
+      # } else {
+      #   cur_digit <- cur_div  
+      # }
+      
+      # collect output:     
+      out <- paste0(cur_digit, out)
+      
+      # update value and position counter:
+      val_left <- val_left - (cur_digit * base^(position))
+      position <- position + 1 
+      
+    } # while. 
+    
+    out <- as.numeric(out)
+    
   }
-  
-  # Initialize: 
-  out <- NULL
-  dec_left <- dec 
-  
-  # Prepare:
-  n_digits <- floor(log(dec)/log(base) + 1)
-  # print(paste("n_digits =", n_digits))  # 4debugging
-  
-  # Main: 
-  for (i in n_digits:1){
-    
-    cur_digit <- dec_left %/% base^(i - 1)
-    
-    dec_left <- dec_left - (cur_digit * base^(i - 1))
-    
-    out <- paste0(out, cur_digit)
-    
-  }
-  
-  out <- as.numeric(out)
   
   return(out)
   
@@ -209,13 +294,18 @@ dec2base <- function(x, base = 2){
 # dec2base(8, base = 10)
 # base2dec(2222, base = 3)
 # 
-# # Note: 
+# # Note:
 # base2dec(dec2base(0120, base = 3), base = 3)
 # dec2base(base2dec(0210, base = 3), base = 3)
 
+# # Special cases:
+# dec2base(0)
+# dec2base(NA)
 
 
 ## ToDo: ------
 
+# - Create recursive versions of base2dec() and dec2base().
+# - Create vectorized versions of base2dec() and dec2base().
 
 ## eof. ----------
