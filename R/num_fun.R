@@ -138,21 +138,24 @@ base2dec <- function(x, base = 2){
 #'        
 #' @examples 
 #' # (a) single numeric input:
-#' dec2base(3)
+#' dec2base(3)  # base = 2
+#' dec2base(4)
 #' dec2base(8)
+#' 
 #' dec2base(8, base = 3)
 #' dec2base(8, base = 7)
 #' 
-#' dec2base(110, base = 2)
-#' dec2base(110, base = 10)
+#' dec2base(100, base = 2)
+#' dec2base(100, base = 5)
+#' dec2base(100, base = 10)
 #' 
 #' # (b) single string input:
 #' dec2base("7", base = 2)
 #' dec2base("8", base = 3)
 #' 
 #' # Note: 
-#' base2dec(dec2base(01230, base = 4), base = 4)
-#' dec2base(base2dec(03210, base = 4), base = 4)
+#' base2dec(dec2base(012340, base = 5), base = 5)
+#' dec2base(base2dec(043210, base = 5), base = 5)
 #' 
 #' @family numeric functions
 #' 
@@ -295,9 +298,9 @@ dec2base <- function(x, base = 2){
 # base2dec(2222, base = 3)
 # 
 # # Note:
-# base2dec(dec2base(0120, base = 3), base = 3)
-# dec2base(base2dec(0210, base = 3), base = 3)
-
+# base2dec(dec2base(012340, base = 5), base = 5)
+# dec2base(base2dec(043210, base = 5), base = 5)
+# 
 # # Special cases:
 # dec2base(0)
 # dec2base(NA)
