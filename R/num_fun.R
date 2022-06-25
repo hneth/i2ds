@@ -342,7 +342,7 @@ dec2base <- function(x, base = 2, as_char = TRUE){
 
 # dec2base_v(): Vectorized version of dec2base(): -----
 
-
+# +++ here now +++ 
 
 
 # dec2base_r(): Recursive version of dec2base(): -----
@@ -363,9 +363,9 @@ dec2base_r <- function(x, base = 2){
     digit_cur <- n %% base
     exp <- exp + 1
     n_left <- n - (digit_cur * base^exp)
-
+    
     # +++ here now +++ 
-        
+    
     paste0(dec2base_r(n_left, base), digit_cur)  # recursion
     
   }
