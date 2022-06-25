@@ -275,14 +275,6 @@ dec2base <- function(x, base = 2, as_char = TRUE){
       
       # print(paste0("position = ", position, ": val_left = ", val_left))  # 4debugging
       
-      # nr_next_pos  <- val_left %/% base^(position + 1)
-      # sum_next_pos <- nr_next_pos * base^(position + 1)
-      
-      # cur_digit    <- val_left - sum_next_pos
-      # cur_digit <- dec_remain %% base^(position + 1)
-      # cur_digit   <- val_left - sum_next_pos
-      # print(paste("cur_digit =", cur_digit))  # 4debugging
-      
       next_units <- val_left %/% base^(position + 1)  # dividor on NEXT position (higher order)
       # print(paste0("- next_units = ", next_units))  # 4debugging
       
@@ -309,24 +301,17 @@ dec2base <- function(x, base = 2, as_char = TRUE){
       
       # print(paste0("- cur_digit = ", cur_digit))  # 4debugging    
       
-      # # choose:
-      # if ((next_units > 0)) {
-      #   cur_digit <- cur_rem
-      # } else {
-      #   cur_digit <- cur_div  
-      # }
-      
-      # collect output:     
+      # collect outputs:     
       out <- paste0(cur_digit, out)
       
-      # update value and position counter:
+      # update val_left and position counter:
       val_left <- val_left - (cur_digit * base^(position))
       position <- position + 1 
       
     } # while. 
-  }
+  } # else.
   
-  # Process out:
+  # Process output:
   if (!as_char){
     out <- as.integer(out)  # Note: May cause problems with scientific notation!
   }
@@ -355,6 +340,11 @@ dec2base <- function(x, base = 2, as_char = TRUE){
 # dec2base(NA)
 
 
+# dec2base_v(): Vectorized version of dec2base(): -----
+
+
+
+
 # dec2base_r(): Recursive version of dec2base(): -----
 
 dec2base_r <- function(x, base = 2){
@@ -367,51 +357,74 @@ dec2base_r <- function(x, base = 2){
     exp <- 0 
     out <- as.character(n) 
     
-    } else { 
+  } else { 
     
-      # Simplification step:
-      digit_cur <- n %% base
-      exp <- exp + 1
-      n_left <- n - (digit_cur * base^exp)
-    
+    # Simplification step:
+    digit_cur <- n %% base
+    exp <- exp + 1
+    n_left <- n - (digit_cur * base^exp)
+
+    # +++ here now +++ 
+        
     paste0(dec2base_r(n_left, base), digit_cur)  # recursion
     
-    }
+  }
   
 }
 
 ## Check:
 # dec2base_r(11)
 
-# Simulation: Check that dec2base() and base2dec() complement each other: -----
 
-# Parameters: 
-n_sim <- 1000
-n_org <- sample(0:999999, size = n_sim, replace = TRUE)
-base  <- sample(2:10,     size = n_sim, replace = TRUE)
+# Simulation: Verify that dec2base() and base2dec() complement each other: -----
 
-# Store results:
-n_base <- rep(NA, n_sim)
-n_dec  <- rep(NA, n_sim)
-
-for (i in 1:n_sim){ # loop: 
+dec2base_base2dec_sim <- function(n_sim = 100, 
+                                  min_val = 0, max_val = 999999,
+                                  min_base = 2, max_base = 10){
   
-  n_base[i] <- dec2base(n_org[i],  base[i])
-  n_dec[i]  <- base2dec(n_base[i], base[i])
+  # Use inputs as parameters: 
+  n_sim <- n_sim
+  n_org <- sample(min_val:max_val, size = n_sim, replace = TRUE)
   
-}
+  if (min_base < max_base){
+    base <- sample(min_base:max_base, size = n_sim, replace = TRUE)
+  } else { # Avoid sample(x:x, ) quirk: 
+    base <- sample(c(min_base, max_base), size = n_sim, replace = TRUE)
+  }
+  
+  # Store results:
+  n_base <- rep(NA, n_sim)
+  n_dec  <- rep(NA, n_sim)
+  
+  # Main: 
+  for (i in 1:n_sim){ # loop through simulations: 
+    
+    n_base[i] <- dec2base(n_org[i],  base[i])  # 1. 
+    n_dec[i]  <- base2dec(n_base[i], base[i])  # 2. 
+    
+  } # for loop. 
+  
+  # Collect results:
+  df <- data.frame(n_org, 
+                   base, 
+                   n_base, 
+                   n_dec, 
+                   same = (n_org == n_dec))
+  
+  sum_same <- sum(df$same, na.rm = TRUE)  # count same cases 
+  
+  # Feedback:
+  message(paste0("Same result in all ", n_sim, " simulations? ", 
+                 (sum_same == n_sim)))  # All n_sim = same?
+  
+  return(invisible(df))
+  
+} # dec2base_base2dec_sim(). 
 
-# Inspect results:
-df <- data.frame(n_org, 
-                 base, 
-                 n_base, 
-                 n_dec, 
-                 same = (n_org == n_dec))
-
-sum(df$same, na.rm = TRUE) == n_sim  # all same?
-
-# head(df)
-# base2dec(dec2base(486, 3), 3)
+# # Check:
+# dec2base_base2dec_sim()  # defaults
+# df <- dec2base_base2dec_sim(100, min_val = 100, max_val = 999, min_base = 2, max_base = 4)
+# df
 
 
 ## ToDo: ------
