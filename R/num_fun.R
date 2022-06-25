@@ -150,7 +150,26 @@ base2dec <- function(x, base = 2){
 # base2dec(c(1, NA, 3))
 
 
-# - dec2base conversion function (as complement to base2dec): ------
+# base2dec_v: Vectorized version of base2dec(): -----
+
+# Note a problem with
+# base2dec(c(1, 2, 3), base = 10)
+# => Vector for x is collapsed into sequence: Only 1 result returned.
+
+# # (0) Vectorizing only x argument:
+# base2dec_vx <- Vectorize(base2dec, vectorize.args = "x")
+# base2dec_vx(c(1, 2, 3), base = 10)
+
+# (1) Vectorizing both arguments:
+base2dec_v <- Vectorize(base2dec)
+
+## Check: 
+# base2dec_v(c(1, 10, 100, 1000), base = 2)
+# base2dec_v(11, base = 2:5)
+# base2dec_v(c(1, 10, 100, 1000), base = 7:10)  # Note: Warning when x and base are not of the same length!
+
+
+# dec2base: Conversion function from decimal to base notation (as complement to base2dec): ------
 
 #' Convert an integer in decimal notation into a string of numeric digits in some base. 
 #' 
@@ -340,12 +359,26 @@ dec2base <- function(x, base = 2, as_char = TRUE){
 # dec2base(NA)
 
 
-# dec2base_v(): Vectorized version of dec2base(): -----
+# dec2base_v: Vectorized version of dec2base(): -----
 
-# +++ here now +++ 
+# Note a problem with
+# dec2base(c(9, 10, 11), base = 2)
+# => Result is ok, but messages due to tests on atomic vectors.
+
+# # (0) Vectorizing only x argument:
+# dec2base_vx <- Vectorize(dec2base, vectorize.args = "x")
+# dec2base_vx(c(9, 10, 11), base = 2)
+
+# (1) Vectorizing both arguments:
+dec2base_v <- Vectorize(dec2base)
+
+## Check: 
+# dec2base_v(9:11, base = 2)
+# dec2base_v(10,   base = 2:5)
+# dec2base_v(9:11, base = 5:10)  # Note: Warning when x and base are not of the same length!
 
 
-# dec2base_r(): Recursive version of dec2base(): -----
+# dec2base_r: Recursive version of dec2base(): -----
 
 dec2base_r <- function(x, base = 2){
   
@@ -421,7 +454,7 @@ dec2base_base2dec_sim <- function(n_sim = 100,
   
 } # dec2base_base2dec_sim(). 
 
-# # Check:
+## Check:
 # dec2base_base2dec_sim()  # defaults
 # df <- dec2base_base2dec_sim(100, min_val = 100, max_val = 999, min_base = 2, max_base = 4)
 # df
