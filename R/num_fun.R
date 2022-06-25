@@ -1,49 +1,59 @@
 ## num_fun.R  | i2ds
-## hn | uni.kn | 2022 06 24
+## hn | uni.kn | 2022 06 25
 
 # Functions for manipulating/transforming numbers or numeric symbols: ------ 
 
 
 # base2dec: Convert a base N numeric string into a decimal number: ------ 
 
-#' Convert a string of numeric digits from some base into a decimal number. 
+#' Convert a string of numeric digits from some base into decimal notation. 
 #' 
-#' \code{base2dec} converts a sequence of numeric symbols 
-#' from base N notation to decimal (i.e., base 10) notation. 
+#' \code{base2dec} converts a sequence of numeric symbols (digits) 
+#' from some base notation to decimal (i.e., base 10) notation. 
+#' 
+#' Individual digits (e.g., 0-9) must exist in the specified base 
+#' (i.e., every digit value must be lower than the base value).
 #' 
 #' \code{base2dec} is the complement of \code{\link{dec2base}}. 
 #' 
-#' @return A decimal number. 
+#' @return An integer number (in decimal notation). 
 #' 
-#' @param x A (required) sequence or string of numeric symbols 
-#' (i.e., digits 0-9, as defined in the specified base).
+#' @param x A (required) sequence of numeric symbols 
+#' (as a sequence or vector of digits). 
 #' 
 #' @param base The base of the symbols in \code{seq}. 
 #' Default: \code{base = 2} (binary).   
 #'        
 #' @examples 
 #' # (a) single string input:
-#' base2dec("11")
-#' base2dec("11", base = 5)
-#' base2dec("1010")
+#' base2dec("11")   # default base = 2
 #' base2dec("0101")
+#' base2dec("1010")
 #' 
+#' base2dec("11", base = 3)
+#' base2dec("11", base = 5)
+#' base2dec("11", base = 10)
+#'  
 #' # (b) numeric vectors as inputs:
-#' base2dec(c(1, 0, 1, 0))
-#' base2dec(c(1, 0, 1, 0), base = 3)
+#' base2dec(c(0, 1, 0))
+#' base2dec(c(0, 1, 0), base = 3)
 #' 
 #' # (c) character vector as inputs:
-#' base2dec(c("1", "0", "1", "0"))
-#' base2dec(c("1", "0", "1", "0"), base = 3)
+#' base2dec(c("0", "1", "0"))
+#' base2dec(c("0", "1", "0"), base = 3)
 #' 
 #' # (d) multi-digit vectors:
-#' base2dec(c(1, 1), base = 10)
+#' base2dec(c(1, 1))
 #' base2dec(c(1, 1), base = 3)
-#' base2dec(c(2, 3), base = 3)  # Note message.
+#' 
+#' # Special cases:
+#' base2dec(NA)
+#' base2dec(0)
+#' base2dec(c(3, 3), base = 3)  # Note message!
 #' 
 #' # Note: 
-#' base2dec(dec2base(0120, base = 3), base = 3)
-#' dec2base(base2dec(0210, base = 3), base = 3)
+#' base2dec(dec2base(012340, base = 5), base = 5)
+#' dec2base(base2dec(043210, base = 5), base = 5)
 #' 
 #' @family numeric functions
 #' 
@@ -63,7 +73,7 @@ base2dec <- function(x, base = 2){
   out_val <- 0  # output value (in decimal notation) 
   len_seq <- length(seq)  
   
-  # Catch some special cases:
+  # Catch special cases:
   if (any(is.na(seq)) | is.na(base)) { return(NA) }
   if ((len_seq == 1) && (seq == "0")){ return(0)  }  
   if ((base < 2) | (base > 10) | (base %% 1 != 0)) { 
@@ -71,22 +81,21 @@ base2dec <- function(x, base = 2){
     return(NA)
   }
   
-  # Prepare:
+  # Prepare: Turn seq of characters into a numeric vector:
   if ((len_seq == 1) && (nchar(seq) > 1)) { # seq is a multi-digit string:
     
     # Convert a string into a numeric vector (of 1-digit numeric elements):
     vec <- str2vec(seq)
     seq <- as.numeric(vec)
     
-    
-  } else { # convert character sequence into numeric values:
+  } else { # convert character vector into numeric values:
     
     seq <- as.numeric(seq)
     
   } # if.
   
   # print(seq)  # 4debugging
-  len_seq <- length(seq) 
+  len_seq <- length(seq)  # redo
   
   # Ensure that seq only contains integers <= base:
   if (any(seq >= base)){
@@ -105,36 +114,69 @@ base2dec <- function(x, base = 2){
     
   } # for.
   
+  # Process output:
+  out_val <- as.integer(out_val)
+  
   return(out_val)
   
 } # base2dec(). 
 
-# ## Check:
-# # (a) string inputs:
-# base2dec("0")
-# base2dec("1")
-# base2dec("1010")  # seq as string
+# ## Check: 
+# # (a) single string input:
+# base2dec("11")  # base = 2
+# base2dec("0101")
+# base2dec("1010")
+# 
+# base2dec("11", base = 3)
+# base2dec("11", base = 5)
+# base2dec("11", base = 10)
+# 
 # # (b) numeric vectors as inputs:
-# base2dec(c(1, 0, 1, 0))
-# base2dec(c(1, 0, 1, 0), base = 3)
+# base2dec(c(0, 1, 0, 1))
+# base2dec(c(0, 1, 0, 1), base = 3)
+# 
+# # (c) character vector as inputs:
+# base2dec(c("0", "1", "0", "1"))
+# base2dec(c("0", "1", "0", "1"), base = 3)
+# 
+# # (d) multi-digit vectors:
+# base2dec(c(1, 1), base = 10)
+# base2dec(c(1, 1), base = 3)
+# base2dec(c(2, 3), base = 3)  # Note message.
+# 
+# # Special cases:
+# base2dec(0)
+# base2dec(NA)
+# base2dec(c(1, NA, 3))
 
 
 # - dec2base conversion function (as complement to base2dec): ------
 
-#' Convert a decimal number into a string of numeric digits in some base. 
+#' Convert an integer in decimal notation into a string of numeric digits in some base. 
 #' 
-#' \code{dec2base} converts a decimal (i.e., base 10) number into 
-#' a sequence of numeric symbols (digits) in some other base. 
+#' \code{dec2base} converts an integer from decimal (i.e., base 10) notation 
+#' into a sequence of numeric symbols (digits) of some other base. 
+#' 
+#' To prevent erroneous interpretations of numeric outputs, 
+#' \code{dec2base} returns a sequence of digits (as a character string).
+#' When using \code{as_char = FALSE}, its output string is 
+#' processed by \code{as.integer}, but this may cause 
+#' problems with the interpretation of the numeric value 
+#' (as outputs for bases other than 10 do NOT denote decimal numbers) 
+#' and scientific notation. 
 #' 
 #' \code{dec2base} is the complement of \code{\link{base2dec}}. 
 #' 
-#' @return A number (in base notation).
+#' @return A string of digits (in base notation).
 #' 
-#' @param x A (required) integer in decimal notation 
-#' (i.e., containing only digits 0-9).
+#' @param x A (required) integer in decimal (base 10) notation 
+#' or corresponding string of digits (i.e., 0-9).
 #' 
 #' @param base The base of the symbols in \code{seq}. 
-#' Default: \code{base = 2} (binary).   
+#' Default: \code{base = 2} (binary).
+#' 
+#' @param as_char Return result as character string? 
+#' Default: \code{as_char = TRUE}. 
 #'        
 #' @examples 
 #' # (a) single numeric input:
@@ -165,7 +207,7 @@ base2dec <- function(x, base = 2){
 #' 
 #' @export 
 
-dec2base <- function(x, base = 2){
+dec2base <- function(x, base = 2, as_char = TRUE){
   
   # Version 1: ----
   # - calculate n_digits 
@@ -216,6 +258,11 @@ dec2base <- function(x, base = 2){
     # Process inputs: 
     val_left  <- as.numeric(x)  # numeric value left (in decimal notation) 
     base <- as.numeric(base)
+    
+    if ((base < 2) | (base > 10) | (base %% 1 != 0)) { 
+      message("dec2base: base must be an integer in 2:10.")
+      return(NA)
+    }
     
     # Prepare: 
     position <- 0     # position/order (0 is rightmost/unit/base^0)
@@ -277,9 +324,11 @@ dec2base <- function(x, base = 2){
       position <- position + 1 
       
     } # while. 
-    
-    out <- as.numeric(out)
-    
+  }
+  
+  # Process out:
+  if (!as_char){
+    out <- as.integer(out)  # Note: May cause problems with scientific notation!
   }
   
   return(out)
@@ -304,6 +353,65 @@ dec2base <- function(x, base = 2){
 # # Special cases:
 # dec2base(0)
 # dec2base(NA)
+
+
+# dec2base_r(): Recursive version of dec2base(): -----
+
+dec2base_r <- function(x, base = 2){
+  
+  n <- as.numeric(x)
+  exp <- NA
+  
+  if (n < base) { # stopping condition: 
+    
+    exp <- 0 
+    out <- as.character(n) 
+    
+    } else { 
+    
+      # Simplification step:
+      digit_cur <- n %% base
+      exp <- exp + 1
+      n_left <- n - (digit_cur * base^exp)
+    
+    paste0(dec2base_r(n_left, base), digit_cur)  # recursion
+    
+    }
+  
+}
+
+## Check:
+# dec2base_r(11)
+
+# Simulation: Check that dec2base() and base2dec() complement each other: -----
+
+# Parameters: 
+n_sim <- 1000
+n_org <- sample(0:999999, size = n_sim, replace = TRUE)
+base  <- sample(2:10,     size = n_sim, replace = TRUE)
+
+# Store results:
+n_base <- rep(NA, n_sim)
+n_dec  <- rep(NA, n_sim)
+
+for (i in 1:n_sim){ # loop: 
+  
+  n_base[i] <- dec2base(n_org[i],  base[i])
+  n_dec[i]  <- base2dec(n_base[i], base[i])
+  
+}
+
+# Inspect results:
+df <- data.frame(n_org, 
+                 base, 
+                 n_base, 
+                 n_dec, 
+                 same = (n_org == n_dec))
+
+sum(df$same, na.rm = TRUE) == n_sim  # all same?
+
+# head(df)
+# base2dec(dec2base(486, 3), 3)
 
 
 ## ToDo: ------
