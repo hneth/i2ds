@@ -2,44 +2,58 @@
 % Please edit documentation in R/num_fun.R
 \name{dec2base}
 \alias{dec2base}
-\title{Convert a decimal number into a string of numeric digits in some base.}
+\title{Convert an integer in decimal notation into a string of numeric digits in some base.}
 \usage{
-dec2base(x, base = 2)
+dec2base(x, base = 2, as_char = TRUE)
 }
 \arguments{
-\item{x}{A (required) integer in decimal notation 
-(i.e., containing only digits 0-9).}
+\item{x}{A (required) integer in decimal (base 10) notation 
+or corresponding string of digits (i.e., 0-9).}
 
 \item{base}{The base of the symbols in \code{seq}. 
 Default: \code{base = 2} (binary).}
+
+\item{as_char}{Return result as character string? 
+Default: \code{as_char = TRUE}.}
 }
 \value{
-A number (in base notation).
+A string of digits (in base notation).
 }
 \description{
-\code{dec2base} converts a decimal (i.e., base 10) number into 
-a sequence of numeric symbols (digits) in some other base.
+\code{dec2base} converts an integer from decimal (i.e., base 10) notation 
+into a sequence of numeric symbols (digits) of some other base.
 }
 \details{
+To prevent erroneous interpretations of numeric outputs, 
+\code{dec2base} returns a sequence of digits (as a character string).
+When using \code{as_char = FALSE}, its output string is 
+processed by \code{as.integer}, but this may cause 
+problems with the interpretation of the numeric value 
+(as outputs for bases other than 10 do NOT denote decimal numbers) 
+and scientific notation. 
+
 \code{dec2base} is the complement of \code{\link{base2dec}}.
 }
 \examples{
 # (a) single numeric input:
-dec2base(3)
+dec2base(3)  # base = 2
+dec2base(4)
 dec2base(8)
+
 dec2base(8, base = 3)
 dec2base(8, base = 7)
 
-dec2base(110, base = 2)
-dec2base(110, base = 10)
+dec2base(100, base = 2)
+dec2base(100, base = 5)
+dec2base(100, base = 10)
 
 # (b) single string input:
 dec2base("7", base = 2)
 dec2base("8", base = 3)
 
 # Note: 
-base2dec(dec2base(01230, base = 4), base = 4)
-dec2base(base2dec(03210, base = 4), base = 4)
+base2dec(dec2base(012340, base = 5), base = 5)
+dec2base(base2dec(043210, base = 5), base = 5)
 
 }
 \seealso{
