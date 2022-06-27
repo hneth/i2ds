@@ -1,7 +1,7 @@
 ## num_fun.R  | i2ds
 ## hn | uni.kn | 2022 06 25
 
-# Functions for manipulating/transforming numbers or numeric symbols: ------ 
+# Functions for manipulating/transforming numbers or numeric symbols/digits: ------ 
 
 
 # base2dec: Convert a base N numeric string into a decimal number: ------ 
