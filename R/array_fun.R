@@ -1352,16 +1352,16 @@ ctable <- function(data,
 # array(freq_v2, c(4, 2, 2))  # by-col
 
 
-# # C. Simpson's paradox (Example 2: Causality, Pearl, 2009, p. 174ff.): ------ 
+# # C. Simpson's paradox (Example 2: Causality, Pearl, 2009, p. 174ff.): ------
 # 
-# +++ here now +++ 
+# # +++ here now +++
 # 
-# # Load pkgs:  
-# library(i2ds)      # ctable(), expand_freq_table(), subtable()  
+# # Load pkgs:
+# library(i2ds)      # ctable(), expand_freq_table(), subtable()
 # library(MLM)       # frame(), trans(), focus()
 # library(magrittr)  # pipe %>%
 # 
-# # (A) Data: ---- 
+# # (A) Data: ----
 # 
 # # Frequency values:
 # # group:  male (-F):          female (F):
@@ -1376,16 +1376,17 @@ ctable <- function(data,
 # dnl <- list(effect = effect, cause = cause, sex = sex)
 # 
 # # Create 3 informationally equivalent data structures:
-# (S_tb <- ctable(freq_v3, c(2, 2, 2), dimnames = dnl))  # 3D table 
+# (S_tb <- ctable(freq_v3, c(2, 2, 2), dimnames = dnl))  # 3D table
 # (S_ct <- ctable(freq_v3, c(2, 2, 2), dimnames = dnl, as_df = TRUE))  # contingency table (df)
 # (S_df <- expand_freq_table(S_ct))  # df of raw cases
 # 
-# # (B) Illustrating the paradox: ---- 
+# # (B) Illustrating the paradox: ----
 # 
-# # Collapsing over one dimension: Framing a 2x2 matrix: 
+# # Collapsing over one dimension: Framing a 2x2 matrix:
 # (mx_A <- frame(S_tb, x = "cause", y = "effect"))  # from 3D-table
 # mx_A <- frame(S_df, x = "cause", y = "effect")    # from df of raw cases
-# # using pipe: 
+# 
+# # Collapse for 2 other aggregate matrices (using pipe):
 # (mx_B <- S_tb %>% frame(x = "cause", y = "sex"))
 # (mx_C <- S_tb %>% frame(x = "effect", y = "sex"))
 # 
@@ -1398,7 +1399,7 @@ ctable <- function(data,
 # (mx_A_f <- frame(tb_A_f, x = "cause", y = "effect"))
 # 
 # # Conditionalizing matrices by row/column/diagonal: Transforming
-# mx_A %>% trans(margin = 2)  # by column 
+# mx_A %>% trans(margin = 2)  # by column
 # mx_B %>% trans(margin = 2)  # by column
 # mx_C %>% trans(margin = 1)  # by row!
 # 
@@ -1406,12 +1407,15 @@ ctable <- function(data,
 # mx_A_m %>% trans(margin = 2)  # by column
 # mx_A_f %>% trans(margin = 2)  # by column
 # 
-# # Derive difference in by-column contingency: Focus
+# # Focus on measure(s): Derive difference in by-column contingency/dPc:
 # focus(mx_A_m, measures = "dPc")
 # focus(mx_A_f, measures = "dPc")
 # # vs. aggregate matrix:
 # focus(mx_A, measures = "dPc")
-
+# 
+# # Same measure(s) for alternative aggregates:
+# focus(mx_B, measures = "dPc")
+# focus(mx_C, measures = "dPc")
 
 
 # # D. Shades of skepticism (3x3): ----
