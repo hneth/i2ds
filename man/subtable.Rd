@@ -2,7 +2,7 @@
 % Please edit documentation in R/array_fun.R
 \name{subtable}
 \alias{subtable}
-\title{Extract a subtable (or subset) of a table.}
+\title{Extract a subtable (or subset) from a table.}
 \source{
 Based on the \code{subtable} function by Norman Matloff, 
 The Art of R Programming (2011, pp. 131-134).
