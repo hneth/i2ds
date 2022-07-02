@@ -1,5 +1,5 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2022 06 09
+## hn | uni.kn | 2022 07 02
 
 # Functions for creating and manipulating (transforming: reducing and reshaping) arrays, matrices, and tables: ------ 
 
@@ -117,8 +117,6 @@ prop_mx <- function(x, margin = NULL){
   }
   
 } # prop_mx().
-
-# +++ here now +++ 
 
 # # Check:
 # m1 <- matrix(1:4)
@@ -819,13 +817,13 @@ subtable_names <- function(tbl, dim_list){
 
 
 
-## subtable: Extract a subtable (or subset) of a table: ----- 
+## subtable: Extract a subtable (or subset) from a table: ----- 
 
 # Source: Core is based on the subtable() function by 
 #         Norman Matloff (2011), The Art of R Programming (pp. 131--134), 
 # but using sublist_tbl() function to include/exclude dimensions/levels.
 
-#' Extract a subtable (or subset) of a table. 
+#' Extract a subtable (or subset) from a table. 
 #' 
 #' \code{subtable} yields a subtable of a table \code{tbl}
 #' by filtering or extracting a subset of table's 
@@ -1356,6 +1354,8 @@ ctable <- function(data,
 
 # # C. Simpson's paradox (Example 2: Causality, Pearl, 2009, p. 174ff.): ------ 
 # 
+# +++ here now +++ 
+# 
 # # Load pkgs:  
 # library(i2ds)      # ctable(), expand_freq_table(), subtable()  
 # library(MLM)       # frame(), trans(), focus()
@@ -1412,7 +1412,6 @@ ctable <- function(data,
 # # vs. aggregate matrix:
 # focus(mx_A, measures = "dPc")
 
-# +++ here now +++ 
 
 
 # # D. Shades of skepticism (3x3): ----
