@@ -1,5 +1,5 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2022 07 02
+## hn | uni.kn | 2022 07 06
 
 # Functions for creating and manipulating (transforming: reducing and reshaping) arrays, matrices, and tables: ------ 
 
@@ -1498,7 +1498,7 @@ ctable <- function(data,
 # tb_xtb <- xtabs(Freq ~ ., data = df_con)
 # tb_xtb
 # # str(tb_xtb)
-# all.equal(tb_xtb, tb_org)  # Note: xtabs are NOT table
+# all.equal(tb_xtb, tb_org)  # Note: xtabs are NOT of type table!
 # 
 # df_raw <- i2ds::expand_freq_table(df_con)  # raw cases (as df)
 # df_raw
@@ -1515,6 +1515,14 @@ ctable <- function(data,
 # (tb_new <- table(ct_raw))          # to table
 # all.equal(tb_new, tb_org)
 
+# # Half circle (table > contingency (df) > table):
+# (tb_org <- UCBAdmissions) # Titanic  # from table
+# (ct_df <- as.data.frame(tb_org))   # contingency frame
+# (tb_xt <- xtabs(Freq ~ ., ct_df))  # xtabs  
+# all.equal(tb_xt, tb_org)  # Note: Attribute differences!
+# tb_tb <- ctable(tb_xt, dim = dim(tb_org), dimnames = dimnames(tb_org))  # xtabs as table!
+# all.equal(tb_tb, tb_org)  
+# # +++ here now +++ 
 
 ## ToDo: ------
 
