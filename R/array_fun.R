@@ -1,5 +1,5 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2022 07 06
+## hn | uni.kn | 2022 07 18
 
 # Functions for creating and manipulating (transforming: reducing and reshaping) arrays, matrices, and tables: ------ 
 
@@ -862,7 +862,7 @@ subtable_names <- function(tbl, dim_list){
 #' Default: \code{out_list = NULL} (i.e., nothing). 
 #' 
 #' @param quiet Boolean: Hide feedback messages?
-#' Default: \code{quiet = TRUE} (i.e., hide messages). 
+#' Default: \code{quiet = FALSE} (i.e., show messages). 
 #' 
 #' @examples 
 #' t <- datasets::Titanic
@@ -914,7 +914,7 @@ subtable_names <- function(tbl, dim_list){
 
 subtable <- function(tbl, 
                      # sub_dims = dimnames(tbl), # s1: Use sublist_names() function
-                     in_list = dimnames(tbl), out_list = NULL, quiet = TRUE  # s3: Use sublist_tbl() function
+                     in_list = dimnames(tbl), out_list = NULL, quiet = FALSE  # s3: Use sublist_tbl() function
 ) 
 {
   
@@ -1154,26 +1154,32 @@ subtable <- function(tbl,
 #' Return result as a \code{\link{data.frame}}?
 #' Default: \code{as_df = FALSE}. 
 #' 
+#' @param quiet Boolean: Hide feedback messages?
+#' Default: \code{quiet = FALSE} (i.e., show messages). 
+#' 
 #' @examples
 #' # Prepare dimnames (as lists): 
 #' l_24 <- list(rows = c("A", "B"), cols = letters[1:4])
 #' l432 <- list(Ys = letters[1:4], Xs = LETTERS[1:3], group = c("I", "II"))
 #' 
 #' # Standard use:
-#' ctable(1:8,  dim = c(2,4), dimnames = l_24)
-#' ctable(1:24, dim = c(4,3,2), dimnames = l432)
+#' ctable(1:8,  dim = c(2,4 ), dimnames = l_24)
+#' ctable(1:24, dim = c(4, 3, 2), dimnames = l432)
 #' 
 #' # by row:
-#' ctable(1:8,  dim = c(2,4), dimnames = l_24, by_row = TRUE)
-#' ctable(1:24, dim = c(4,3,2), dimnames = l432, by_row = TRUE)
+#' ctable(1:8,  dim = c(2, 4), dimnames = l_24, by_row = TRUE)
+#' ctable(1:24, dim = c(4, 3, 2), dimnames = l432, by_row = TRUE)
 #' 
 #' # Return as df:
-#' ctable(1:8, dim = c(2,4), dimnames = l_24, as_df = TRUE)
-#' ctable(1:24, dim = c(4,3,2), dimnames = l432, as_df = TRUE)
+#' ctable(1:8, dim = c(2, 4), dimnames = l_24, as_df = TRUE)
+#' ctable(1:24, dim = c(4, 3, 2), dimnames = l432, as_df = TRUE)
 #' 
 #' # No dimnames:
-#' ctable(1:8, dim = c(2,4))
-#' ctable(1:8, dim = c(2,2,2))
+#' ctable(1:8, dim = c(2, 4))
+#' ctable(1:8, dim = c(2, 2, 2))
+#' 
+#' # Non-integers:
+#' ctable(1:9/3, dim = c(3, 3), quiet = FALSE)
 #' 
 #' @family array functions
 #' 
@@ -1186,23 +1192,27 @@ subtable <- function(tbl,
 
 ctable <- function(data, 
                    dim = length(data), dimnames = NULL, 
-                   by_row = FALSE, as_df = FALSE){
+                   by_row = FALSE, as_df = FALSE, quiet = FALSE){
   
   # Inputs:
-  # ToDo: Verify that data contains only frequency counts (integers >= 0).
+  # Verify that data contains only frequency counts (integers >= 0).
   # a) only numeric values
   # b) only integers >= 0
-  if (!is.numeric(data) | any(data %% 1 != 0) | any(data < 0)) {
+  if (!quiet){
     
-    message("ctable: Contingency data must only contain frequency counts (i.e., non-negative integers).")
+    if (!is.numeric(data) | any(data %% 1 != 0) | any(data < 0)) {
+      
+      message("ctable: Contingency data must only contain frequency counts (i.e., non-negative integers).")
+      
+    }
     
-  }
-  
-  if (length(data) != prod(dim)){ # conflict between data and dim: 
+    if (length(data) != prod(dim)){ # conflict between data and dim: 
+      
+      message("ctable: Length of data does not correspond to dim. Using array() defaults...")
+      
+    }
     
-    message("ctable: Length of data does not correspond to dim. Using array() defaults...")
-    
-  }
+  } # if (!quiet). 
   
   
   # Main: Pass to array():
@@ -1221,7 +1231,9 @@ ctable <- function(data,
   # Check/add names:
   if (is.null(dimnames)){ # no dimnames provided:
     
-    message("ctable: No list of dimnames provided. Adding default dimnames:")
+    if (!quiet){
+      message("ctable: No list of dimnames provided. Adding default dimnames:")
+    } # if (!quiet).
     
     ar <- add_dimnames(ar, sep = "_")  # use utility function (above)
     
@@ -1229,7 +1241,6 @@ ctable <- function(data,
   
   # Coerce to "table" (to flag impossible values):
   tb <- as.table(ar, stringsAsFactors = TRUE)  # Note: Use factors to preserve level orders  
-  
   
   if (as_df){ # convert to df:
     
