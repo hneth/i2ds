@@ -9,7 +9,8 @@ ctable(
   dim = length(data),
   dimnames = NULL,
   by_row = FALSE,
-  as_df = FALSE
+  as_df = FALSE,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ Default: \code{by_row = FALSE}.}
 \item{as_df}{(Boolean): 
 Return result as a \code{\link{data.frame}}?
 Default: \code{as_df = FALSE}.}
+
+\item{quiet}{Boolean: Hide feedback messages?
+Default: \code{quiet = FALSE} (i.e., show messages).}
 }
 \value{
 A table.
@@ -55,20 +59,23 @@ l_24 <- list(rows = c("A", "B"), cols = letters[1:4])
 l432 <- list(Ys = letters[1:4], Xs = LETTERS[1:3], group = c("I", "II"))
 
 # Standard use:
-ctable(1:8,  dim = c(2,4), dimnames = l_24)
-ctable(1:24, dim = c(4,3,2), dimnames = l432)
+ctable(1:8,  dim = c(2,4 ), dimnames = l_24)
+ctable(1:24, dim = c(4, 3, 2), dimnames = l432)
 
 # by row:
-ctable(1:8,  dim = c(2,4), dimnames = l_24, by_row = TRUE)
-ctable(1:24, dim = c(4,3,2), dimnames = l432, by_row = TRUE)
+ctable(1:8,  dim = c(2, 4), dimnames = l_24, by_row = TRUE)
+ctable(1:24, dim = c(4, 3, 2), dimnames = l432, by_row = TRUE)
 
 # Return as df:
-ctable(1:8, dim = c(2,4), dimnames = l_24, as_df = TRUE)
-ctable(1:24, dim = c(4,3,2), dimnames = l432, as_df = TRUE)
+ctable(1:8, dim = c(2, 4), dimnames = l_24, as_df = TRUE)
+ctable(1:24, dim = c(4, 3, 2), dimnames = l432, as_df = TRUE)
 
 # No dimnames:
-ctable(1:8, dim = c(2,4))
-ctable(1:8, dim = c(2,2,2))
+ctable(1:8, dim = c(2, 4))
+ctable(1:8, dim = c(2, 2, 2))
+
+# Non-integers:
+ctable(1:9/3, dim = c(3, 3), quiet = FALSE)
 
 }
 \seealso{

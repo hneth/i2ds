@@ -8,7 +8,7 @@ Based on the \code{subtable} function by Norman Matloff,
 The Art of R Programming (2011, pp. 131-134).
 }
 \usage{
-subtable(tbl, in_list = dimnames(tbl), out_list = NULL, quiet = TRUE)
+subtable(tbl, in_list = dimnames(tbl), out_list = NULL, quiet = FALSE)
 }
 \arguments{
 \item{tbl}{An original table to be reduced (as \code{\link{table}}).}
@@ -26,7 +26,7 @@ of the desired levels.
 Default: \code{out_list = NULL} (i.e., nothing).}
 
 \item{quiet}{Boolean: Hide feedback messages?
-Default: \code{quiet = TRUE} (i.e., hide messages).}
+Default: \code{quiet = FALSE} (i.e., show messages).}
 }
 \value{
 A table.
