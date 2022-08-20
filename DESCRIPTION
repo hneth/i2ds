@@ -26,5 +26,5 @@ License: CC BY-SA 4.0
 URL: https://bookdown.org/hneth/ds4psy/, https://github.com/hneth/i2ds/
 BugReports: https://github.com/hneth/i2ds/issues
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Language: en-US
