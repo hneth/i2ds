@@ -121,9 +121,9 @@ The R package **i2ds** supports the course **Introduction to Data Science (using
 
 <!-- From package description: -->
 
-The **i2ds** package provides datasets and functions used in the examples and exercises of the book "Introduction to Data Science" (by Hansjoerg Neth, Konstanz University, 2021), available at <`r url_i2ds_book`>. 
-The book and course introduce principles and methods of data science to students of psychology and other biological or social sciences. 
-The R package **i2ds** primarily provides datasets, but also functions for data generation and manipulation that are used in the book and its exercises. 
+The **i2ds** package provides datasets and functions used in the examples and exercises of the book [Introduction to Data Science](`r url_i2ds_book`) (by Hansjoerg Neth, University of Konstanz, 2022), available at <`r url_i2ds_book`>. 
+The book and course provide a gentle introduction into the principles and methods of data science to students of psychology and other natural or social sciences. 
+The R package **i2ds** primarily provides datasets, but also functions for data generation and manipulation that are used in the book's examples and exercises. 
 All functions included in **i2ds** are designed to be explicit and instructive, rather than efficient or elegant. 
 
 The textbook [Introduction to Data Science](`r url_i2ds_book`) is available at <`r url_i2ds_book`>. 
@@ -135,8 +135,8 @@ The textbook [Introduction to Data Science](`r url_i2ds_book`) is available at <
 
 <!-- Contents: -->
 
-This course provides an introduction to data science for students of any discipline with little or no background in data analysis or computer programming. 
-Based on notions of representation, measurement, and modeling, we examine key data types (e.g., logicals, numbers, text) and learn to clean, summarize, transform, and visualize (rectangular) data. By reflecting on the relations between representations, tasks, and tools, the course promotes data literacy and cultivates reproducible research practices that precede and enable practical uses of programming or statistics.  
+This course provides a gentle introduction to data science for students of any discipline with little or no background in data analysis or computer programming. 
+Based on notions of representation, measurement, and modeling, we examine key data types (e.g., logicals, numbers, text) and learn to clean, summarize, transform, and visualize (rectangular) data. By reflecting on the relations between representations, tasks, and tools, the course promotes data literacy and cultivates reproducible research practices that precede and enable practical uses of programming or statistics.
 
 <!-- Tools/technology: -->
 
@@ -254,17 +254,16 @@ Additional details or readings may be announced if they are needed for individua
 
 Please ask any question that may also be of interest to other course members in the **Discussion Forum** on [Ilias](`r url_i2ds_ilias`).  
 
-For all other questions, contact 
-the instructor (Hansjörg Neth, h.neth at uni.kn). 
+For all other questions, contact Hansjörg Neth (h dot neth at uni dot kn). 
 
 
 <!-- Footer: -->
 
 ----- 
 
-<!-- Update note: -->
+<!-- Update: -->
 
-[Updated `r format(Sys.time(), "%Y-%m-%d")` by [hn](https://neth.de).]  
+[File `README.md` updated `r format(Sys.time(), "%Y-%m-%d")` by [hn](https://neth.de).]  
 
 
 <!-- Automatic references: -->
