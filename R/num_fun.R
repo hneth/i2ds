@@ -1,6 +1,8 @@
 ## num_fun.R  | i2ds
 ## hn | uni.kn | 2022 06 25
 
+# Note: Newer and better versions of these functions were included in the R package **ds4psy**.
+
 # Functions for manipulating/transforming numbers or numeric symbols/digits: ------ 
 
 
