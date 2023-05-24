@@ -1,5 +1,5 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2022 07 18
+## hn | uni.kn | 2023 05 24
 
 # Functions for creating and manipulating (transforming: reducing and reshaping) arrays, matrices, and tables: ------ 
 

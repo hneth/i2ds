@@ -52,9 +52,9 @@ df_1 <- data.frame(ans, eat)  # data frame from vectors
 df_2 <- expand_freq_table(data.frame(table(ans, eat))) # table > contingency table > df
 all.equal(table(df_1), table(df_2))
 
-# (b) from a table:
+# (b) from a table (3D table > contingency table > data frame > 3D array):
 df <- expand_freq_table(UCBAdmissions)  # array/table > contingency table > df
-tb <- table(df)                                # df > array/table 
+tb <- table(df)                         # df > array/table 
 all.equal(UCBAdmissions, tb)
 
 # Trivial case:
