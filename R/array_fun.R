@@ -1224,7 +1224,7 @@ ctable <- function(data,
   
   if (by_row){  # swap dimensions 1 and 2 of array: 
     
-    ar <- swap_xy(ar, x = 1, y = 2)  # use utility function (in util.R)
+    ar <- swap_xy_dims(ar, x = 1, y = 2)  # use utility function (in util.R)
     
   }
   

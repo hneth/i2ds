@@ -3,16 +3,16 @@
 
 # General utility functions: ------ 
 
-## swap_xy: Swap 2 dimensions x and y of an array/table OR elements of a vector/list/columns of a data.frame: ------
+## swap_xy_dims: Swap 2 dimensions x and y of an array/table OR elements of a vector/list/columns of a data.frame: ------
 
 # Goal: A generalized version of t() that works for multiple object types.
 
-swap_xy <- function(obj, x = 1, y = 2){
+swap_xy_dims <- function(obj, x = 1, y = 2){
   
   # Inputs: Ensure that x and y are integer values: 
   if ( (x %% 1 != 0) || (y %% 1 != 0) ) {
     
-    message("swap_xy: x and y must be integer values.")
+    message("swap_xy_dims: x and y must be integer values.")
     x <- as.integer(x)
     y <- as.integer(y)
     
@@ -37,7 +37,7 @@ swap_xy <- function(obj, x = 1, y = 2){
       
     } else { # no change:
       
-      message("swap_xy: no change.")
+      message("swap_xy_dims: no change.")
       t_obj <- obj
       
     }
@@ -60,7 +60,7 @@ swap_xy <- function(obj, x = 1, y = 2){
       
     } else { # Trivial case 0: no change:
       
-      message("swap_xy: no change.")      
+      message("swap_xy_dims: no change.")      
       t_obj <- obj      
       
     }
@@ -68,14 +68,14 @@ swap_xy <- function(obj, x = 1, y = 2){
     
   } else { # any other obj: 
     
-    message("swap_xy: obj is not an array/table or linear vector/list.")
+    message("swap_xy_dims: obj is not an array/table or linear vector/list.")
     
   }
   
   
   return(t_obj)
   
-} # swap_xy().
+} # swap_xy_dims().
 
 # # Check:
 # (v  <- 1:4)
@@ -85,28 +85,28 @@ swap_xy <- function(obj, x = 1, y = 2){
 # (ar <- array(1:24, dim = c(4, 3, 2)))
 # (tb <- UCBAdmissions)
 # 
-# swap_xy(v)
-# swap_xy(v, 1, 4)
-# swap_xy(v, 2.2, pi)  # as integers
-# swap_xy(v, 1, 9)     # no change
+# swap_xy_dims(v)
+# swap_xy_dims(v, 1, 4)
+# swap_xy_dims(v, 2.2, pi)  # as integers
+# swap_xy_dims(v, 1, 9)     # no change
 # 
-# swap_xy(l)
+# swap_xy_dims(l)
 # 
-# swap_xy(l, 2, pi)
-# swap_xy(l, 1, 9)     # no change
+# swap_xy_dims(l, 2, pi)
+# swap_xy_dims(l, 1, 9)     # no change
 # 
-# swap_xy(df) # df is list
+# swap_xy_dims(df) # df is list
 # 
-# swap_xy(m)  # same as t(m)
+# swap_xy_dims(m)  # same as t(m)
 # 
-# swap_xy(ar)
-# swap_xy(ar, 2, 3)
+# swap_xy_dims(ar)
+# swap_xy_dims(ar, 2, 3)
 # 
-# swap_xy(tb)
-# swap_xy(tb, 2, 3)
-# swap_xy(tb, 1, pi)
+# swap_xy_dims(tb)
+# swap_xy_dims(tb, 2, 3)
+# swap_xy_dims(tb, 1, pi)
 # 
-# swap_xy(factor(v)) # factor
+# swap_xy_dims(factor(v)) # factor
 
 
 
