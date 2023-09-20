@@ -1,5 +1,5 @@
 ## util.R | i2ds
-## hn | uni.kn | 2021 09 23
+## hn | uni.kn | 2023 09 20
 
 # General utility functions: ------ 
 
@@ -110,7 +110,25 @@ swap_xy <- function(obj, x = 1, y = 2){
 
 
 
-## get_name: A function to get an object's name (inside a function): ------ 
+## get_arg: Get raw argument(s) of a function (from inside a function) ------
+
+get_arg <- function(x){
+  
+  base::substitute(x)
+  
+  # rlang::enexpr(x)
+  
+} # get_arg().
+
+# # Check:
+# get_arg(x = "abc")
+# get_arg(x = list("abc", 123, TRUE))
+# get_arg(x = list(a, b, c))
+# as.character(get_arg(x = list(a, b, c)))[-1]
+
+
+
+## get_name: Get an object's name (from inside a function): ------ 
 
 # vec <- 1:10
 # deparse(substitute(vec))
@@ -138,6 +156,10 @@ get_name <- function(x){
 # get_name(df)
 # get_name(ar)
 # get_name(tb)
+
+
+
+
 
 
 ## ToDo: ------
