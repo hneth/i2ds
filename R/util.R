@@ -1,5 +1,5 @@
 ## util.R | i2ds
-## hn | uni.kn | 2023 09 20
+## hn | uni.kn | 2023 12 23
 
 # General utility functions: ------ 
 
@@ -156,6 +156,8 @@ get_name <- function(x){
 # get_name(df)
 # get_name(ar)
 # get_name(tb)
+
+
 
 
 
