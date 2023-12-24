@@ -1,9 +1,43 @@
 ## num_fun.R  | i2ds
-## hn | uni.kn | 2022 06 25
+## hn | uni.kn | 2023 12 24
 
-# Note: Newer and better versions of these functions were included in the R package **ds4psy**.
+# A. Arithmetic functions: ------ 
 
-# Functions for manipulating/transforming numbers or numeric symbols/digits: ------ 
+sum_of_n_integers <- function(n){
+  
+  out <- NA
+  
+  # Gauss' formula: 
+  out <- n * (n + 1)/2
+  
+  
+  # Check: 
+  check_sum <- sum(1:n)
+  
+  if (out == check_sum) { 
+    message("ok") 
+  } else {
+    message(paste0("Should be ", check_sum))  
+  }
+  
+  
+  # Output: 
+  return(out)
+  
+} # sum_of_n_integers(). 
+
+# # Check:
+# sum_of_n_integers(100)
+# sum_of_n_integers(101)
+
+
+# ToDo: Vectorize sum_of_n_integers.
+
+
+
+# B. Functions for transforming numeric symbols/digits: ------ 
+
+# Note: Newer and better versions of some functions were included in the R package **ds4psy**.
 
 
 # base2dec: Convert a base N numeric string into a decimal number: ------ 
