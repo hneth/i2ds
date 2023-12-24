@@ -5,21 +5,24 @@
 
 sum_of_n_integers <- function(n){
   
+  # Verify input:
+  if (!is.integer(n)){ stop("n must be an integer") }
+  if (n <= 0) { stop("assuming n > 0") }
+  
+  # Initialize output:
   out <- NA
   
-  # Gauss' formula: 
+  # Use Gauss' formula: 
   out <- n * (n + 1)/2
   
-  
   # Check: 
-  check_sum <- sum(1:n)
+  check_sum <- sum(1L:n)
   
   if (out == check_sum) { 
     message("ok") 
   } else {
     message(paste0("Should be ", check_sum))  
   }
-  
   
   # Output: 
   return(out)
@@ -29,10 +32,16 @@ sum_of_n_integers <- function(n){
 # # Check:
 # sum_of_n_integers(100)
 # sum_of_n_integers(101)
+# sum_of_n_integers(-1)
+# sum_of_n_integers(0)
 
 
-# ToDo: Vectorize sum_of_n_integers.
+# Vectorize sum_of_n_integers(): ------ 
 
+vec_sum_of_n_integers <- Vectorize(sum_of_n_integers)
+
+# # Check:
+# vec_sum_of_n_integers(1:101)
 
 
 # B. Functions for transforming numeric symbols/digits: ------ 
