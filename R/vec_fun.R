@@ -1,5 +1,5 @@
 ## vec_fun.R  | i2ds
-## hn | uni.kn | 2023 12 23
+## hn | uni.kn | 2023 12 25
 
 # Functions for transforming/manipulating vectors: ------ 
 #
@@ -11,7 +11,7 @@
 
 sort_in_order <- function(x, order){
   
-  if (! all(x %in% order)){
+  if ( !all(x %in% order) ){
     
     message("Some elements of x are not in order.")
     
