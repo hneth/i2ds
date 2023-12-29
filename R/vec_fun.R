@@ -1,10 +1,9 @@
 ## vec_fun.R  | i2ds
-## hn | uni.kn | 2023 12 25
+## hn | uni.kn | 2023 12 29
 
 # Functions for transforming/manipulating vectors: ------ 
 #
 # Note that objects of type "table" are specific cases of arrays (contingency tables with freq. counts).
-
 
 
 # sort_in_order: Sort a vector x into the order given by the elements of order: ------ 
