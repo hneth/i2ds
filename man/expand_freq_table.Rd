@@ -2,7 +2,7 @@
 % Please edit documentation in R/array_fun.R
 \name{expand_freq_table}
 \alias{expand_freq_table}
-\title{Expand a contingency table (as array/table or data frame) into a raw cases (as data frame).}
+\title{Expand a contingency table (as array/table or data frame) to raw cases (as data frame).}
 \usage{
 expand_freq_table(x, freq_var = "Freq", row_name_repair = TRUE)
 }
