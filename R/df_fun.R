@@ -62,6 +62,7 @@ lookup <- function(x, df, v_1 = 1, v_2 = 1){
 # # +++ here now +++ 
 
 
+
 ## ToDo: ------
 
 # - i2ds course: Explicate relation(s) between match() and which() (in logical/numeric indexing).

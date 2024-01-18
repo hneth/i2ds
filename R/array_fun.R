@@ -532,7 +532,7 @@ flatten_array <- function(x, margin = 2, varsAsFactors = FALSE){
 
 ## expand_freq_table: Turn a contingency table into a data frame of raw cases: ------ 
 
-#' Expand a contingency table (as array/table or data frame) into a raw cases (as data frame). 
+#' Expand a contingency table (as array/table or data frame) to raw cases (as data frame). 
 #' 
 #' \code{expand_freq_table} turns a contingency table 
 #' (given as an array/table or as a data frame with a frequency count variable 
