@@ -1,5 +1,5 @@
 ## array_fun.R | i2ds
-## hn | uni.kn | 2023 05 24
+## hn | uni.kn | 2024 01 19
 
 # Functions for creating and manipulating (transforming: reducing and reshaping) arrays, matrices, and tables: ------ 
 
@@ -703,17 +703,17 @@ expand_freq_table <- function(x, freq_var = "Freq", row_name_repair = TRUE){
 # df_2 <- expand_freq_table(data.frame(table(ans, eat))) # from table > contingency table > data frame
 # all.equal(table(df_1), table(df_2))
 # 
-# # (b) from array/table:
+# # (b) from an array/table:
 # df <- expand_freq_table(UCBAdmissions) # array/table > contingency table > df
-# tb <- table(df)                        # df > array/table 
+# tb <- table(df)                        # df > array/table
 # all.equal(UCBAdmissions, tb)
 # 
 # # Full circle (4D array > contingency table > data frame > 4D array): 
-# df <- expand_freq_table(Titanic)
+# df <- expand_freq_table(Titanic)  # uses contingency table (as df) as intermediate step
 # tb <- table(df)
 # all.equal(Titanic, tb)
 # 
-# # From 2x2 table:
+# # From a 2x2 table:
 # (mx <- margin.table(Titanic, c(4, 2)))
 # all.equal(mx, table(expand_freq_table(mx)))
 # 
