@@ -214,23 +214,24 @@ by [Hansjörg Neth](https://neth.de) (<h.neth@uni.kn>, [SPDS](https://spds.uni-k
 
 The current version of the textbook [Introduction to Data Science](`r url_i2ds_book`) is:
 
-- Neth, H. (forthcoming). i2ds: _Introduction to Data Science_.  
+- Neth, H. (2025). i2ds: _Introduction to Data Science_.  
 Social Psychology and Decision Sciences, University of Konstanz, Germany.  
-Textbook (version 0.0.5, 2025).  
+Textbook (version 0.5.9, 2025).  
 Available at <`r url_i2ds_book`>. 
 
 Additionally, we will be using several chapters from the textbook [-@ds4psyBook]: 
 
-- Neth, H. (2023). ds4psy: _Data Science for Psychologists_.  
+- Neth, H. (2025). ds4psy: _Data Science for Psychologists_.  
 Social Psychology and Decision Sciences, University of Konstanz, Germany.  
-Textbook and R package (version 1.0.0, September 15, 2023).  
+Textbook and R package (version 1.1.0, September 12, 2025).  
 Available at <`r url_ds4psy_book`>.  
+
 
 The URL of the supporting R package **ds4psy** [-@R-ds4psy] is <`r url_ds4psy_cran`>. 
 
 <!-- Other books and chapters: --> 
 
-Chapters from the following textbooks [@mdsr; @JamesEtAl2021] are used for individual topics:  
+Selected chapters from the following textbooks [@mdsr; @JamesEtAl2021] are used for more advanced topics:  
 
 - Baumer, B. S., Kaplan, D. T., & Horton, N. J. (2021).  
 _Modern Data Science with R_ (2nd ed.).  

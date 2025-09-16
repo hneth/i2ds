@@ -1,8 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit the .Rmd file. -->
+
 <!-- badges: start: -->
+
 <!-- badges: end. -->
+
 <!-- i2ds logo: -->
+
 <!-- ![](i2ds_logo_1.png) -->
 
 <a href="https://www.spds.uni-konstanz.de/">
@@ -57,6 +61,7 @@ topic is welcome to read and learn from these materials.
 ### Coordinates
 
 <!-- uni.kn logo and link: -->
+
 <!-- ![](./images/uniKn_logo.png) -->
 
 <a href = "https://www.uni-konstanz.de/en/">
@@ -98,29 +103,29 @@ Neth](https://neth.de) (<h.neth@uni.kn>,
 The current version of the textbook [Introduction to Data
 Science](https://bookdown.org/hneth/i2ds/) is:
 
-- Neth, H. (forthcoming). i2ds: *Introduction to Data Science*.  
+- Neth, H. (2025). i2ds: *Introduction to Data Science*.  
   Social Psychology and Decision Sciences, University of Konstanz,
   Germany.  
-  Textbook (version 0.0.5, 2025).  
+  Textbook (version 0.5.9, 2025).  
   Available at <https://bookdown.org/hneth/i2ds/>.
 
 Additionally, we will be using several chapters from the textbook
-([2023a](#ref-ds4psyBook)):
+([2025a](#ref-ds4psyBook)):
 
-- Neth, H. (2023). ds4psy: *Data Science for Psychologists*.  
+- Neth, H. (2025). ds4psy: *Data Science for Psychologists*.  
   Social Psychology and Decision Sciences, University of Konstanz,
   Germany.  
-  Textbook and R package (version 1.0.0, September 15, 2023).  
+  Textbook and R package (version 1.1.0, September 12, 2025).  
   Available at <https://bookdown.org/hneth/ds4psy/>.
 
-The URL of the supporting R package **ds4psy** ([2023b](#ref-R-ds4psy))
+The URL of the supporting R package **ds4psy** ([2025b](#ref-R-ds4psy))
 is <https://CRAN.R-project.org/package=ds4psy>.
 
 <!-- Other books and chapters: -->
 
-Chapters from the following textbooks ([Baumer, Kaplan, & Horton,
-2021](#ref-mdsr); [James, Witten, Hastie, & Tibshirani,
-2021](#ref-JamesEtAl2021)) are used for individual topics:
+Selected chapters from the following textbooks ([Baumer, Kaplan, &
+Horton, 2021](#ref-mdsr); [James, Witten, Hastie, & Tibshirani,
+2021](#ref-JamesEtAl2021)) are used for more advanced topics:
 
 - Baumer, B. S., Kaplan, D. T., & Horton, N. J. (2021).  
   *Modern Data Science with R* (2nd ed.).  
@@ -144,7 +149,9 @@ individual sessions.
 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
 
 <!-- (b) Use local image: -->
+
 <!-- <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src = "./images/CC_BY_NC_SA.png" /></a> -->
+
 <!-- License text:  -->
 
 <span xmlns:dct="http://purl.org/dc/terms/"
@@ -157,6 +164,7 @@ Commons Attribution-NonCommercial-ShareAlike 4.0 International
 License</a>.
 
 <!-- i2ds logo: -->
+
 <!-- ![](i2ds_logo_2.png) -->
 
 <a href="https://www.spds.uni-konstanz.de/">
@@ -178,7 +186,7 @@ kn).
 
 <!-- Update: -->
 
-\[File `README.md` updated 2025-01-12 by [hn](https://neth.de).\]
+\[File `README.md` updated 2025-09-16 by [hn](https://neth.de).\]
 
 <!-- Automatic references: -->
 
@@ -207,14 +215,14 @@ edition). Retrieved from <https://www.statlearning.com/>
 
 <div id="ref-ds4psyBook" class="csl-entry">
 
-Neth, H. (2023a). *Data science for psychologists*.
+Neth, H. (2025a). *Data science for psychologists*.
 <https://doi.org/10.5281/zenodo.7229812>
 
 </div>
 
 <div id="ref-R-ds4psy" class="csl-entry">
 
-Neth, H. (2023b). *<span class="nocase">ds4psy</span>: Data science for
+Neth, H. (2025b). *<span class="nocase">ds4psy</span>: Data science for
 psychologists*. <https://doi.org/10.5281/zenodo.7229812>
 
 </div>
