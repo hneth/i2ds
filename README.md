@@ -24,7 +24,7 @@ Konstanz](https://www.uni-konstanz.de/en/).
 The **i2ds** package provides datasets and functions used in the
 examples and exercises of the book **[Introduction to Data
 Science](https://hneth-i2ds.share.connect.posit.cloud/)** (by Hansjoerg
-Neth, University of Konstanz, 2025), available at
+Neth, University of Konstanz, 2026), available at
 <https://hneth-i2ds.share.connect.posit.cloud/>. <!-- Contents: --> This
 book provides a gentle introduction to data science for students of any
 discipline with little or no background in data analysis or computer
@@ -52,9 +52,9 @@ scaffold for a curriculum that is filled with content as we go along.
 
 ## Current course
 
-The latest course **Introduction to Data Science (using R, ADILT)**
-takes place at the [University of
-Konstanz](https://www.uni-konstanz.de/en/) in 2024/2025. However, as all
+The latest courses **Introduction to Data Science (using R, ADILT)**
+take place at the [University of
+Konstanz](https://www.uni-konstanz.de/en/) in 2026. However, as all
 course materials are freely available online, anyone interested in this
 topic is welcome to read and learn from these materials.
 
@@ -71,17 +71,23 @@ topic is welcome to read and learn from these materials.
 
 <!-- Latest course: Fall/Winter 2024/2025: -->
 
-**Introduction to data science (ADILT, i2ds)** (PSY-16620) at the
-[University of Konstanz](https://www.uni-konstanz.de/en/) by [Hansjörg
-Neth](https://neth.de) (<h.neth@uni.kn>,
-[SPDS](https://spds.uni-konstanz.de/), office D507).
+**Introduction to data science (ADILT, i2ds)**  
+at the [University of Konstanz](https://www.uni-konstanz.de/en/) by
+[Hansjörg Neth](https://neth.de) (<h.neth@uni.kn>,
+[SPDS](https://spds.uni-konstanz.de/), office D507).
 
-- Fall/Winter 2024/2025: Mondays, 13:30–15:00, D430.
+- Spring/Summer 2026: i2ds 1: Basics \| i2ds 2: Applications
 
-- Course management systems:
+- Online platforms (at [uni.kn](https://www.uni-konstanz.de/en/)):
 
-  - [Ilias](https://ilias.uni-konstanz.de/goto.php/crs/2030607)
-  - [ZEuS](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=796)
+  - Course registration system [ZEuS](https://zeus.uni-konstanz.de):
+    [i2ds
+    1](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=796)
+    \| [i2ds
+    2](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=93121&periodId=796)
+  - Course management system [Ilias](https://ilias.uni-konstanz.de):
+    [i2ds 1](https://ilias.uni-konstanz.de/goto.php/crs/2030607) \|
+    [i2ds 2](https://ilias.uni-konstanz.de/goto.php/crs/2030618)
 
 <!-- Materials: -->
 
@@ -115,7 +121,7 @@ Additionally, we will be using several chapters from the textbook
 - Neth, H. (2026). ds4psy: *Data Science for Psychologists*.  
   Social Psychology and Decision Sciences, University of Konstanz,
   Germany.  
-  Textbook and R package (version 1.3.0, April , 2025).  
+  Textbook and R package (version 1.3.0, April 22, 2025).  
   Available at <https://hneth-ds4psy.share.connect.posit.cloud/>.
 
 The URL of the supporting R package **ds4psy** ([2026b](#ref-R-ds4psy))

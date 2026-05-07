@@ -142,7 +142,7 @@ It currently serves as a scaffold for a curriculum that is filled with content a
 
 ## Current course
 
-The latest course **Introduction to Data Science (using R, ADILT)** takes place at the [University of Konstanz](https://www.uni-konstanz.de/en/) in\ 2024/2025. 
+The latest courses **Introduction to Data Science (using R, ADILT)** take place at the [University of Konstanz](https://www.uni-konstanz.de/en/) in\ 2026. 
 However, as all course materials are freely available online, anyone interested in this topic is welcome to read and learn from these materials. 
 
 
@@ -157,16 +157,17 @@ However, as all course materials are freely available online, anyone interested 
 
 <!-- Latest course: Fall/Winter 2024/2025: -->
 
-**Introduction to data science (ADILT, i2ds)** (PSY-16620) 
+**Introduction to data science (ADILT, i2ds)**  
 at the [University of Konstanz](https://www.uni-konstanz.de/en/) 
-by [Hansjörg Neth](https://neth.de) (<h.neth@uni.kn>, [SPDS](https://spds.uni-konstanz.de/), office D507). 
+by [Hansjörg Neth](https://neth.de) (<h.neth@uni.kn>, [SPDS](https://spds.uni-konstanz.de/), office\ D507). 
 
-* Fall/Winter 2024/2025: Mondays, 13:30--15:00, D430.
+* Spring/Summer 2026: i2ds 1: Basics | i2ds\ 2: Applications
 
-* Course management systems: 
-
-   - [Ilias](`r url_i2ds_ilias`)
-   - [ZEuS](`r url_i2ds_zeus`)
+* Online platforms (at [uni.kn](https://www.uni-konstanz.de/en/)):
+    - Course registration system [ZEuS](`r url_zeus`): 
+    [i2ds 1](`r url_i2ds_zeus`) | [i2ds 2](`r url_i2ds_2_zeus`)
+    - Course management system [Ilias](`r url_ilias`): 
+    [i2ds 1](`r url_i2ds_ilias`) | [i2ds 2](`r url_i2ds_2_ilias`)
 
 <!-- Materials: --> 
 
