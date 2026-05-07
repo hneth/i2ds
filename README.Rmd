@@ -34,106 +34,75 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r define-URLs-i2ds-220408, echo = FALSE, eval = TRUE}
+```{r define-URLs-i2ds-260506, echo = FALSE, eval = TRUE}
 # URLs:
 
-# (1) ds4psy: ------ 
-url_ds4psy_book <- "https://bookdown.org/hneth/ds4psy/"
-url_ds4psy_cran <- "https://CRAN.R-project.org/package=ds4psy"
+# URLs:
+url_R    <- "https://www.r-project.org"
+url_CRAN <- "https://cran.r-project.org/"
 
-# ds4psy course in Fall 2020:
-# Data Science for Psychologists | PSY-15150 
-# 02.11.2020 - 08.02.2021
-# weekly on Mon	15:15 - 16:45
-# Room R 513/online
-url_ds4psy_ilias <- "https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1077327.html"  # ds4psy
-url_ds4psy_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=5101&periodId=181" 
-
-# ds4psy course in Summer 2021:
-# Data Science for Psychologists | PSY-15150 
-# 12.04.2021 - 19.07.2021
-# weekly on Mon	15:15 - 16:45 | online
-url_ds4psy_ilias <- "https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1173220.html"  # ds4psy
-url_ds4psy_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=5101&periodId=555"
-
-# i2ds course in Fall 2020: 
-# Introduction to Data Science 1: Foundations (using R, ADILT) | PSY-16620 
-# 05.11.2020 - 11.02.2021
-# weekly on Thu	13:30 - 15:00 | Room C 336/online 
-# url_i2ds_ilias <- "https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1077339.html"
-# url_i2ds_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=181" 
-
-# ds4psy course in Summer 2022:
-# Data Science for Psychologists | PSY-15150 
-# 11.04.2022 - 18.07.2022 
-# weekly on Mon	13:30 - 15:00 | D430 
-url_ds4psy_ilias <- "https://ilias.uni-konstanz.de/goto.php?target=crs_1391467"  # ds4psy ilias 
-url_ds4psy_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=5101&periodId=557&navigationPosition=hisinoneLehrorganisation,examEventOverviewOwn"  # ds4psy ZEuS
-
-
-# (2) i2ds: ------ 
-url_i2ds_book  <- "https://bookdown.org/hneth/i2ds/"
-
-# i2ds_2 course in Summer 2021: 
-# Introduction to Data Science 2: Applications (using R, ADILT) | PSY-16710 
-# 15.04.2021 - 22.07.2024 
-# weekly on Thu	15:15 - 16:45 | online 
-# url_i2ds_ilias <- "https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_1179622.html"
-# url_i2ds_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=93121&periodId=555" 
-
-# i2ds_2 course in Summer 2022: 
-# Introduction to Data Science 2: Applications (using R, ADILT) | PSY-16710 
-# 11.04.2022 - 18.07.2022
-# weekly on Mon	15:15 - 16:45 | D430  
-url_i2ds_ilias <- "https://ilias.uni-konstanz.de/goto_ILIASKONSTANZ_crs_1392107.html" # i2ds_2 ilias 
-url_i2ds_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=93121&periodId=557&navigationPosition=hisinoneLehrorganisation,examEventOverviewOwn" # i2ds_2 ZEuS 
-
-# i2ds_1 course in Fall 2023/2024:
-# Introduction to Data Science 1: Basics (using R, ADILT) | PSY-16620  
-# 23.10.2023 - 05.02.2024 
-# weekly on Mon	13:30 - 15:00 (14 sessions) | D435
-# url_i2ds_ilias <- "https://ilias.uni-konstanz.de/goto.php?target=crs_1633875" # i2ds_1 ilias
-# url_i2ds_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=791" # i2ds_1 ZEuS 
-
-# i2ds_1 in Fall 2024/2025    | PSY-16620
-# Di	13:30 - 15:00           | Room D430
-url_i2ds_ilias <- "https://ilias.uni-konstanz.de/goto.php?target=crs_1788982" # i2ds_1 ilias
-url_i2ds_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=793" # i2ds_1 ZEuS 
-
-# i2ds_2 in Fall 2024/2025   | PSY-16710
-# Blockveranstaltung		          13:30-18:30	 01.11.2024		  | Room D247
-# Blockveranstaltung + Sa und So	09:00-18:00	 02.+03.11.2024	| Room F423
-
-url_i2ds_2_ilias <- "https://ilias.uni-konstanz.de/goto.php?target=crs_1788994"
-url_i2ds_2_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=93121&periodId=793"
-
-# +++ here now +++: 2024 08 30
-
-
-# (3) OTHER/OLDER URLs: ------ 
-
-# ossd: ------ 
-
-# SoSe 2023:
-# Open Source Software Development in R (ADILT Applications) 
-# PSY-18040 
-# Tue:	13:30 - 15:00 | C426
-
-url_ossd_ilias <- "https://ilias.uni-konstanz.de/goto_ILIASKONSTANZ_crs_1559797.html"
-url_ossd_zeus <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=102164&periodId=790"
-
-# SoSe 2020:
-# url_ds4psy_ilias <- "https://ilias.uni-konstanz.de/ilias/goto_ilias_uni_crs_979923.html"
-# url_ds4psy_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=5101&periodId=173"
-# # Other:
-url_ds4psy_rpository <- "http://rpository.com/ds4psy/"  # Syllabus
-
+# uni.kn:
+url_ilias <- "https://ilias.uni-konstanz.de"
+url_zeus <- "https://zeus.uni-konstanz.de"
 # ADILT: 
 url_ADILT    <- "https://www.uni-konstanz.de/adilt/"
 url_ADILT_en <- "https://www.uni-konstanz.de/en/adilt/"
 
+# Posit software products:
+url_RStudio   <- "https://posit.co/products/open-source/rstudio/" 
+url_RMarkdown <- "https://rmarkdown.rstudio.com"
+url_RMarkdown_cheatsheet <- "https://raw.githubusercontent.com/rstudio/cheatsheets/main/rmarkdown-2.0.pdf"
+
+# (1) ds4psy: ------ 
+url_ds4psy_book_old <- "https://bookdown.org/hneth/ds4psy/" # moved to:
+url_ds4psy_book     <- "https://hneth-ds4psy.share.connect.posit.cloud/"
+url_ds4psy_cran     <- "https://CRAN.R-project.org/package=ds4psy"
+
+# (2) i2ds: ------ 
+url_i2ds_book_old <- "https://bookdown.org/hneth/i2ds/" # moved to: 
+url_i2ds_book     <- "https://hneth-i2ds.share.connect.posit.cloud/"
+
+
+# (3) Current course links: ------
+
+# Current course links: Spring/Summer 2026: ---- 
+
+# i2ds 1: Basics (PSY-16620)
+# Dates:                   Room:
+# 24.04.2026:			         was C422, now: C424  
+# 25.04.2026 & 26.04.2026	 was F423, now: G530
+url_i2ds_ilias <- "https://ilias.uni-konstanz.de/goto.php/crs/2030607"
+url_i2ds_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=796"
+
+# i2ds 2: Applications (PSY-16710)
+# Dates:				            Room:
+# 19.06.2026:			          C426
+# 20.06.2026 & 21.06.2026:	F423
+url_i2ds_2_ilias <- "https://ilias.uni-konstanz.de/goto.php/crs/2030618"
+url_i2ds_2_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=93121&periodId=796"
+
+# vis4psy: Data visualization for psychology research (PSY-18940)
+# Dates:				            Room:
+# 15.05.2026:			          G304
+# 16.05.2026 & 17.05.2026:	F423
+url_vis4psy_ilias <- "https://ilias.uni-konstanz.de/goto.php/crs/2030854"
+url_vis4psy_zeus  <- "https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=115445&periodId=796" 
+
+# +++ here now +++: 2026-04-30
+
+# NEW: Set links to ds4psy courses to current i2ds 1 course:
+url_ds4psy_ilias <- url_i2ds_ilias
+url_ds4psy_zeus  <- url_i2ds_zeus
+
+
+# (4) OTHER/OLDER URLs: ------ 
+
+# Other URLs:
+url_i2ds_survey <- "https://ww3.unipark.de/uc/i2ds_survey/"  # i2ds survey on Unipark
+url_ds4psy_rpository <- "http://rpository.com/ds4psy/"  # syllabus/data files
+
 # Other course-related variables:
-ds_project_due  <- lubridate::ymd("2025-02-28")
+ds_project_due <- lubridate::ymd("2026-07-31")  # updated on 2026-04-30
 frm_ds_deadline <- "%A, %B %e, %Y"
 # format(ds_project_due, frm_ds_deadline)
 ```
@@ -153,7 +122,7 @@ The R package **i2ds** supports the course **Introduction to Data Science (using
 
 ## Description 
 
-The **i2ds** package provides datasets and functions used in the examples and exercises of the book **[Introduction to Data Science](`r url_i2ds_book`)** (by Hansjoerg Neth, University of Konstanz, 2025), available at <`r url_i2ds_book`>. 
+The **i2ds** package provides datasets and functions used in the examples and exercises of the book **[Introduction to Data Science](`r url_i2ds_book`)** (by Hansjoerg Neth, University of Konstanz, 2026), available at <`r url_i2ds_book`>. 
 <!-- Contents: -->
 This book provides a gentle introduction to data science for students of any discipline with little or no background in data analysis or computer programming. Based on notions of representation, measurement, and modeling, we examine key data types (e.g., logicals, numbers, text) and learn to clean, summarize, transform, and visualize (rectangular) data. 
 
@@ -214,16 +183,16 @@ by [Hansjörg Neth](https://neth.de) (<h.neth@uni.kn>, [SPDS](https://spds.uni-k
 
 The current version of the textbook [Introduction to Data Science](`r url_i2ds_book`) is:
 
-- Neth, H. (2025). i2ds: _Introduction to Data Science_.  
+- Neth, H. (2026). i2ds: _Introduction to Data Science_.  
 Social Psychology and Decision Sciences, University of Konstanz, Germany.  
-Textbook (version 0.5.9, 2025).  
+Textbook (version 0.6.5, 2026).  
 Available at <`r url_i2ds_book`>. 
 
 Additionally, we will be using several chapters from the textbook [-@ds4psyBook]: 
 
-- Neth, H. (2025). ds4psy: _Data Science for Psychologists_.  
+- Neth, H. (2026). ds4psy: _Data Science for Psychologists_.  
 Social Psychology and Decision Sciences, University of Konstanz, Germany.  
-Textbook and R package (version 1.1.0, September 12, 2025).  
+Textbook and R package (version 1.3.0, April 22, 2025).  
 Available at <`r url_ds4psy_book`>.  
 
 

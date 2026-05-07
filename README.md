@@ -23,10 +23,10 @@ Konstanz](https://www.uni-konstanz.de/en/).
 
 The **i2ds** package provides datasets and functions used in the
 examples and exercises of the book **[Introduction to Data
-Science](https://bookdown.org/hneth/i2ds/)** (by Hansjoerg Neth,
-University of Konstanz, 2025), available at
-<https://bookdown.org/hneth/i2ds/>. <!-- Contents: --> This book
-provides a gentle introduction to data science for students of any
+Science](https://hneth-i2ds.share.connect.posit.cloud/)** (by Hansjoerg
+Neth, University of Konstanz, 2025), available at
+<https://hneth-i2ds.share.connect.posit.cloud/>. <!-- Contents: --> This
+book provides a gentle introduction to data science for students of any
 discipline with little or no background in data analysis or computer
 programming. Based on notions of representation, measurement, and
 modeling, we examine key data types (e.g., logicals, numbers, text) and
@@ -80,8 +80,8 @@ Neth](https://neth.de) (<h.neth@uni.kn>,
 
 - Course management systems:
 
-  - [Ilias](https://ilias.uni-konstanz.de/goto.php?target=crs_1788982)
-  - [ZEuS](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=793)
+  - [Ilias](https://ilias.uni-konstanz.de/goto.php/crs/2030607)
+  - [ZEuS](https://zeus.uni-konstanz.de:443/hioserver/pages/startFlow.xhtml?_flowId=detailView-flow&unitId=86706&periodId=796)
 
 <!-- Materials: -->
 
@@ -89,10 +89,10 @@ Neth](https://neth.de) (<h.neth@uni.kn>,
 
   - Scripts at [Introduction to Data Science
     (i2ds)](https://bookdown.org/hneth/i2ds/) (at
-    <https://bookdown.org/hneth/i2ds/>)
+    <https://hneth-i2ds.share.connect.posit.cloud/>)
   - Ebook [Data Science for
     Psychologists](https://bookdown.org/hneth/ds4psy/) (at
-    <https://bookdown.org/hneth/ds4psy/>)
+    <https://hneth-ds4psy.share.connect.posit.cloud/>)
   - R package [ds4psy](https://CRAN.R-project.org/package=ds4psy) (at
     <https://CRAN.R-project.org/package=ds4psy>)
 
@@ -101,24 +101,24 @@ Neth](https://neth.de) (<h.neth@uni.kn>,
 ## Readings
 
 The current version of the textbook [Introduction to Data
-Science](https://bookdown.org/hneth/i2ds/) is:
+Science](https://hneth-i2ds.share.connect.posit.cloud/) is:
 
-- Neth, H. (2025). i2ds: *Introduction to Data Science*.  
+- Neth, H. (2026). i2ds: *Introduction to Data Science*.  
   Social Psychology and Decision Sciences, University of Konstanz,
   Germany.  
-  Textbook (version 0.5.9, 2025).  
-  Available at <https://bookdown.org/hneth/i2ds/>.
+  Textbook (version 0.6.5, 2026).  
+  Available at <https://hneth-i2ds.share.connect.posit.cloud/>.
 
 Additionally, we will be using several chapters from the textbook
-([2025a](#ref-ds4psyBook)):
+([2026a](#ref-ds4psyBook)):
 
-- Neth, H. (2025). ds4psy: *Data Science for Psychologists*.  
+- Neth, H. (2026). ds4psy: *Data Science for Psychologists*.  
   Social Psychology and Decision Sciences, University of Konstanz,
   Germany.  
-  Textbook and R package (version 1.1.0, September 12, 2025).  
-  Available at <https://bookdown.org/hneth/ds4psy/>.
+  Textbook and R package (version 1.3.0, April , 2025).  
+  Available at <https://hneth-ds4psy.share.connect.posit.cloud/>.
 
-The URL of the supporting R package **ds4psy** ([2025b](#ref-R-ds4psy))
+The URL of the supporting R package **ds4psy** ([2026b](#ref-R-ds4psy))
 is <https://CRAN.R-project.org/package=ds4psy>.
 
 <!-- Other books and chapters: -->
@@ -175,7 +175,7 @@ License</a>.
 
 Please ask any question that may also be of interest to other course
 members in the **Discussion Forum** on
-[Ilias](https://ilias.uni-konstanz.de/goto.php?target=crs_1788982).
+[Ilias](https://ilias.uni-konstanz.de/goto.php/crs/2030607).
 
 For all other questions, contact Hansjörg Neth (h dot neth at uni dot
 kn).
@@ -186,7 +186,7 @@ kn).
 
 <!-- Update: -->
 
-\[File `README.md` updated 2025-09-16 by [hn](https://neth.de).\]
+\[File `README.md` updated 2026-05-07 by [hn](https://neth.de).\]
 
 <!-- Automatic references: -->
 
@@ -215,14 +215,14 @@ edition). Retrieved from <https://www.statlearning.com/>
 
 <div id="ref-ds4psyBook" class="csl-entry">
 
-Neth, H. (2025a). *Data science for psychologists*.
-<https://doi.org/10.5281/zenodo.7229812>
+Neth, H. (2026a). *Data science for psychologists*. Retrieved from
+<https://hneth-ds4psy.share.connect.posit.cloud/>
 
 </div>
 
 <div id="ref-R-ds4psy" class="csl-entry">
 
-Neth, H. (2025b). *<span class="nocase">ds4psy</span>: Data science for
+Neth, H. (2026b). *<span class="nocase">ds4psy</span>: Data science for
 psychologists*. <https://doi.org/10.5281/zenodo.7229812>
 
 </div>
